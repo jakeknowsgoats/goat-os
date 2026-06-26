@@ -1,0 +1,11 @@
+{
+  "drops": [
+    { "store": "Target", "name": "2025 Donruss Optic NFL Blaster", "price": 29.99, "tag": "🏈 Football" },
+    { "store": "Topps", "name": "Topps NOW — Darryn Peterson RC", "price": 11.99, "tag": "🏀 Basketball" },
+    { "store": "Amazon", "name": "MTG Marvel Spider-Man Collector Box", "price": 332.49, "tag": "🃏 TCG" },
+    { "store": "Amazon", "name": "MTG Marvel Super Heroes Bundle (preorder)", "price": 74.99, "tag": "🃏 TCG" },
+    { "store": "Walmart", "name": "Pokémon Prismatic Evolutions Poster Collection", "price": 19.87, "tag": "⚡ Pokémon" },
+    { "store": "Pokémon Center", "name": "151 Booster Bundle 2-Pack", "price": 50.0, "tag": "⚡ Pokémon" },
+    { "store": "Target", "name": "2025 Topps Chrome Platinum Value Box", "price": 24.99, "tag": "⚾ Baseball" }
+  ]
+}

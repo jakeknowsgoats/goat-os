@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  background: #0e1014;
+  color: #e7e9ee;
+}
+
+input[type="range"] {
+  accent-color: #e67e22;
+}
