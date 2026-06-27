@@ -2,6 +2,7 @@
 import { useEffect, useMemo, useState } from "react";
 import type { Drop } from "@/lib/drops";
 import { SAMPLE_DROPS } from "@/lib/drops";
+import { enablePush, updatePushStores, pushIsOn } from "@/lib/push";
 
 const money = (n: number) =>
   n > 0 ? "$" + n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : "—";
@@ -18,6 +19,8 @@ export default function DropRadar({
   const [drops, setDrops] = useState<Drop[]>(SAMPLE_DROPS);
   const [source, setSource] = useState("sample");
   const [muted, setMuted] = useState<string[]>([]);
+  const [pushOn, setPushOn] = useState(false);
+  const [pushMsg, setPushMsg] = useState("");
 
   // load saved muted stores
   useEffect(() => {
@@ -57,9 +60,32 @@ export default function DropRadar({
   }, []);
 
   const stores = useMemo(() => Array.from(new Set(drops.map((d) => d.store))), [drops]);
+  const enabledStores = useMemo(() => stores.filter((s) => !muted.includes(s)), [stores, muted]);
   const shown = drops.filter((d) => !muted.includes(d.store));
   const toggle = (s: string) =>
     setMuted((m) => (m.includes(s) ? m.filter((x) => x !== s) : [...m, s]));
+
+  useEffect(() => {
+    pushIsOn().then(setPushOn);
+  }, []);
+  useEffect(() => {
+    if (pushOn) updatePushStores(enabledStores);
+  }, [pushOn, enabledStores]);
+
+  async function turnOnPush() {
+    setPushMsg("");
+    const res = await enablePush(enabledStores);
+    if (res.ok) {
+      setPushOn(true);
+      setPushMsg("✅ Phone alerts on — you'll get pushed the second a drop hits.");
+    } else if (res.error === "denied") {
+      setPushMsg("You blocked notifications — turn them on for this site in your browser settings.");
+    } else if (res.error === "unsupported") {
+      setPushMsg("On iPhone: tap Share → Add to Home Screen, then open it from there and try again.");
+    } else {
+      setPushMsg("Couldn't enable alerts — make sure you're signed in, then try again.");
+    }
+  }
 
   const live = source === "discord";
 
@@ -76,6 +102,28 @@ export default function DropRadar({
         </span>
         <span className="text-mut">· auto-refreshing every 45s</span>
       </div>
+
+      {!pushOn ? (
+        <div className="mb-4 flex flex-col gap-2 rounded-xl border border-goat bg-card p-4 sm:flex-row sm:items-center">
+          <div className="flex-1">
+            <div className="font-bold">🔔 Get instant phone alerts</div>
+            <div className="text-xs text-mut">
+              Tap an alert and it opens the store link directly — no Discord, no hunting. You&apos;re at checkout before it sells out.
+            </div>
+          </div>
+          <button
+            onClick={turnOnPush}
+            className="rounded-lg bg-goat px-4 py-2 font-bold text-[#1a1206]"
+          >
+            Enable phone alerts
+          </button>
+        </div>
+      ) : (
+        <div className="mb-4 rounded-xl border border-green-700 bg-green-500/10 px-4 py-2 text-sm text-green-300">
+          ✅ Phone alerts on — for the stores toggled on below. Tapping an alert opens the store.
+        </div>
+      )}
+      {pushMsg && <div className="mb-3 text-xs text-mut">{pushMsg}</div>}
 
       <div className="mb-4 rounded-xl border border-line bg-card p-3">
         <div className="mb-2 text-[11px] font-semibold uppercase tracking-wide text-mut">
