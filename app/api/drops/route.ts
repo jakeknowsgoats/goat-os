@@ -21,6 +21,28 @@ function parsePrice(text: string): number {
   return m ? parseFloat(m[1].replace(/,/g, "")) || 0 : 0;
 }
 
+// Trim Moonitor's trailing codes ("NEWM", "N2", ...) and squash double spaces.
+function cleanName(s: string): string {
+  let n = s.replace(/\s+/g, " ").trim();
+  for (let i = 0; i < 3; i++) n = n.replace(/\s+(NEW[MW]?|N\d+)$/i, "").trim();
+  return n.slice(0, 140);
+}
+
+// Derive the real store from the product link; fall back to the channel's label.
+function storeFromUrl(url: string | undefined, fallback: string): string {
+  if (!url) return fallback;
+  const u = url.toLowerCase();
+  if (u.includes("walmart.")) return "Walmart";
+  if (u.includes("bestbuy.")) return "Best Buy";
+  if (u.includes("target.")) return "Target";
+  if (u.includes("amazon.")) return "Amazon";
+  if (u.includes("pokemoncenter.")) return "Pokémon Center";
+  if (u.includes("costco.")) return "Costco";
+  if (u.includes("gamestop.")) return "GameStop";
+  if (u.includes("samsclub.")) return "Sam's Club";
+  return fallback;
+}
+
 type Embed = {
   title?: string;
   description?: string;
@@ -46,10 +68,10 @@ async function fetchChannel(
       const blob = [e.title, e.description, ...(e.fields?.flatMap((f) => [f.name, f.value]) ?? [])]
         .filter(Boolean)
         .join(" \n ");
-      const name = (e.title || e.description || "").split("\n")[0].slice(0, 140).trim();
+      const name = cleanName(e.title || e.description || "");
       if (!name) continue;
       out.push({
-        store: ch.store,
+        store: storeFromUrl(e.url, ch.store),
         name,
         price: parsePrice(blob),
         tag: ch.tag,
@@ -68,10 +90,17 @@ export async function GET() {
       const results = await Promise.all(
         CHANNELS.map((c) => fetchChannel(token, c).catch(() => []))
       );
+      const seen = new Set<string>();
       const drops = results
         .flat()
         .sort((a, b) => (a.ts < b.ts ? 1 : -1))
-        .slice(0, 40)
+        .filter((d) => {
+          const key = (d.url || d.name).toLowerCase();
+          if (seen.has(key)) return false;
+          seen.add(key);
+          return true;
+        })
+        .slice(0, 30)
         .map(({ ts, ...d }) => d);
       if (drops.length) return NextResponse.json({ drops, source: "discord" });
     } catch {
