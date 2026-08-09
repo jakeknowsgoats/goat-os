@@ -156,6 +156,30 @@ tr.detail td{padding:0;border-bottom:1px solid var(--line);background:var(--rais
 .leg b{color:var(--ink);}
 footer{margin-top:26px;font-size:12px;color:var(--faint);border-top:1px solid var(--line);padding-top:16px;}
 footer a{color:var(--accent);}
+/* collection progress */
+.progress{display:flex;align-items:center;gap:14px;background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--radius);padding:13px 16px;margin:14px 0 2px;box-shadow:var(--shadow);flex-wrap:wrap;}
+.progress .phead{font-size:13px;color:var(--muted);}
+.progress .phead b{color:var(--ink);font-weight:700;font-size:15px;}
+.progress .bar{flex:1 1 200px;height:9px;border-radius:999px;background:var(--surface-2);overflow:hidden;min-width:130px;}
+.progress .fill{height:100%;width:0;border-radius:999px;
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));transition:width .35s ease;}
+.progress .pct{font-family:ui-monospace,Menlo,monospace;font-size:13px;color:var(--accent);font-weight:700;}
+.progress .exportbtns{display:flex;gap:8px;}
+.mini{border:1px solid var(--line);background:var(--surface-2);color:var(--muted);border-radius:9px;
+  padding:7px 11px;font:inherit;font-size:12.5px;cursor:pointer;display:inline-flex;gap:6px;align-items:center;}
+.mini:hover{color:var(--ink);border-color:var(--accent);}
+.lswarn{font-size:11.5px;color:var(--e);flex-basis:100%;}
+/* caught star */
+th.gotcol,td.gotcol{width:46px;}
+.starbtn{border:0;background:none;cursor:pointer;padding:5px;line-height:0;border-radius:8px;color:var(--faint);}
+.starbtn:hover{color:var(--accent-2);background:var(--surface-2);}
+.starbtn[aria-pressed="true"]{color:var(--accent-2);}
+.starbtn[aria-pressed="true"] svg{fill:currentColor;}
+.starbtn svg{width:21px;height:21px;}
+tr.row.caught{background:color-mix(in srgb,var(--accent) 8%,transparent);}
+tr.row.caught:hover{background:color-mix(in srgb,var(--accent) 13%,transparent);}
+tr.row.caught .name{color:var(--accent);}
 @media (max-width:560px){
   .kpi .n{font-size:24px;} .wrap{padding:18px 12px 60px;}
   .name .gx{display:none;}
@@ -179,6 +203,20 @@ footer a{color:var(--accent);}
 
   <section class="kpis" id="kpis"></section>
 
+  <section class="progress">
+    <div class="phead">Your shiny collection&nbsp; <b><span id="pcount">0</span> / <span id="ptotal">0</span></b> caught</div>
+    <div class="bar"><div class="fill" id="pfill"></div></div>
+    <div class="pct" id="ppct">0%</div>
+    <div class="exportbtns">
+      <button class="mini" id="exportbtn" title="Download a backup of your caught list">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12M8 11l4 4 4-4M4 21h16"/></svg>Export</button>
+      <label class="mini" title="Restore a caught list from a backup file">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21V9M8 13l4-4 4 4M4 3h16"/></svg>Import
+        <input id="importfile" type="file" accept="application/json,.json" hidden></label>
+    </div>
+    <div class="lswarn" id="lswarn" hidden>Heads-up: this browser is blocking local storage (Private Browsing?), so your picks won't be saved between visits. Use Export to keep a backup.</div>
+  </section>
+
   <section class="controls">
     <div class="searchrow">
       <label class="search">
@@ -198,6 +236,7 @@ footer a{color:var(--accent);}
   <div class="tablewrap">
     <table>
       <thead><tr>
+        <th class="center gotcol" title="Mark the ones you've caught shiny">Got</th>
         <th>Pokémon</th><th>Category</th><th>Shiny</th><th>Status</th>
         <th>Bucket</th><th>Pokémon GO</th><th>Methods</th><th class="center"></th>
       </tr></thead>
@@ -214,6 +253,9 @@ footer a{color:var(--accent);}
     Counts are computed from the dataset. Ultra Beasts are shown as a separate class and excluded from the
     Legendary/Mythical totals. Sources &amp; verification caveats live in <span class="mono">sources.md</span>.
     Post-Jan-2026 Pokémon GO specifics verified by web search where possible; a few exact dates are approximate.
+    <br><br><b>Your caught picks</b> (the ★ column) are saved locally in this browser on this device — reopening in
+    Safari keeps them. They don't sync across devices; use <b>Export</b> to save a backup file and <b>Import</b> to
+    restore it here or on another device.
   </footer>
 </div>
 
@@ -237,6 +279,25 @@ tbtn.onclick = () => setTheme(curTheme()==='dark'?'light':'dark');
 
 /* ---- state ---- */
 const state = { q:'', sort:'dex', cat:new Set(), bucket:new Set(), method:new Set(), gen:new Set(), flag:new Set() };
+
+/* ---- caught tracker (persisted per-device via localStorage) ---- */
+const SHINY_TOTAL = MONS.filter(m=>m.shiny_exists).length;
+const LS_KEY='shinydex.caught.v1';
+let caught={}, lsOK=true;
+try{ caught = JSON.parse(localStorage.getItem(LS_KEY)||'{}') || {}; }catch(e){ caught={}; }
+try{ localStorage.setItem('__t','1'); localStorage.removeItem('__t'); }catch(e){ lsOK=false; }
+function saveCaught(){ try{ localStorage.setItem(LS_KEY, JSON.stringify(caught)); }catch(e){} }
+const isCaught = n => !!caught[n];
+const caughtCount = () => MONS.filter(m=>m.shiny_exists && caught[m.name]).length;
+function setCaught(n,v){ if(v) caught[n]=1; else delete caught[n]; saveCaught(); updateProgress(); }
+function updateProgress(){
+  const c=caughtCount(), pct= SHINY_TOTAL ? Math.round(c/SHINY_TOTAL*100):0;
+  document.getElementById('pcount').textContent=c;
+  document.getElementById('ptotal').textContent=SHINY_TOTAL;
+  document.getElementById('pfill').style.width=pct+'%';
+  document.getElementById('ppct').textContent=pct+'%';
+}
+const STAR_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M12 2.6l2.9 6 6.5.9-4.7 4.6 1.1 6.5L12 18.9 6.2 21.6l1.1-6.5L2.6 9.5l6.5-.9z"/></svg>';
 
 /* ---- KPI tiles (clickable) ---- */
 const KPIS = [
@@ -264,7 +325,8 @@ const CHIPS = [
   {g:'Bucket', items:[['bucket','A'],['bucket','E'],['bucket','B'],['bucket','C'],['bucket','D']]},
   {sep:1},
   {g:'Quick', items:[['flag','huntable','Huntable now'],['flag','go','GO shiny'],['flag','gorng','RNG in GO'],
-    ['flag','home','HOME guaranteed'],['flag','eventonly','Event-only']]},
+    ['flag','home','HOME guaranteed'],['flag','eventonly','Event-only'],
+    ['flag','caught','★ Caught'],['flag','notcaught','Still to hunt']]},
   {sep:1},
   {g:'Method', items:[['method','da','Dynamax Adv.'],['method','uw','Ultra Wormhole'],['method','bdsp','Ramanas Park'],
     ['method','swsh','SwSh static'],['method','za','Z-A Hyperspace'],['method','gorng','GO raid/box']]},
@@ -310,6 +372,8 @@ function flagOK(m){
     if(f==='gorng' && !m.go_rng_hunt) return false;
     if(f==='home' && !m.home_guaranteed) return false;
     if(f==='eventonly' && !m.event_only) return false;
+    if(f==='caught' && !isCaught(m.name)) return false;
+    if(f==='notcaught' && (isCaught(m.name) || !m.shiny_exists)) return false;
   }
   return true;
 }
@@ -392,8 +456,11 @@ function render(){
   document.getElementById('empty').hidden = rows.length>0;
   const frag=document.createDocumentFragment();
   rows.forEach(m=>{
-    const tr=document.createElement('tr'); tr.className='row'; tr.tabIndex=0;
+    const tr=document.createElement('tr'); tr.className='row'+(isCaught(m.name)?' caught':''); tr.tabIndex=0;
     tr.innerHTML = `
+      <td class="center gotcol">${m.shiny_exists
+        ? `<button class="starbtn" aria-pressed="${isCaught(m.name)}" data-name="${esc(m.name)}" aria-label="Mark ${esc(m.name)} caught shiny">${STAR_SVG}</button>`
+        : '<span class="go-n" title="No shiny exists to catch">—</span>'}</td>
       <td><span class="name">${esc(m.name)}<span class="gx">${m.gen}</span></span></td>
       <td><span class="cattag">${m.category}</span></td>
       <td>${m.shiny_exists?'Yes':'<span class="go-n">No</span>'}</td>
@@ -404,10 +471,17 @@ function render(){
       <td><div class="mchips">${methodBadges(m).map(x=>`<span class="mchip">${x}</span>`).join('')||'<span class="go-n">—</span>'}</div></td>
       <td class="center exp">▸</td>`;
     const dtr=document.createElement('tr'); dtr.className='detail'; dtr.hidden=true;
-    const dtd=document.createElement('td'); dtd.colSpan=8; dtr.appendChild(dtd);
+    const dtd=document.createElement('td'); dtd.colSpan=9; dtr.appendChild(dtd);
     const openIt=()=>{ const now=dtr.hidden; if(now){ dtd.innerHTML=detailHTML(m); }
       dtr.hidden=!now; tr.querySelector('.exp').textContent = now?'▾':'▸'; };
     tr.onclick=openIt; tr.onkeydown=e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault();openIt();} };
+    const star=tr.querySelector('.starbtn');
+    if(star){
+      star.onclick=(e)=>{ e.stopPropagation(); const n=star.dataset.name, nv=!isCaught(n);
+        setCaught(n,nv); star.setAttribute('aria-pressed',nv); tr.classList.toggle('caught',nv);
+        if(state.flag.has('caught')||state.flag.has('notcaught')) render(); };
+      star.onkeydown=e=>{ if(e.key==='Enter'||e.key===' ') e.stopPropagation(); };
+    }
     frag.appendChild(tr); frag.appendChild(dtr);
   });
   tb.appendChild(frag);
@@ -422,7 +496,37 @@ const LEG=[['var(--a)','A — true hunt now','roll / reset / raid / breed'],
 document.getElementById('legend').innerHTML = LEG.map(([c,t,d])=>
   `<div class="leg"><span class="k" style="--lc:${c}"></span><span><b>${t}</b><br>${d}</span></div>`).join('');
 
-buildChips(); syncChips(); render();
+/* ---- export / import backup ---- */
+document.getElementById('exportbtn').onclick = async () => {
+  const payload = {app:'legendary-mythical-shiny-hunt', version:1,
+    exported:new Date().toISOString(), total:SHINY_TOTAL, count:caughtCount(),
+    caught:MONS.filter(m=>caught[m.name]).map(m=>m.name)};
+  const data = JSON.stringify(payload, null, 2);
+  if(window.claude && window.claude.downloads){
+    try{ await window.claude.downloads.save({filename:'shiny-caught-progress.json', data}); }
+    catch(err){ if(err && err.code!=='declined')
+      alert('Could not export here — but your picks are still saved in this browser.'); }
+  } else {
+    try{ const url=URL.createObjectURL(new Blob([data],{type:'application/json'}));
+      const a=document.createElement('a'); a.href=url; a.download='shiny-caught-progress.json'; a.click();
+      URL.revokeObjectURL(url);
+    }catch(e){ alert('Export is not supported in this view.'); }
+  }
+};
+document.getElementById('importfile').onchange = (e) => {
+  const f=e.target.files[0]; if(!f) return;
+  const r=new FileReader();
+  r.onload=()=>{ try{ const o=JSON.parse(r.result); const list=Array.isArray(o)?o:(o.caught||[]);
+      const known=new Set(MONS.map(m=>m.name)); let n=0;
+      list.forEach(name=>{ if(known.has(name)){ caught[name]=1; n++; } });
+      saveCaught(); updateProgress(); render();
+      alert('Imported '+n+' caught Pokémon.');
+    }catch(err){ alert('That file could not be read as a caught-list backup.'); } };
+  r.readAsText(f); e.target.value='';
+};
+
+if(!lsOK) document.getElementById('lswarn').hidden=false;
+buildChips(); syncChips(); updateProgress(); render();
 </script>
 """
 
