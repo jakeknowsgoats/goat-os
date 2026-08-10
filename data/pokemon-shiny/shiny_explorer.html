@@ -223,8 +223,8 @@ tr.row.both .name::after{content:"✦";color:var(--accent-2);margin-left:6px;fon
   tbody tr.row td.c-exp{display:none;}
   td.gotcol{width:auto;}
   .apps{justify-content:flex-end;} .mchips{justify-content:flex-end;}
-  /* expanded detail sits just under its card */
-  tbody tr.detail{display:block;}
+  /* expanded detail sits just under its card (respect the [hidden] attribute!) */
+  tbody tr.detail:not([hidden]){display:block;}
   tbody tr.detail td{display:block;border:1px solid var(--line);border-radius:14px;
     background:var(--raise);margin:-3px 0 12px;}
   .panel{padding:14px;}
