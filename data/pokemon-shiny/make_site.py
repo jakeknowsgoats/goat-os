@@ -201,9 +201,41 @@ tr.row.both .name::after{content:"✦";color:var(--accent-2);margin-left:6px;fon
 .progress .brk b{color:var(--ink);}
 .progress .brk .h{color:var(--home);} .progress .brk .g{color:var(--gogo);}
 .progress .brk .swatch{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:5px;vertical-align:0;}
-@media (max-width:560px){
-  .kpi .n{font-size:24px;} .wrap{padding:18px 12px 60px;}
-  .name .gx{display:none;}
+/* ---- phone: collapse the table into stacked cards (no sideways scroll) ---- */
+@media (max-width:640px){
+  .wrap{padding:16px 11px 64px;}
+  .kpi .n{font-size:23px;}
+  .tablewrap{overflow-x:visible;border:0;background:transparent;box-shadow:none;border-radius:0;}
+  table{min-width:0;width:100%;}
+  thead{display:none;}
+  tbody tr.row{display:block;background:var(--surface);border:1px solid var(--line);border-radius:14px;
+    box-shadow:var(--shadow);margin-bottom:10px;padding:6px 13px 10px;}
+  tbody tr.row:hover{background:var(--surface);}
+  tbody tr.row.owned{background:color-mix(in srgb,var(--accent) 8%,transparent);}
+  tbody tr.row td{display:flex;align-items:center;justify-content:space-between;gap:14px;
+    border:0;padding:6px 0;text-align:right;}
+  tbody tr.row td::before{content:attr(data-label);color:var(--faint);font-size:10.5px;font-weight:700;
+    letter-spacing:.05em;text-transform:uppercase;text-align:left;flex:0 0 auto;white-space:nowrap;}
+  /* name is the card header, full-width, tappable */
+  tbody tr.row td.c-name{justify-content:flex-start;border-bottom:1px solid var(--line);
+    padding:8px 0;margin-bottom:2px;}
+  tbody tr.row td.c-name::before{content:none;}
+  td.c-name .name{font-size:17px;}
+  td.c-name::after{content:"›";margin-left:auto;color:var(--faint);font-size:22px;line-height:1;
+    display:inline-block;transition:transform .15s ease;}
+  tr.row.open td.c-name::after{transform:rotate(90deg);}
+  tbody tr.row td.c-exp{display:none;}
+  td.gotcol{width:auto;}
+  .apps{justify-content:flex-end;} .mchips{justify-content:flex-end;}
+  /* expanded detail sits just under its card */
+  tbody tr.detail{display:block;}
+  tbody tr.detail td{display:block;border:1px solid var(--line);border-radius:14px;
+    background:var(--raise);margin:-3px 0 12px;}
+  .panel{padding:14px;}
+}
+@media (max-width:380px){
+  .kpis{grid-template-columns:1fr 1fr;}
+  td.c-name .name{font-size:16px;}
 }
 </style>
 
@@ -524,23 +556,23 @@ function render(){
     const tr=document.createElement('tr'); tr.className='row'+(isOwned(m.name)?' owned':'')+(isBoth(m.name)?' both':''); tr.tabIndex=0;
     const legacy = rec(m.name) && rec(m.name).legacy;
     tr.innerHTML = `
-      <td class="center gotcol">${m.shiny_exists ? `<div class="apps">
+      <td class="center gotcol c-apps" data-label="In HOME / GO">${m.shiny_exists ? `<div class="apps">
         <button class="app home" data-name="${esc(m.name)}" data-app="home" aria-pressed="${hasApp(m.name,'home')}" aria-label="${esc(m.name)} in Pokémon HOME">HOME</button>
         <button class="app go" data-name="${esc(m.name)}" data-app="go" aria-pressed="${hasApp(m.name,'go')}" ${m.go_shiny?'':'disabled title="Shiny not available in Pokémon GO"'} aria-label="${esc(m.name)} in Pokémon GO">GO</button>
       </div>` : '<span class="go-n" title="No shiny exists to store">—</span>'}</td>
-      <td><span class="name">${esc(m.name)}<span class="gx">${m.gen}</span></span>${legacy?'<span class="legdot" title="Marked owned earlier — set HOME or GO"></span>':''}${m.forms&&m.forms.length&&!m.is_form?'<span class="formflag" title="Has alternate forms">forms</span>':''}</td>
-      <td><span class="cattag">${m.category}${m.is_form?` · form of ${esc(m.base)}`:''}</span></td>
-      <td>${m.shiny_exists?'Yes':'<span class="go-n">No</span>'}</td>
-      <td>${m.huntable_now?'<span class="pill A"><span class="dot" style="background:var(--a)"></span>Now</span>':
+      <td class="c-name"><span class="name">${esc(m.name)}<span class="gx">${m.gen}</span></span>${legacy?'<span class="legdot" title="Marked owned earlier — set HOME or GO"></span>':''}${m.forms&&m.forms.length&&!m.is_form?'<span class="formflag" title="Has alternate forms">forms</span>':''}</td>
+      <td data-label="Category"><span class="cattag">${m.category}${m.is_form?` · form of ${esc(m.base)}`:''}</span></td>
+      <td data-label="Shiny exists">${m.shiny_exists?'Yes':'<span class="go-n">No</span>'}</td>
+      <td data-label="Hunt status">${m.huntable_now?'<span class="pill A"><span class="dot" style="background:var(--a)"></span>Now</span>':
             (m.rng_hunt?'<span class="pill E">Historical</span>':'<span class="go-n">—</span>')}</td>
-      <td><span class="pill ${m.bucket}">${m.bucket}</span></td>
-      <td>${goCell(m)}</td>
-      <td><div class="mchips">${methodBadges(m).map(x=>`<span class="mchip">${x}</span>`).join('')||'<span class="go-n">—</span>'}</div></td>
-      <td class="center exp">▸</td>`;
+      <td data-label="Bucket"><span class="pill ${m.bucket}">${m.bucket}</span></td>
+      <td data-label="Pokémon GO">${goCell(m)}</td>
+      <td data-label="Methods"><div class="mchips">${methodBadges(m).map(x=>`<span class="mchip">${x}</span>`).join('')||'<span class="go-n">—</span>'}</div></td>
+      <td class="center exp c-exp">▸</td>`;
     const dtr=document.createElement('tr'); dtr.className='detail'; dtr.hidden=true;
     const dtd=document.createElement('td'); dtd.colSpan=9; dtr.appendChild(dtd);
     const openIt=()=>{ const now=dtr.hidden; if(now){ dtd.innerHTML=detailHTML(m); }
-      dtr.hidden=!now; tr.querySelector('.exp').textContent = now?'▾':'▸'; };
+      dtr.hidden=!now; tr.classList.toggle('open', now); tr.querySelector('.exp').textContent = now?'▾':'▸'; };
     tr.onclick=openIt; tr.onkeydown=e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault();openIt();} };
     tr.querySelectorAll('.app').forEach(btn=>{
       btn.onclick=(e)=>{ e.stopPropagation(); if(btn.disabled) return;
