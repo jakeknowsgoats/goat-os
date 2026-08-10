@@ -135,6 +135,10 @@ td.center,th.center{text-align:center;}
 /* detail panel */
 tr.detail td{padding:0;border-bottom:1px solid var(--line);background:var(--raise);}
 .panel{padding:16px 18px;display:grid;gap:14px;}
+.closehint{justify-self:end;font-family:ui-monospace,Menlo,monospace;font-size:11px;letter-spacing:.04em;
+  text-transform:uppercase;color:var(--muted);border:1px solid var(--line);border-radius:999px;
+  padding:4px 11px;background:var(--surface);margin-bottom:-4px;}
+.closehint:hover{color:var(--ink);border-color:var(--accent);}
 .panel .meta{display:flex;flex-wrap:wrap;gap:8px;}
 .badge{font-size:11.5px;padding:3px 9px;border-radius:8px;background:var(--surface-2);border:1px solid var(--line);color:var(--muted);}
 .badge b{color:var(--ink);}
@@ -529,6 +533,7 @@ function detailHTML(m){
       ${x.note?`<div class="mnote">${esc(x.note)}</div>`:''}</div>`;
   }).join('');
   return `<div class="panel">
+    <div class="closehint">▲ Tap here to close</div>
     <div class="meta">
       <span class="badge">Gen <b>${m.gen}</b></span>
       <span class="badge">${m.category}</span>
@@ -574,6 +579,7 @@ function render(){
     const openIt=()=>{ const now=dtr.hidden; if(now){ dtd.innerHTML=detailHTML(m); }
       dtr.hidden=!now; tr.classList.toggle('open', now); tr.querySelector('.exp').textContent = now?'▾':'▸'; };
     tr.onclick=openIt; tr.onkeydown=e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault();openIt();} };
+    dtr.style.cursor='pointer'; dtr.onclick=openIt;   // tapping the open panel closes it too
     tr.querySelectorAll('.app').forEach(btn=>{
       btn.onclick=(e)=>{ e.stopPropagation(); if(btn.disabled) return;
         const n=btn.dataset.name, app=btn.dataset.app;
