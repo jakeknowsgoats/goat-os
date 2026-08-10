@@ -70,10 +70,20 @@ not be pinned to an exact date, it is flagged *(verify)* in the report notes.
 - Meltan / Mystery Box: https://www.dexerto.com/pokemon/how-to-get-shiny-meltan-in-pokemon-go-1456253/ , https://www.serebii.net/pokemongo/mysterybox.shtml
 - 2026 events: GO Fest 2026 (Mega Mewtwo X/Y, Zeraora), Solgaleo/Mega Rayquaza raid weekend (Jul 2026) — pokemongo.com / pokemongohub.net / bristoledition.org
 
-## Shiny Koraidon / Miraidon distribution (2026)
+## Shiny Koraidon / Miraidon distribution (2025)
 - pokemon.com — "Get Shiny Koraidon or Shiny Miraidon at GameStop and EB Games": https://www.pokemon.com/us/news/get-shiny-koraidon-or-shiny-miraidon-at-gamestop-and-eb-games
-- Vice — https://www.vice.com/en/article/pokemon-scarlet-and-violet-finally-get-shiny-koraidon-miraidon-years-after-release/
-- **Guaranteed serial-code distribution (Sep–Oct 2026); shiny is fixed, not RNG-huntable.**
+- GameSpot — Free Shiny Koraidon/Miraidon, Sep 26–Oct 15 2025: https://www.gamespot.com/articles/get-a-free-shiny-koraidon-and-miraidon-in-pokemon-scarlet-and-violet/1100-6534715/
+- **Guaranteed serial-code distribution (Sep 26–Oct 15, 2025); shiny is fixed, not RNG-huntable.**
+
+## Obtainment-channel audit — HOME rewards & event distributions (2026-08-10)
+- HOME guaranteed-shiny rewards (4): Meloetta (Oct 2024), Keldeo + Meltan (Feb 2025), Volcanion (Apr 2026). Magearna's HOME reward is Original-Color (a form), NOT shiny.
+  - pokemon.com — Shiny Volcanion for Legends Z-A dexes; Shiny Keldeo & Meltan; Pokémon Press — Shiny Meloetta.
+- Guaranteed-shiny EVENT distributions (Legendary/Mythical): Shiny beasts Raikou/Entei/Suicune (2011), Genesect (2013), Diancie (2016), Tapu Koko/Lele/Bulu/Fini (2019 competitions), Zeraora (2020 HOME raid-milestone), Celebi (2021 movie promo), Zacian/Zamazenta (2021–22), Galarian Articuno/Zapdos/Moltres (2022 competitions), Silvally (2017 GameStop/GAME/EB), Koraidon/Miraidon (2025).
+  - pocketmonsters.net / pokemonblog.com / mynintendonews / nintendowire — Shiny Silvally 2017 distribution (confirmed by 5+ outlets).
+  - pokemonblog.com — Shiny Zeraora HOME distribution (Jun–Jul 2020); Dada Zarude & Shiny Celebi codes (2021).
+  - Nintendo Life / PokéBeach — Shiny legendary beasts GameStop (2011).
+- Random-shiny (self-caught, NOT guaranteed) distributions: Jirachi (WISHMKR bonus disc, 2003–04) and Mew (Old Sea Map / Faraway Island, JP Emerald 2005) are soft-reset RNG, not shiny-locked — genuine (historical) hunts, not guaranteed shinies.
+- Verified NOT huntable / no shiny: Type: Null & Silvally's in-game gifts are shiny-locked in every game (SM/USUM/SwSh/SV Indigo Disk); Zygarde is shiny-locked in every story/static/cell encounter — BUT shiny Zygarde IS obtainable via Sword/Shield Dynamax Adventures (Max Lair), the sole hunt route.
 
 ## Older-game historical hunts
 - PokéCommunity Daily — Gen 2 shiny guide (Crystal VC, roamers): https://daily.pokecommunity.com/2018/01/26/generation-2-shiny-guide/

@@ -18,12 +18,12 @@
 | Total **Legendary** Pokémon | 71 |
 | Total **Mythical** Pokémon | 23 |
 | **Total combined** (Legendary + Mythical) | 94 |
-| …with a legitimately obtainable **shiny form** | 66 |
-| …with at least one **true RNG shiny hunt** (ever) | 59 |
-| …**currently** shiny-huntable (as of Aug 2026) | 55 |
-| …historically huntable but **no longer normally accessible** | 4 |
-| …shiny exists **only via distribution / guaranteed reward** (never a hunt) | 7 |
-| …shiny has **never** been legitimately obtainable | 28 |
+| …with a legitimately obtainable **shiny form** | 69 |
+| …with at least one **true RNG shiny hunt** (ever) | 61 |
+| …**currently** shiny-huntable (as of Aug 2026) | 56 |
+| …historically huntable but **no longer normally accessible** | 5 |
+| …shiny exists **only via distribution / guaranteed reward** (never a hunt) | 8 |
+| …shiny has **never** been legitimately obtainable | 25 |
 | *(Appendix)* Ultra Beasts total / currently huntable | 11 / 9 |
 | *(Appendix)* Distinct alternate-form rows (e.g. Galarian birds) / huntable | 12 / 12 |
 
@@ -41,7 +41,7 @@ Bucket key: **A** = true hunt available now · **E** = hunt historical only · *
 | Zapdos | I | Legendary | Yes | Yes | Yes | A | Yes (RNG) | No | No | DA, USUM, BDSP, GO-raid/box |
 | Moltres | I | Legendary | Yes | Yes | Yes | A | Yes (RNG) | No | No | DA, USUM, BDSP, GO-raid/box |
 | Mewtwo | I | Legendary | Yes | Yes | Yes | A | Yes (RNG) | No | No | USUM, BDSP, GO-raid/box |
-| Mew | I | Mythical | Yes | No | No | B | Yes (guar.) | No | Yes | — |
+| Mew | I | Mythical | Yes | Yes | No (historical only) | E | Yes (guar.) | No | No | legacy |
 | Raikou | II | Legendary | Yes | Yes | Yes | A | Yes (RNG) | No | No | DA, USUM, BDSP, GO-raid/box, legacy |
 | Entei | II | Legendary | Yes | Yes | Yes | A | Yes (RNG) | No | No | DA, USUM, BDSP, GO-raid/box, legacy |
 | Suicune | II | Legendary | Yes | Yes | Yes | A | Yes (RNG) | No | No | DA, USUM, BDSP, GO-raid/box, legacy |
@@ -87,12 +87,12 @@ Bucket key: **A** = true hunt available now · **E** = hunt historical only · *
 | Genesect | V | Mythical | Yes | Yes | Yes | A | Yes (RNG) | No | No | GO-raid/box |
 | Xerneas | VI | Legendary | Yes | Yes | Yes | A | Yes (RNG) | No | No | DA, USUM, GO-raid/box |
 | Yveltal | VI | Legendary | Yes | Yes | Yes | A | Yes (RNG) | No | No | DA, USUM, GO-raid/box |
-| Zygarde | VI | Legendary | No | No | No | D | No | No | No | — |
+| Zygarde | VI | Legendary | Yes | Yes | Yes | A | No | No | No | DA |
 | Diancie | VI | Mythical | Yes | No | No | B | Yes (guar.) | No | Yes | — |
 | Hoopa | VI | Mythical | No | No | No | D | No | No | No | — |
 | Volcanion | VI | Mythical | Yes | No | No | B | No | Yes | Yes | — |
 | Type: Null | VII | Legendary | No | No | No | D | No | No | No | — |
-| Silvally | VII | Legendary | No | No | No | D | No | No | No | — |
+| Silvally | VII | Legendary | Yes | No | No | C | No | No | Yes | — |
 | Tapu Koko | VII | Legendary | Yes | Yes | Yes | A | Yes (RNG) | No | No | DA, GO-raid/box |
 | Tapu Lele | VII | Legendary | Yes | Yes | Yes | A | Yes (RNG) | No | No | DA, GO-raid/box |
 | Tapu Bulu | VII | Legendary | Yes | Yes | Yes | A | Yes (RNG) | No | No | DA, GO-raid/box |
@@ -104,7 +104,7 @@ Bucket key: **A** = true hunt available now · **E** = hunt historical only · *
 | Necrozma | VII | Legendary | Yes | Yes | Yes | A | Yes (RNG) | No | No | DA, GO-raid/box |
 | Magearna | VII | Mythical | No | No | No | D | No | No | No | — |
 | Marshadow | VII | Mythical | No | No | No | D | No | No | No | — |
-| Zeraora | VII | Mythical | No | No | No | D | No | No | No | — |
+| Zeraora | VII | Mythical | Yes | No | No | C | No | No | Yes | — |
 | Meltan | VII | Mythical | Yes | Yes | Yes | A | Yes (RNG) | Yes | No | GO-raid/box |
 | Melmetal | VII | Mythical | Yes | Yes | Yes | A | Yes (RNG) | No | No | GO-raid/box |
 | Zacian | VIII | Legendary | Yes | Yes | Yes | A | Yes (RNG) | No | No | GO-raid/box |
@@ -219,29 +219,36 @@ Bucket key: **A** = true hunt available now · **E** = hunt historical only · *
 - **Classification:** Mythical
 - **Generation:** I
 - **Shiny exists:** Yes
-- **Currently shiny-huntable (RNG):** No
-- **Bucket:** B (guaranteed reward)
-- **HOME guaranteed-shiny reward:** No  |  **Event-only shiny:** Yes
+- **Currently shiny-huntable (RNG):** No (historical only)
+- **Bucket:** E (hunt, historical only)
+- **HOME guaranteed-shiny reward:** No  |  **Event-only shiny:** No
 
 **Hunting / shiny methods:**
 
-1. **Pokémon GO** — Masterwork Research 'All-in-One #151' (guaranteed shiny reward)
+1. **Emerald (Japan, Old Sea Map)** — Faraway Island static (soft-reset)
+    - Shiny locked: Not shiny-locked
+    - Odds (base): 1/8192
+    - Shiny Charm: No charm pre-Gen6
+    - Currently accessible: No (historical / discontinued)
+    - Type: A (true RNG hunt)
+    - Note: The Old Sea Map (Japan-only, 2005) unlocks Faraway Island; that Mew is NOT shiny-locked -> genuine soft-reset hunt at 1/8192. Item never released in the West (historical)
+2. **Pokémon GO** — Masterwork Research 'All-in-One #151' (guaranteed shiny reward)
     - Shiny locked: Not shiny-locked
     - Odds (base): 100% (guaranteed)
     - Shiny Charm: n/a
     - Currently accessible: No (historical / discontinued)
     - Type: B (guaranteed reward)
     - Note: Shiny since Jul 6 2023; one guaranteed shiny, NOT rollable
-2. **Main series** — Event distributions
+3. **Other events** — Distribution
     - Shiny locked: **Shiny-LOCKED**
     - Shiny Charm: n/a
     - Currently accessible: No (historical / discontinued)
     - Type: C (event distribution)
-    - Note: All legit main-series Mew are shiny/IV-locked; no soft-reset hunt
+    - Note: Other event Mew are shiny/IV-locked
 
-**Pokémon GO:** Shiny via 'All-in-One #151' Masterwork (guaranteed; $5). Not RNG-huntable.
+**Pokémon GO:** Shiny via 'All-in-One #151' Masterwork (guaranteed; $5). Not RNG-huntable in GO.
 
-**Notes:** No legitimate main-series shiny Mew has ever existed. Shiny exists only as a guaranteed GO reward.
+**Notes:** Correction: shiny Mew IS a (historical) self-catch hunt via the Japan-only Old Sea Map (Faraway Island, Emerald), 1/8192 — long discontinued. Also a guaranteed GO Masterwork shiny.
 
 ### Mewtwo
 
@@ -2680,24 +2687,31 @@ Bucket key: **A** = true hunt available now · **E** = hunt historical only · *
 
 - **Classification:** Legendary
 - **Generation:** VI
-- **Shiny exists:** No
-- **Currently shiny-huntable (RNG):** No
-- **Bucket:** D (shiny unavailable)
+- **Shiny exists:** Yes
+- **Currently shiny-huntable (RNG):** Yes
+- **Bucket:** A (true hunt, current)
 - **HOME guaranteed-shiny reward:** No  |  **Event-only shiny:** No
 - **Alternate forms:** 10% / 50% / Complete Forme — all shiny-unavailable
 
 **Hunting / shiny methods:**
 
-1. **X/Y, USUM, SV, Legends Z-A** — Static / cell assembly
+1. **Sword/Shield (Crown Tundra)** — Dynamax Adventure boss (soft-resettable reward)
+    - Shiny locked: Not shiny-locked
+    - Odds (base): 1/300  |  with Shiny Charm: 1/100
+    - Shiny Charm: Yes (1/300 -> 1/100; applies to boss)
+    - Currently accessible: Yes
+    - Type: A (true RNG hunt)
+    - Note: Requires Crown Tundra DLC; best modern odds
+2. **X/Y, USUM, SV, Legends Z-A** — Story static / cell assembly
     - Shiny locked: **Shiny-LOCKED**
     - Shiny Charm: n/a
     - Currently accessible: Yes
-    - Type: D (shiny unavailable)
-    - Note: Shiny-locked in every game (incl. Z-A main story); no distribution; not shiny in GO
+    - Type: C (event distribution)
+    - Note: All story/static/cell-assembly encounters are shiny-locked (incl. Z-A Main Mission 42 and the SV Indigo Disk)
 
 **Pokémon GO:** In GO (Routes/cells); shiny NOT released.
 
-**Notes:** No legitimate shiny Zygarde exists anywhere as of Aug 2026. SHINY UNAVAILABLE.
+**Notes:** Correction: shiny Zygarde IS huntable — Sword/Shield Dynamax Adventures (Max Lair) is the only game where you can catch it, 1/300 (1/100 with Shiny Charm). Every story/static/cell-assembly encounter is shiny-locked; no guaranteed shiny Zygarde has ever been officially distributed.
 
 ### Cosmoem
 
@@ -2917,23 +2931,29 @@ Bucket key: **A** = true hunt available now · **E** = hunt historical only · *
 
 - **Classification:** Legendary
 - **Generation:** VII
-- **Shiny exists:** No
+- **Shiny exists:** Yes
 - **Currently shiny-huntable (RNG):** No
-- **Bucket:** D (shiny unavailable)
-- **HOME guaranteed-shiny reward:** No  |  **Event-only shiny:** No
+- **Bucket:** C (event distribution only)
+- **HOME guaranteed-shiny reward:** No  |  **Event-only shiny:** Yes
 
 **Hunting / shiny methods:**
 
-1. **Sun/Moon/USUM** — Evolves from Type: Null
+1. **Event (GameStop/GAME/EB Games)** — Serial-code guaranteed shiny
+    - Shiny locked: Not shiny-locked
+    - Shiny Charm: n/a
+    - Currently accessible: No (historical / discontinued)
+    - Type: C (event distribution)
+    - Note: A battle-ready Shiny Silvally was officially distributed Oct 23–Nov 13 2017 (for Sun/Moon); event over
+2. **Sun/Moon/USUM/SwSh** — Evolves from Type: Null gift
     - Shiny locked: **Shiny-LOCKED**
     - Shiny Charm: n/a
     - Currently accessible: Yes
-    - Type: D (shiny unavailable)
-    - Note: Only from the shiny-locked Type: Null gift; not in GO
+    - Type: C (event distribution)
+    - Note: The in-game Type: Null gift is shiny-locked in every game
 
 **Pokémon GO:** Not in Pokémon GO.
 
-**Notes:** Gained Legendary status Oct 2017. Shiny UNAVAILABLE (only from shiny-locked Type: Null).
+**Notes:** Correction: a legit shiny Silvally EXISTS via the official 2017 GameStop/GAME/EB event distribution (already evolved) — but it is NOT RNG-huntable. The in-game Type: Null gift is shiny-locked everywhere.
 
 ### Solgaleo
 
@@ -3130,38 +3150,44 @@ Bucket key: **A** = true hunt available now · **E** = hunt historical only · *
 
 **Hunting / shiny methods:**
 
-1. **Sun/Moon/USUM** — Gift (Aether)
+1. **Sun/Moon/USUM/SwSh** — Gift (Aether / Battle Tower)
     - Shiny locked: **Shiny-LOCKED**
     - Shiny Charm: n/a
     - Currently accessible: Yes
     - Type: D (shiny unavailable)
-    - Note: Gift is shiny-locked; only source; not in GO
+    - Note: Gift is shiny-locked in every game; only source; not in GO
 
 **Pokémon GO:** Not in Pokémon GO.
 
-**Notes:** Officially 'Synthetic Pokémon'; Bulbapedia counts it as Legendary. Shiny UNAVAILABLE (gift is the only source and is locked).
+**Notes:** Officially 'Synthetic Pokémon'; Bulbapedia counts it as Legendary. No legit shiny Type: Null: the gift is shiny-locked everywhere, and the 2017 event distributed the already-evolved Shiny SILVALLY (you cannot devolve it). So shiny Silvally exists, but shiny Type: Null does not.
 
 ### Zeraora
 
 - **Classification:** Mythical
 - **Generation:** VII
-- **Shiny exists:** No
+- **Shiny exists:** Yes
 - **Currently shiny-huntable (RNG):** No
-- **Bucket:** D (shiny unavailable)
-- **HOME guaranteed-shiny reward:** No  |  **Event-only shiny:** No
+- **Bucket:** C (event distribution only)
+- **HOME guaranteed-shiny reward:** No  |  **Event-only shiny:** Yes
 
 **Hunting / shiny methods:**
 
-1. **Distribution / GO** — Serial / raids
+1. **Pokémon HOME (2020)** — Raid-milestone Mystery Gift (guaranteed shiny)
+    - Shiny locked: Not shiny-locked
+    - Shiny Charm: n/a
+    - Currently accessible: No (historical / discontinued)
+    - Type: C (event distribution)
+    - Note: Shiny Zeraora distributed via Pokémon HOME Jun 30–Jul 6 2020 after trainers won 1M+ Max Raids (-> Sword/Shield); event over
+2. **Other distributions / GO** — Serial / raids
     - Shiny locked: **Shiny-LOCKED**
     - Shiny Charm: n/a
     - Currently accessible: Yes
-    - Type: D (shiny unavailable)
-    - Note: Shiny-locked; shiny not released in GO (base in game GO Fest 2026); future paid Masterwork reportedly planned
+    - Type: C (event distribution)
+    - Note: Other Zeraora distributions are shiny-locked; shiny not released in GO
 
 **Pokémon GO:** In GO (GO Fest 2026); shiny NOT released.
 
-**Notes:** No legitimate shiny Zeraora as of Aug 2026 (future GO release rumored). SHINY UNAVAILABLE currently.
+**Notes:** Correction: a legit shiny Zeraora EXISTS via the 2020 Pokémon HOME raid-milestone distribution (guaranteed, event over) — but it is NOT RNG-huntable. Not shiny in GO as of Aug 2026.
 
 ### Calyrex
 
@@ -3541,13 +3567,13 @@ Bucket key: **A** = true hunt available now · **E** = hunt historical only · *
 2. **Distribution (GameStop/EB code)** — Serial-code gift (guaranteed shiny)
     - Shiny locked: Not shiny-locked
     - Shiny Charm: n/a
-    - Currently accessible: Yes
+    - Currently accessible: No (historical / discontinued)
     - Type: C (event distribution)
-    - Note: Shiny Koraidon distributed Sep-Oct 2026 via retail codes (guaranteed, not a roll)
+    - Note: Shiny Koraidon distributed Sep 26–Oct 15 2025 via GameStop/EB Games codes (guaranteed, not a roll); event over
 
 **Pokémon GO:** Not in Pokémon GO.
 
-**Notes:** Shiny exists ONLY via the 2026 guaranteed retail-code distribution. Never RNG-huntable.
+**Notes:** Shiny exists ONLY via the 2025 guaranteed retail-code distribution (Sep 26–Oct 15 2025). Never RNG-huntable.
 
 ### Miraidon
 
@@ -3569,13 +3595,13 @@ Bucket key: **A** = true hunt available now · **E** = hunt historical only · *
 2. **Distribution (GameStop/EB code)** — Serial-code gift (guaranteed shiny)
     - Shiny locked: Not shiny-locked
     - Shiny Charm: n/a
-    - Currently accessible: Yes
+    - Currently accessible: No (historical / discontinued)
     - Type: C (event distribution)
-    - Note: Shiny Miraidon distributed Sep-Oct 2026 via retail codes (guaranteed, not a roll)
+    - Note: Shiny Miraidon distributed Sep 26–Oct 15 2025 via GameStop/EB Games codes (guaranteed, not a roll); event over
 
 **Pokémon GO:** Not in Pokémon GO.
 
-**Notes:** Shiny exists ONLY via the 2026 guaranteed retail-code distribution. Never RNG-huntable.
+**Notes:** Shiny exists ONLY via the 2025 guaranteed retail-code distribution (Sep 26–Oct 15 2025). Never RNG-huntable.
 
 ### Munkidori
 
@@ -4485,8 +4511,8 @@ Bucket key: **A** = true hunt available now · **E** = hunt historical only · *
 # FILTERED LISTS
 
 ### 1. Huntable through Sword/Shield **Dynamax Adventures**
-*(51 species — 1/300 base, 1/100 with Shiny Charm)*  
-Articuno, Zapdos, Moltres, Raikou, Entei, Suicune, Lugia, Ho-Oh, Regirock, Regice, Registeel, Latias, Latios, Kyogre, Groudon, Rayquaza, Uxie, Mesprit, Azelf, Dialga, Palkia, Heatran, Giratina, Cresselia, Cobalion, Terrakion, Virizion, Tornadus, Thundurus, Landorus, Reshiram, Zekrom, Kyurem, Xerneas, Yveltal, Tapu Koko, Tapu Lele, Tapu Bulu, Tapu Fini, Solgaleo, Lunala, Necrozma, Nihilego, Buzzwole, Pheromosa, Xurkitree, Celesteela, Kartana, Guzzlord, Stakataka, Blacephalon
+*(52 species — 1/300 base, 1/100 with Shiny Charm)*  
+Articuno, Zapdos, Moltres, Raikou, Entei, Suicune, Lugia, Ho-Oh, Regirock, Regice, Registeel, Latias, Latios, Kyogre, Groudon, Rayquaza, Uxie, Mesprit, Azelf, Dialga, Palkia, Heatran, Giratina, Cresselia, Cobalion, Terrakion, Virizion, Tornadus, Thundurus, Landorus, Reshiram, Zekrom, Kyurem, Xerneas, Yveltal, Zygarde, Tapu Koko, Tapu Lele, Tapu Bulu, Tapu Fini, Solgaleo, Lunala, Necrozma, Nihilego, Buzzwole, Pheromosa, Xurkitree, Celesteela, Kartana, Guzzlord, Stakataka, Blacephalon
 
 ### 2. Huntable in **Ultra Sun / Ultra Moon** (Ultra Wormholes)
 *(45 species — 1/4096, 1/1365 charm; distance does NOT boost legendary odds)*  
@@ -4511,20 +4537,20 @@ Articuno, Zapdos, Moltres, Mewtwo, Raikou, Entei, Suicune, Lugia, Ho-Oh, Regiroc
 > Guaranteed-only GO shinies (NOT hunts): Mew, Celebi, Jirachi, Shaymin, Keldeo, Meloetta, Diancie.
 
 ### 6. **Mythical** Pokémon that can legitimately be shiny-**hunted** (true RNG, ever)
-*(11 of 23 Mythicals)*  
-Celebi (historical), Jirachi (historical), Deoxys (current), Phione (current), Manaphy (historical), Darkrai (current), Shaymin (historical), Arceus (current), Genesect (current), Meltan (current), Melmetal (current)
+*(12 of 23 Mythicals)*  
+Mew (historical), Celebi (historical), Jirachi (historical), Deoxys (current), Phione (current), Manaphy (historical), Darkrai (current), Shaymin (historical), Arceus (current), Genesect (current), Meltan (current), Melmetal (current)
 
 ### 7. Shiny **still completely unavailable** (no legitimate shiny ever)
-*(30 species incl. Ultra Beasts)*  
-Victini, Zygarde, Hoopa, Type: Null, Silvally, Cosmog, Cosmoem, Magearna, Marshadow, Zeraora, Eternatus, Kubfu, Urshifu, Glastrier, Spectrier, Calyrex, Enamorus, Zarude, Wo-Chien, Chien-Pao, Ting-Lu, Chi-Yu, Okidogi, Munkidori, Fezandipiti, Ogerpon, Terapagos, Pecharunt, Poipole, Naganadel
+*(27 species incl. Ultra Beasts)*  
+Victini, Hoopa, Type: Null, Cosmog, Cosmoem, Magearna, Marshadow, Eternatus, Kubfu, Urshifu, Glastrier, Spectrier, Calyrex, Enamorus, Zarude, Wo-Chien, Chien-Pao, Ting-Lu, Chi-Yu, Okidogi, Munkidori, Fezandipiti, Ogerpon, Terapagos, Pecharunt, Poipole, Naganadel
 
 ### 8. Shiny **exists but only via guaranteed / event distribution** (never a hunt)
-*(7 species)*  
-Mew, Keldeo, Meloetta, Diancie, Volcanion, Koraidon, Miraidon
+*(8 species)*  
+Keldeo, Meloetta, Diancie, Volcanion, Silvally, Zeraora, Koraidon, Miraidon
 
 ### 9. **Currently huntable** without needing an expired event (as of Aug 2026)
-*(76 species incl. Ultra Beasts; 55 core Legendary/Mythical)*  
-Articuno, Zapdos, Moltres, Mewtwo, Raikou, Entei, Suicune, Lugia, Ho-Oh, Regirock, Regice, Registeel, Latias, Latios, Kyogre, Groudon, Rayquaza, Deoxys, Uxie, Mesprit, Azelf, Dialga, Palkia, Heatran, Regigigas, Giratina, Cresselia, Phione, Darkrai, Arceus, Cobalion, Terrakion, Virizion, Tornadus, Thundurus, Landorus, Reshiram, Zekrom, Kyurem, Genesect, Xerneas, Yveltal, Tapu Koko, Tapu Lele, Tapu Bulu, Tapu Fini, Solgaleo, Lunala, Necrozma, Meltan, Melmetal, Zacian, Zamazenta, Regieleki, Regidrago, Nihilego, Buzzwole, Pheromosa, Xurkitree, Celesteela, Kartana, Guzzlord, Stakataka, Blacephalon, Galarian Articuno, Galarian Zapdos, Galarian Moltres, Deoxys (Attack Forme), Deoxys (Defense Forme), Deoxys (Speed Forme), Giratina (Origin Forme), Dialga (Origin Forme), Palkia (Origin Forme), Tornadus (Therian Forme), Thundurus (Therian Forme), Landorus (Therian Forme)
+*(77 species incl. Ultra Beasts; 56 core Legendary/Mythical)*  
+Articuno, Zapdos, Moltres, Mewtwo, Raikou, Entei, Suicune, Lugia, Ho-Oh, Regirock, Regice, Registeel, Latias, Latios, Kyogre, Groudon, Rayquaza, Deoxys, Uxie, Mesprit, Azelf, Dialga, Palkia, Heatran, Regigigas, Giratina, Cresselia, Phione, Darkrai, Arceus, Cobalion, Terrakion, Virizion, Tornadus, Thundurus, Landorus, Reshiram, Zekrom, Kyurem, Genesect, Xerneas, Yveltal, Zygarde, Tapu Koko, Tapu Lele, Tapu Bulu, Tapu Fini, Solgaleo, Lunala, Necrozma, Meltan, Melmetal, Zacian, Zamazenta, Regieleki, Regidrago, Nihilego, Buzzwole, Pheromosa, Xurkitree, Celesteela, Kartana, Guzzlord, Stakataka, Blacephalon, Galarian Articuno, Galarian Zapdos, Galarian Moltres, Deoxys (Attack Forme), Deoxys (Defense Forme), Deoxys (Speed Forme), Giratina (Origin Forme), Dialga (Origin Forme), Palkia (Origin Forme), Tornadus (Therian Forme), Thundurus (Therian Forme), Landorus (Therian Forme)
 
 ### 9b. Distinct alternate **forms** with their own shiny status (broken out as separate rows)
 *(12 forms)*  
@@ -4535,7 +4561,7 @@ Other legendaries with alternate formes that share their base species' shiny sta
 | Rank | Platform | # Legendary/Mythical/UB shinies huntable |
 |---:|---|---:|
 | 1 | Pokémon GO (raids/box, RNG) | 73 |
-| 2 | Sword/Shield Dynamax Adventures | 51 |
+| 2 | Sword/Shield Dynamax Adventures | 52 |
 | 3 | Ultra Sun/Ultra Moon Ultra Wormholes | 45 |
 | 4 | Brilliant Diamond/Shining Pearl | 24 |
 | 5 | Omega Ruby/Alpha Sapphire (Mirage Spots) | 16 |
@@ -4550,8 +4576,8 @@ Other legendaries with alternate formes that share their base species' shiny sta
 # VALIDATION PASS
 
 - **Every species appears exactly once:** PASS (117 rows, 117 unique names).
-- **Counts reconcile:** shiny-exists (66) + shiny-never (28) = 94 = total (94) — PASS.
-- **Hunt counts reconcile:** current (55) + historical-only (4) = 59 = RNG-hunt-ever (59) — PASS.
+- **Counts reconcile:** shiny-exists (69) + shiny-never (25) = 94 = total (94) — PASS.
+- **Hunt counts reconcile:** current (56) + historical-only (5) = 61 = RNG-hunt-ever (61) — PASS.
 - **Guaranteed rewards are never counted as hunts:** HOME dex-reward shinies (Meloetta, Keldeo, Meltan*, Volcanion) and GO Masterwork shinies (Mew, Celebi, Jirachi, Shaymin, Meloetta, Keldeo, Diancie) are recorded as Bucket B, and are excluded from `rng_hunt`. (*Meltan also has a real Mystery Box RNG hunt, so it is Bucket A.)
 - **'Currently huntable' claims** are based on Aug-2026 game/service availability: SwSh+DLC, BDSP, USUM/ORAS (3DS cartridge; eShop closed Mar 2023 but carts play), Legends Z-A + Mega Dimension DLC, and GO raid rotations. Discontinued-only routes (Gen 2 VC, Gen 3/4 event-island tickets, Pokémon Ranger egg) are marked historical.
 - **Known uncertainties (flagged in notes):** exact GO first-shiny dates for a few long-standing raid legendaries; Regidrago/Cosmog GO shiny status; the disputed BDSP Azure-Flute Arceus claim (treated as no-legit-shiny). Negative 'no shiny' claims for in-GO species can flip at any future event.

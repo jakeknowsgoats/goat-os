@@ -142,13 +142,18 @@ add(name="Mewtwo", gen="I", category="Legendary",
     go="Legendary raids (shiny since Sep 2019); Mega X/Y shiny GO Fest 2026; ~1/20",
     notes="Huntable via USUM, Ramanas Park, LGPE, and GO raids. NOTE its Dynamax Adventure form is shiny-locked.")
 add(name="Mew", gen="I", category="Mythical",
-    shiny_exists=True, rng_hunt=False, huntable_now=False, event_only=True,
+    shiny_exists=True, rng_hunt=True, huntable_now=False, event_only=False,
     home_guaranteed=False, go_shiny=True, go_rng_hunt=False,
-    methods=[go_mw("Masterwork Research 'All-in-One #151'", "Jul 6 2023"),
-             M("Main series", "Event distributions", True, "n/a", "n/a", "n/a", False, "C",
-               "All legit main-series Mew are shiny/IV-locked; no soft-reset hunt")],
-    go="Shiny via 'All-in-One #151' Masterwork (guaranteed; $5). Not RNG-huntable.",
-    notes="No legitimate main-series shiny Mew has ever existed. Shiny exists only as a guaranteed GO reward.")
+    methods=[M("Emerald (Japan, Old Sea Map)", "Faraway Island static (soft-reset)", False, FULL_OLD, "n/a",
+               "No charm pre-Gen6", False, "A",
+               "The Old Sea Map (Japan-only, 2005) unlocks Faraway Island; that Mew is NOT shiny-locked -> genuine "
+               "soft-reset hunt at 1/8192. Item never released in the West (historical)"),
+             go_mw("Masterwork Research 'All-in-One #151'", "Jul 6 2023"),
+             M("Other events", "Distribution", True, "n/a", "n/a", "n/a", False, "C",
+               "Other event Mew are shiny/IV-locked")],
+    go="Shiny via 'All-in-One #151' Masterwork (guaranteed; $5). Not RNG-huntable in GO.",
+    notes="Correction: shiny Mew IS a (historical) self-catch hunt via the Japan-only Old Sea Map (Faraway Island, "
+          "Emerald), 1/8192 — long discontinued. Also a guaranteed GO Masterwork shiny.")
 
 # ---------- GENERATION II ----------
 add(name="Raikou", gen="II", category="Legendary",
@@ -526,12 +531,16 @@ add(name="Yveltal", gen="VI", category="Legendary",
     go="Legendary raids (shiny since Sep 2022); ~1/20; rotates",
     notes="Story catch locked; huntable via DA, USUM, GO.")
 add(name="Zygarde", gen="VI", category="Legendary",
-    shiny_exists=False, rng_hunt=False, huntable_now=False, event_only=False,
+    shiny_exists=True, rng_hunt=True, huntable_now=True, event_only=False,
     home_guaranteed=False, go_shiny=False, go_rng_hunt=False,
-    methods=[M("X/Y, USUM, SV, Legends Z-A", "Static / cell assembly", True, "n/a", "n/a", "n/a", True, "D",
-               "Shiny-locked in every game (incl. Z-A main story); no distribution; not shiny in GO")],
+    methods=[da(),
+             M("X/Y, USUM, SV, Legends Z-A", "Story static / cell assembly", True, "n/a", "n/a", "n/a", True, "C",
+               "All story/static/cell-assembly encounters are shiny-locked (incl. Z-A Main Mission 42 and the SV "
+               "Indigo Disk)")],
     go="In GO (Routes/cells); shiny NOT released.",
-    notes="No legitimate shiny Zygarde exists anywhere as of Aug 2026. SHINY UNAVAILABLE.")
+    notes="Correction: shiny Zygarde IS huntable — Sword/Shield Dynamax Adventures (Max Lair) is the only game where "
+          "you can catch it, 1/300 (1/100 with Shiny Charm). Every story/static/cell-assembly encounter is "
+          "shiny-locked; no guaranteed shiny Zygarde has ever been officially distributed.")
 add(name="Diancie", gen="VI", category="Mythical",
     shiny_exists=True, rng_hunt=False, huntable_now=False, event_only=True,
     home_guaranteed=False, go_shiny=True, go_rng_hunt=False,
@@ -560,17 +569,22 @@ add(name="Volcanion", gen="VI", category="Mythical",
 add(name="Type: Null", gen="VII", category="Legendary",
     shiny_exists=False, rng_hunt=False, huntable_now=False, event_only=False,
     home_guaranteed=False, go_shiny=False, go_rng_hunt=False,
-    methods=[M("Sun/Moon/USUM", "Gift (Aether)", True, "n/a", "n/a", "n/a", True, "D",
-               "Gift is shiny-locked; only source; not in GO")],
+    methods=[M("Sun/Moon/USUM/SwSh", "Gift (Aether / Battle Tower)", True, "n/a", "n/a", "n/a", True, "D",
+               "Gift is shiny-locked in every game; only source; not in GO")],
     go="Not in Pokémon GO.",
-    notes="Officially 'Synthetic Pokémon'; Bulbapedia counts it as Legendary. Shiny UNAVAILABLE (gift is the only source and is locked).")
+    notes="Officially 'Synthetic Pokémon'; Bulbapedia counts it as Legendary. No legit shiny Type: Null: the gift is "
+          "shiny-locked everywhere, and the 2017 event distributed the already-evolved Shiny SILVALLY (you cannot "
+          "devolve it). So shiny Silvally exists, but shiny Type: Null does not.")
 add(name="Silvally", gen="VII", category="Legendary",
-    shiny_exists=False, rng_hunt=False, huntable_now=False, event_only=False,
-    home_guaranteed=False, go_shiny=False, go_rng_hunt=False,
-    methods=[M("Sun/Moon/USUM", "Evolves from Type: Null", True, "n/a", "n/a", "n/a", True, "D",
-               "Only from the shiny-locked Type: Null gift; not in GO")],
+    shiny_exists=True, rng_hunt=False, huntable_now=False, event_only=True,
+    home_guaranteed=False, go_shiny=False, go_rng_hunt=False, home_event=True,
+    methods=[M("Event (GameStop/GAME/EB Games)", "Serial-code guaranteed shiny", False, "n/a", "n/a", "n/a", False, "C",
+               "A battle-ready Shiny Silvally was officially distributed Oct 23–Nov 13 2017 (for Sun/Moon); event over"),
+             M("Sun/Moon/USUM/SwSh", "Evolves from Type: Null gift", True, "n/a", "n/a", "n/a", True, "C",
+               "The in-game Type: Null gift is shiny-locked in every game")],
     go="Not in Pokémon GO.",
-    notes="Gained Legendary status Oct 2017. Shiny UNAVAILABLE (only from shiny-locked Type: Null).")
+    notes="Correction: a legit shiny Silvally EXISTS via the official 2017 GameStop/GAME/EB event distribution "
+          "(already evolved) — but it is NOT RNG-huntable. The in-game Type: Null gift is shiny-locked everywhere.")
 for nm, first in [("Tapu Koko", "Jan 25 2023"), ("Tapu Lele", "Feb 8 2023"),
                   ("Tapu Bulu", "Apr 17 2023"), ("Tapu Fini", "May 9 2023")]:
     add(name=nm, gen="VII", category="Legendary",
@@ -638,12 +652,16 @@ add(name="Marshadow", gen="VII", category="Mythical",
     go="In GO (research); shiny NOT released.",
     notes="No legitimate shiny Marshadow as of Aug 2026. SHINY UNAVAILABLE.")
 add(name="Zeraora", gen="VII", category="Mythical",
-    shiny_exists=False, rng_hunt=False, huntable_now=False, event_only=False,
+    shiny_exists=True, rng_hunt=False, huntable_now=False, event_only=True,
     home_guaranteed=False, go_shiny=False, go_rng_hunt=False,
-    methods=[M("Distribution / GO", "Serial / raids", True, "n/a", "n/a", "n/a", True, "D",
-               "Shiny-locked; shiny not released in GO (base in game GO Fest 2026); future paid Masterwork reportedly planned")],
+    methods=[M("Pokémon HOME (2020)", "Raid-milestone Mystery Gift (guaranteed shiny)", False, "n/a", "n/a", "n/a",
+               False, "C", "Shiny Zeraora distributed via Pokémon HOME Jun 30–Jul 6 2020 after trainers won 1M+ "
+                            "Max Raids (-> Sword/Shield); event over"),
+             M("Other distributions / GO", "Serial / raids", True, "n/a", "n/a", "n/a", True, "C",
+               "Other Zeraora distributions are shiny-locked; shiny not released in GO")],
     go="In GO (GO Fest 2026); shiny NOT released.",
-    notes="No legitimate shiny Zeraora as of Aug 2026 (future GO release rumored). SHINY UNAVAILABLE currently.")
+    notes="Correction: a legit shiny Zeraora EXISTS via the 2020 Pokémon HOME raid-milestone distribution "
+          "(guaranteed, event over) — but it is NOT RNG-huntable. Not shiny in GO as of Aug 2026.")
 add(name="Meltan", gen="VII", category="Mythical",
     shiny_exists=True, rng_hunt=True, huntable_now=True, event_only=False,
     home_guaranteed=True, go_shiny=True, go_rng_hunt=True,
@@ -754,18 +772,18 @@ add(name="Koraidon", gen="IX", category="Legendary",
     methods=[M("Scarlet/Violet", "Story ride legendary", True, "n/a", "n/a", "n/a", True, "C",
                "SV story Koraidon shiny-LOCKED"),
              M("Distribution (GameStop/EB code)", "Serial-code gift (guaranteed shiny)", False, "n/a", "n/a", "n/a",
-               True, "C", "Shiny Koraidon distributed Sep-Oct 2026 via retail codes (guaranteed, not a roll)")],
+               False, "C", "Shiny Koraidon distributed Sep 26–Oct 15 2025 via GameStop/EB Games codes (guaranteed, not a roll); event over")],
     go="Not in Pokémon GO.",
-    notes="Shiny exists ONLY via the 2026 guaranteed retail-code distribution. Never RNG-huntable.")
+    notes="Shiny exists ONLY via the 2025 guaranteed retail-code distribution (Sep 26–Oct 15 2025). Never RNG-huntable.")
 add(name="Miraidon", gen="IX", category="Legendary",
     shiny_exists=True, rng_hunt=False, huntable_now=False, event_only=True,
     home_guaranteed=False, go_shiny=False, go_rng_hunt=False,
     methods=[M("Scarlet/Violet", "Story ride legendary", True, "n/a", "n/a", "n/a", True, "C",
                "SV story Miraidon shiny-LOCKED"),
              M("Distribution (GameStop/EB code)", "Serial-code gift (guaranteed shiny)", False, "n/a", "n/a", "n/a",
-               True, "C", "Shiny Miraidon distributed Sep-Oct 2026 via retail codes (guaranteed, not a roll)")],
+               False, "C", "Shiny Miraidon distributed Sep 26–Oct 15 2025 via GameStop/EB Games codes (guaranteed, not a roll); event over")],
     go="Not in Pokémon GO.",
-    notes="Shiny exists ONLY via the 2026 guaranteed retail-code distribution. Never RNG-huntable.")
+    notes="Shiny exists ONLY via the 2025 guaranteed retail-code distribution (Sep 26–Oct 15 2025). Never RNG-huntable.")
 for nm in ["Wo-Chien", "Chien-Pao", "Ting-Lu", "Chi-Yu"]:
     add(name=nm, gen="IX", category="Legendary",
         shiny_exists=False, rng_hunt=False, huntable_now=False, event_only=False,
@@ -954,11 +972,49 @@ FORMS = {
     "Terapagos": ["Normal / Terastal / Stellar Forme — shiny-locked"],
 }
 
-# normalize: every entry gets is_form / base / forms fields
+# Species with a GUARANTEED-SHINY EVENT DISTRIBUTION (serial code / Mystery Gift / in-person /
+# HOME event distribution) — a predetermined shiny you could store in HOME, NOT a self-caught hunt.
+# (Set from research; see sources.md. Species already flagged home_event=True in add() are unioned in.)
+HOME_EVENT_SHINY = {
+    "Raikou", "Entei", "Suicune",                       # 2011 shiny beasts (GameStop/GAME)
+    "Genesect",                                          # 2013 movie (JP)
+    "Diancie",                                           # 2016 serial
+    "Tapu Koko", "Tapu Lele", "Tapu Bulu", "Tapu Fini",  # 2019 competition serials
+    "Zeraora",                                           # 2020 HOME raid-milestone distribution
+    "Celebi",                                            # 2021 movie promo (guaranteed shiny)
+    "Zacian", "Zamazenta",                               # 2021-22 BDSP-launch serials
+    "Galarian Articuno", "Galarian Zapdos", "Galarian Moltres",  # 2022 competition serials
+    "Silvally",                                          # 2017 GameStop/GAME/EB distribution
+    "Koraidon", "Miraidon",                              # Sep 26-Oct 15 2025 GameStop/EB codes
+}  # confirmed guaranteed-shiny distributions (research audit; see sources.md). Zygarde has NO shiny distribution.
+
+def _has_main_ot(p):
+    """True if there is a legit main-series self-catch (OT) shiny — a non-GO/HOME, cat-A, not-locked method."""
+    for m in p["methods"]:
+        if m["game"] in ("Pokémon GO", "Pokémon HOME"):
+            continue
+        if m["cat"] == "A" and not m["shiny_locked"]:
+            return True
+    return False
+
+# normalize: every entry gets is_form / base / forms + the four obtainment-source flags
+_WARN = []
 for _p in DATA:
     _p.setdefault("is_form", False)
     _p.setdefault("base", None)
     _p.setdefault("forms", FORMS.get(_p["name"], []))
+    _p["home_event"] = _p.get("home_event", False) or (_p["name"] in HOME_EVENT_SHINY)
+    # four obtainment channels (for the collection tracker)
+    _p["src_home_ot"] = _has_main_ot(_p)          # self-caught shiny in HOME
+    _p["src_home_reward"] = _p["home_guaranteed"] # HOME Pokédex-completion reward shiny
+    _p["src_home_event"] = _p["home_event"]       # event-distributed shiny (storable in HOME)
+    _p["src_go"] = _p["go_shiny"]                 # shiny in Pokémon GO
+    _derived = _p["src_home_ot"] or _p["src_home_reward"] or _p["src_home_event"] or _p["src_go"]
+    if _p["shiny_exists"] and not _derived:
+        _WARN.append(f"{_p['name']}: shiny_exists but no source channel")
+    if _derived and not _p["shiny_exists"]:
+        _WARN.append(f"{_p['name']}: has a source channel but shiny_exists=False")
+    _p["shiny_exists"] = _p["shiny_exists"] or _derived
 
 
 # ============================================================================
@@ -1451,10 +1507,20 @@ not be pinned to an exact date, it is flagged *(verify)* in the report notes.
 - Meltan / Mystery Box: https://www.dexerto.com/pokemon/how-to-get-shiny-meltan-in-pokemon-go-1456253/ , https://www.serebii.net/pokemongo/mysterybox.shtml
 - 2026 events: GO Fest 2026 (Mega Mewtwo X/Y, Zeraora), Solgaleo/Mega Rayquaza raid weekend (Jul 2026) — pokemongo.com / pokemongohub.net / bristoledition.org
 
-## Shiny Koraidon / Miraidon distribution (2026)
+## Shiny Koraidon / Miraidon distribution (2025)
 - pokemon.com — "Get Shiny Koraidon or Shiny Miraidon at GameStop and EB Games": https://www.pokemon.com/us/news/get-shiny-koraidon-or-shiny-miraidon-at-gamestop-and-eb-games
-- Vice — https://www.vice.com/en/article/pokemon-scarlet-and-violet-finally-get-shiny-koraidon-miraidon-years-after-release/
-- **Guaranteed serial-code distribution (Sep–Oct 2026); shiny is fixed, not RNG-huntable.**
+- GameSpot — Free Shiny Koraidon/Miraidon, Sep 26–Oct 15 2025: https://www.gamespot.com/articles/get-a-free-shiny-koraidon-and-miraidon-in-pokemon-scarlet-and-violet/1100-6534715/
+- **Guaranteed serial-code distribution (Sep 26–Oct 15, 2025); shiny is fixed, not RNG-huntable.**
+
+## Obtainment-channel audit — HOME rewards & event distributions (2026-08-10)
+- HOME guaranteed-shiny rewards (4): Meloetta (Oct 2024), Keldeo + Meltan (Feb 2025), Volcanion (Apr 2026). Magearna's HOME reward is Original-Color (a form), NOT shiny.
+  - pokemon.com — Shiny Volcanion for Legends Z-A dexes; Shiny Keldeo & Meltan; Pokémon Press — Shiny Meloetta.
+- Guaranteed-shiny EVENT distributions (Legendary/Mythical): Shiny beasts Raikou/Entei/Suicune (2011), Genesect (2013), Diancie (2016), Tapu Koko/Lele/Bulu/Fini (2019 competitions), Zeraora (2020 HOME raid-milestone), Celebi (2021 movie promo), Zacian/Zamazenta (2021–22), Galarian Articuno/Zapdos/Moltres (2022 competitions), Silvally (2017 GameStop/GAME/EB), Koraidon/Miraidon (2025).
+  - pocketmonsters.net / pokemonblog.com / mynintendonews / nintendowire — Shiny Silvally 2017 distribution (confirmed by 5+ outlets).
+  - pokemonblog.com — Shiny Zeraora HOME distribution (Jun–Jul 2020); Dada Zarude & Shiny Celebi codes (2021).
+  - Nintendo Life / PokéBeach — Shiny legendary beasts GameStop (2011).
+- Random-shiny (self-caught, NOT guaranteed) distributions: Jirachi (WISHMKR bonus disc, 2003–04) and Mew (Old Sea Map / Faraway Island, JP Emerald 2005) are soft-reset RNG, not shiny-locked — genuine (historical) hunts, not guaranteed shinies.
+- Verified NOT huntable / no shiny: Type: Null & Silvally's in-game gifts are shiny-locked in every game (SM/USUM/SwSh/SV Indigo Disk); Zygarde is shiny-locked in every story/static/cell encounter — BUT shiny Zygarde IS obtainable via Sword/Shield Dynamax Adventures (Max Lair), the sole hunt route.
 
 ## Older-game historical hunts
 - PokéCommunity Daily — Gen 2 shiny guide (Crystal VC, roamers): https://daily.pokecommunity.com/2018/01/26/generation-2-shiny-guide/
@@ -1483,6 +1549,8 @@ def write_json(path, s):
             shiny_exists=p["shiny_exists"], rng_hunt=p["rng_hunt"], huntable_now=p["huntable_now"],
             event_only=p["event_only"], home_guaranteed=p["home_guaranteed"],
             go_shiny=p["go_shiny"], go_rng_hunt=p["go_rng_hunt"],
+            src_home_ot=p["src_home_ot"], src_home_reward=p["src_home_reward"],
+            src_home_event=p["src_home_event"], src_go=p["src_go"],
             bucket=bucket(p)[0], bucket_full=bucket(p), status=status_now(p),
             in_da=in_da(p), in_uw=in_uw(p), in_bdsp=in_bdsp(p), in_swsh=in_swsh_static(p), in_za=in_za(p),
             go=p["go"], notes=p["notes"],
@@ -1504,4 +1572,12 @@ if __name__ == "__main__":
     print(f"Total rows: {len(DATA)} (species core {len(core)}, UB {len(ub)}, forms {s['forms_total']})")
     for k, v in s.items():
         print(f"  {k}: {v}")
+    # source-channel tallies (all rows)
+    for key, lab in [("src_home_ot", "Home OT"), ("src_home_reward", "Home Reward"),
+                     ("src_home_event", "Home Event"), ("src_go", "GO")]:
+        print(f"  source[{lab}]: {sum(1 for p in DATA if p[key])}")
+    if _WARN:
+        print("WARNINGS:")
+        for wln in _WARN:
+            print("  ! " + wln)
     print("Wrote: CSV, XLSX, report.md, sources.md, data.json")

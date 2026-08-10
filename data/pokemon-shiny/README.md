@@ -29,6 +29,12 @@ python3 build_db.py
 - **D — SHINY UNAVAILABLE**: no legitimate shiny ever obtainable.
 
 ## Headline counts (computed)
-71 Legendary + 23 Mythical = **94**. Shiny exists: **65**. At least one true RNG hunt ever: **58**.
-Currently huntable (Aug 2026): **54**. Historical-only: **4**. Guaranteed/event-only shiny: **7**.
-Never legitimately shiny: **29**. (Ultra Beasts tracked separately: 11, of which 9 huntable.)
+71 Legendary + 23 Mythical = **94**. Shiny exists: **69**. At least one true RNG hunt ever: **61**.
+Currently huntable (Aug 2026): **56**. Historical-only: **5**. Guaranteed/event-only shiny: **8**.
+Never legitimately shiny: **25**. (Ultra Beasts tracked separately: 11 of which 9 huntable; plus 12 alternate-form rows.)
+
+## Obtainment channels (collection tracker)
+Each shiny is tagged by how it can be obtained, so the web tracker can offer the right toggles:
+**Home OT** (self-caught main-series shiny) · **Home Reward** (HOME Pokédex-completion reward: Meloetta, Keldeo,
+Meltan, Volcanion) · **Home Event** (guaranteed-shiny distribution — 19 species incl. shiny beasts, Tapus, Zacian/
+Zamazenta, Diancie, Genesect, Zeraora, Celebi, Silvally, Galarian birds, Koraidon/Miraidon) · **GO** (shiny in Pokémon GO).

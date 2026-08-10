@@ -186,13 +186,15 @@ footer a{color:var(--accent);}
 .mini:hover{color:var(--ink);border-color:var(--accent);}
 .lswarn{font-size:11.5px;color:var(--e);flex-basis:100%;}
 /* ownership toggles (HOME / GO) */
-th.gotcol,td.gotcol{width:122px;}
-.apps{display:flex;gap:5px;justify-content:center;}
-.app{font-family:ui-monospace,Menlo,monospace;font-size:10px;font-weight:700;letter-spacing:.03em;
+th.gotcol,td.gotcol{width:200px;}
+.apps{display:flex;gap:4px;justify-content:center;flex-wrap:wrap;}
+.app{font-family:ui-monospace,Menlo,monospace;font-size:10px;font-weight:700;letter-spacing:.02em;
   border:1px solid var(--line);background:var(--surface-2);color:var(--faint);border-radius:7px;
-  padding:5px 7px;cursor:pointer;line-height:1;transition:all .12s ease;}
+  padding:5px 6px;cursor:pointer;line-height:1;transition:all .12s ease;}
 .app:hover{color:var(--ink);border-color:var(--accent);}
-.app.home[aria-pressed="true"]{background:var(--home);border-color:var(--home);color:#fff;}
+.app.ot[aria-pressed="true"]{background:var(--home);border-color:var(--home);color:#fff;}
+.app.rwd[aria-pressed="true"]{background:var(--a);border-color:var(--a);color:#fff;}
+.app.evt[aria-pressed="true"]{background:var(--c);border-color:var(--c);color:#fff;}
 .app.go[aria-pressed="true"]{background:var(--gogo);border-color:var(--gogo);color:#fff;}
 .app:disabled{opacity:.25;cursor:not-allowed;}
 tr.row.owned{background:color-mix(in srgb,var(--accent) 8%,transparent);}
@@ -204,7 +206,8 @@ tr.row.both .name::after{content:"✦";color:var(--accent-2);margin-left:6px;fon
 .progress .brk{font-family:ui-monospace,Menlo,monospace;font-size:12px;color:var(--muted);
   display:flex;gap:14px;flex-wrap:wrap;align-items:center;}
 .progress .brk b{color:var(--ink);}
-.progress .brk .h{color:var(--home);} .progress .brk .g{color:var(--gogo);}
+.progress .brk .s-ot{color:var(--home);} .progress .brk .s-rwd{color:var(--a);}
+.progress .brk .s-evt{color:var(--c);} .progress .brk .s-go{color:var(--gogo);}
 .progress .brk .swatch{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:5px;vertical-align:0;}
 /* ---- phone: collapse the table into stacked cards (no sideways scroll) ---- */
 @media (max-width:640px){
@@ -266,9 +269,10 @@ tr.row.both .name::after{content:"✦";color:var(--accent-2);margin-left:6px;fon
     <div class="bar"><div class="fill" id="pfill"></div></div>
     <div class="pct" id="ppct">0%</div>
     <div class="brk">
-      <span class="h"><span class="swatch" style="background:var(--home)"></span>HOME <b id="nhome">0</b></span>
-      <span class="g"><span class="swatch" style="background:var(--gogo)"></span>GO <b id="ngo">0</b></span>
-      <span><span class="swatch" style="background:var(--accent-2)"></span>Both <b id="nboth">0</b></span>
+      <span class="s-ot"><span class="swatch" style="background:var(--home)"></span>Home OT <b id="not">0</b></span>
+      <span class="s-rwd"><span class="swatch" style="background:var(--a)"></span>Reward <b id="nrwd">0</b></span>
+      <span class="s-evt"><span class="swatch" style="background:var(--c)"></span>Event <b id="nevt">0</b></span>
+      <span class="s-go"><span class="swatch" style="background:var(--gogo)"></span>GO <b id="ngo">0</b></span>
     </div>
     <div class="exportbtns">
       <button class="mini" id="exportbtn" title="Download a backup of your caught list">
@@ -301,7 +305,7 @@ tr.row.both .name::after{content:"✦";color:var(--accent-2);margin-left:6px;fon
   <div class="tablewrap">
     <table>
       <thead><tr>
-        <th class="center gotcol" title="Mark where you have this shiny stored">In HOME / GO</th>
+        <th class="center gotcol" title="Mark where/how you have this shiny: Home OT, Home Reward, Home Event, or GO">Where you have it</th>
         <th>Pokémon</th><th>Category</th><th>Shiny</th><th>Status</th>
         <th>Bucket</th><th>Pokémon GO</th><th>Methods</th><th class="center"></th>
       </tr></thead>
@@ -318,10 +322,12 @@ tr.row.both .name::after{content:"✦";color:var(--accent-2);margin-left:6px;fon
     Counts are computed from the dataset. Ultra Beasts are shown as a separate class and excluded from the
     Legendary/Mythical totals. Sources &amp; verification caveats live in <span class="mono">sources.md</span>.
     Post-Jan-2026 Pokémon GO specifics verified by web search where possible; a few exact dates are approximate.
-    <br><br><b>Your collection</b> — tap <b>HOME</b> and/or <b>GO</b> on any row to record where you have that shiny
-    (light up both for a "both" ✦). It's saved locally in this browser on this device, so reopening in Safari keeps it;
-    it doesn't sync across devices — use <b>Export</b> to save a backup file and <b>Import</b> to restore it here or on
-    another device. The GO toggle is disabled for shinies not available in Pokémon GO.
+    <br><br><b>Your collection</b> — on each row, tap the channels you own it through:
+    <b>OT</b> = a Home shiny you caught yourself · <b>RWD</b> = a Home Pokédex-completion reward ·
+    <b>EVT</b> = a Home event/distribution shiny · <b>GO</b> = a shiny in Pokémon GO. Only the channels that
+    are actually possible for a species are shown (e.g. a HOME-reward-only Mythical shows just RWD). It's saved
+    locally in this browser on this device, so reopening in Safari keeps it; it doesn't sync across devices —
+    use <b>Export</b> to back it up and <b>Import</b> to restore it here or on another device.
   </footer>
 </div>
 
@@ -346,45 +352,53 @@ tbtn.onclick = () => setTheme(curTheme()==='dark'?'light':'dark');
 /* ---- state ---- */
 const state = { q:'', sort:'dex', cat:new Set(), bucket:new Set(), method:new Set(), gen:new Set(), flag:new Set() };
 
-/* ---- ownership tracker: where you have each shiny (HOME / GO), per-device ---- */
+/* ---- collection tracker: where/how you have each shiny, per-device ----
+   Four channels: ot = Home (self-caught, OT) · rwd = Home (Pokédex reward) ·
+   evt = Home (event distribution) · go = Pokémon GO. Each is only offered when
+   the species can actually be obtained that way (src_* flags from the database). */
+const CH = ['ot','rwd','evt','go'];
+const CH_LABEL = {ot:'Home OT', rwd:'Home Reward', evt:'Home Event', go:'Pokémon GO'};
+const srcOf = m => ({ot:m.src_home_ot, rwd:m.src_home_reward, evt:m.src_home_event, go:m.src_go});
+const canHave = (m,ch) => !!srcOf(m)[ch];
 const SHINY_TOTAL = MONS.filter(m=>m.shiny_exists).length;
-const LS_KEY='shinydex.store.v2';
-const LS_OLD='shinydex.caught.v1';
-let store={}, lsOK=true;   // store[name] = {home:bool, go:bool, legacy:bool}
+const LS_KEY='shinydex.store.v3';
+let store={}, lsOK=true;   // store[name] = {ot,rwd,evt,go}
 try{ store = JSON.parse(localStorage.getItem(LS_KEY)||'{}') || {}; }catch(e){ store={}; }
-// one-time migration from the old single-"caught" model -> legacy-owned (app unspecified)
+// migrate older formats non-destructively
 try{
-  const old = JSON.parse(localStorage.getItem(LS_OLD)||'null');
-  if(old && typeof old==='object'){
-    Object.keys(old).forEach(n=>{ if(!store[n]) store[n]={home:false,go:false,legacy:true}; });
-    localStorage.removeItem(LS_OLD);
+  if(!Object.keys(store).length){
+    const v2 = JSON.parse(localStorage.getItem('shinydex.store.v2')||'null');
+    if(v2 && typeof v2==='object'){
+      Object.entries(v2).forEach(([n,r])=>{ store[n]={ot:!!(r.home||r.legacy), rwd:false, evt:false, go:!!r.go}; });
+    } else {
+      const v1 = JSON.parse(localStorage.getItem('shinydex.caught.v1')||'null');
+      if(v1 && typeof v1==='object') Object.keys(v1).forEach(n=>{ store[n]={ot:true,rwd:false,evt:false,go:false}; });
+    }
   }
 }catch(e){}
 try{ localStorage.setItem('__t','1'); localStorage.removeItem('__t'); }catch(e){ lsOK=false; }
 function saveStore(){ try{ localStorage.setItem(LS_KEY, JSON.stringify(store)); }catch(e){} }
 const rec = n => store[n] || null;
-const hasApp = (n,app) => !!(store[n] && store[n][app]);
-const isOwned = n => { const r=store[n]; return !!(r && (r.home||r.go||r.legacy)); };
-const isBoth = n => { const r=store[n]; return !!(r && r.home && r.go); };
-function toggleApp(n,app){
-  const r = store[n] || (store[n]={home:false,go:false});
-  r[app] = !r[app];
-  if(r.legacy) r.legacy=false;               // once a real app is set, drop the legacy marker
-  if(!r.home && !r.go && !r.legacy) delete store[n];
+const hasApp = (n,ch) => !!(store[n] && store[n][ch]);
+const isOwned = n => { const r=store[n]; return !!(r && (r.ot||r.rwd||r.evt||r.go)); };
+function toggleApp(n,ch){
+  const r = store[n] || (store[n]={ot:false,rwd:false,evt:false,go:false});
+  r[ch] = !r[ch];
+  if(!(r.ot||r.rwd||r.evt||r.go)) delete store[n];
   saveStore(); updateProgress();
 }
 const ownedCount = () => MONS.filter(m=>m.shiny_exists && isOwned(m.name)).length;
-const appCount = app => MONS.filter(m=>m.shiny_exists && hasApp(m.name,app)).length;
-const bothCount = () => MONS.filter(m=>m.shiny_exists && isBoth(m.name)).length;
+const chCount = ch => MONS.filter(m=>hasApp(m.name,ch)).length;
 function updateProgress(){
   const c=ownedCount(), pct= SHINY_TOTAL ? Math.round(c/SHINY_TOTAL*100):0;
   document.getElementById('pcount').textContent=c;
   document.getElementById('ptotal').textContent=SHINY_TOTAL;
   document.getElementById('pfill').style.width=pct+'%';
   document.getElementById('ppct').textContent=pct+'%';
-  document.getElementById('nhome').textContent=appCount('home');
-  document.getElementById('ngo').textContent=appCount('go');
-  document.getElementById('nboth').textContent=bothCount();
+  document.getElementById('not').textContent=chCount('ot');
+  document.getElementById('nrwd').textContent=chCount('rwd');
+  document.getElementById('nevt').textContent=chCount('evt');
+  document.getElementById('ngo').textContent=chCount('go');
 }
 
 /* ---- KPI tiles (clickable) ---- */
@@ -414,8 +428,8 @@ const CHIPS = [
   {sep:1},
   {g:'Quick', items:[['flag','huntable','Huntable now'],['flag','go','GO shiny'],['flag','gorng','RNG in GO'],
     ['flag','home','HOME guaranteed'],['flag','eventonly','Event-only'],
-    ['flag','inhome','In HOME'],['flag','ingo','In GO'],['flag','both','In both'],
-    ['flag','owned','Owned (any)'],['flag','need','Not in either app'],['flag','form','Alt forms']]},
+    ['flag','ot','Have: Home OT'],['flag','rwd','Have: Reward'],['flag','evt','Have: Event'],['flag','ingo','Have: GO'],
+    ['flag','owned','Owned (any)'],['flag','need','Not owned'],['flag','form','Alt forms']]},
   {sep:1},
   {g:'Method', items:[['method','da','Dynamax Adv.'],['method','uw','Ultra Wormhole'],['method','bdsp','Ramanas Park'],
     ['method','swsh','SwSh static'],['method','za','Z-A Hyperspace'],['method','gorng','GO raid/box']]},
@@ -468,9 +482,10 @@ function flagOK(m){
     if(f==='gorng' && !m.go_rng_hunt) return false;
     if(f==='home' && !m.home_guaranteed) return false;
     if(f==='eventonly' && !m.event_only) return false;
-    if(f==='inhome' && !hasApp(m.name,'home')) return false;
+    if(f==='ot' && !hasApp(m.name,'ot')) return false;
+    if(f==='rwd' && !hasApp(m.name,'rwd')) return false;
+    if(f==='evt' && !hasApp(m.name,'evt')) return false;
     if(f==='ingo' && !hasApp(m.name,'go')) return false;
-    if(f==='both' && !isBoth(m.name)) return false;
     if(f==='owned' && !isOwned(m.name)) return false;
     if(f==='need' && (isOwned(m.name) || !m.shiny_exists)) return false;
     if(f==='form' && !m.is_form) return false;
@@ -567,10 +582,20 @@ function detailHTML(m){
       ${m.is_form?`<span class="badge">Form of <b>${esc(m.base)}</b></span>`:''}
     </div>
     ${m.forms&&m.forms.length?`<div class="pnote"><b>Alternate forms:</b> ${m.forms.map(esc).join(' &nbsp;·&nbsp; ')}</div>`:''}
+    <div class="pnote"><b>Shiny obtainable via:</b> ${CH.filter(ch=>canHave(m,ch)).map(ch=>CH_LABEL[ch]).join(' &nbsp;·&nbsp; ')||'no legitimate shiny yet'}</div>
     <div class="methods">${meth}</div>
     <div class="gorow"><b>Pokémon GO:</b> ${esc(m.go)||'Not in Pokémon GO.'}</div>
     <div class="pnote">${esc(m.notes)}</div>
   </div>`;
+}
+
+const CH_SHORT={ot:'OT',rwd:'RWD',evt:'EVT',go:'GO'};
+function appsCell(m){
+  const chs=CH.filter(ch=>canHave(m,ch));
+  if(!chs.length) return '<span class="go-n" title="No obtainable shiny">—</span>';
+  return '<div class="apps">'+chs.map(ch=>
+    `<button class="app ${ch}" data-name="${esc(m.name)}" data-app="${ch}" aria-pressed="${hasApp(m.name,ch)}" `
+    +`title="${CH_LABEL[ch]}" aria-label="${esc(m.name)} — ${CH_LABEL[ch]}">${CH_SHORT[ch]}</button>`).join('')+'</div>';
 }
 
 function render(){
@@ -580,14 +605,10 @@ function render(){
   document.getElementById('empty').hidden = rows.length>0;
   const frag=document.createDocumentFragment();
   rows.forEach(m=>{
-    const tr=document.createElement('tr'); tr.className='row'+(isOwned(m.name)?' owned':'')+(isBoth(m.name)?' both':''); tr.tabIndex=0;
-    const legacy = rec(m.name) && rec(m.name).legacy;
+    const tr=document.createElement('tr'); tr.className='row'+(isOwned(m.name)?' owned':''); tr.tabIndex=0;
     tr.innerHTML = `
-      <td class="center gotcol c-apps" data-label="In HOME / GO">${m.shiny_exists ? `<div class="apps">
-        <button class="app home" data-name="${esc(m.name)}" data-app="home" aria-pressed="${hasApp(m.name,'home')}" aria-label="${esc(m.name)} in Pokémon HOME">HOME</button>
-        <button class="app go" data-name="${esc(m.name)}" data-app="go" aria-pressed="${hasApp(m.name,'go')}" ${m.go_shiny?'':'disabled title="Shiny not available in Pokémon GO"'} aria-label="${esc(m.name)} in Pokémon GO">GO</button>
-      </div>` : '<span class="go-n" title="No shiny exists to store">—</span>'}</td>
-      <td class="c-name"><span class="name">${esc(m.name)}<span class="gx">${m.gen}</span></span>${legacy?'<span class="legdot" title="Marked owned earlier — set HOME or GO"></span>':''}${m.forms&&m.forms.length&&!m.is_form?'<span class="formflag" title="Has alternate forms">forms</span>':''}</td>
+      <td class="center gotcol c-apps" data-label="Where you have it">${appsCell(m)}</td>
+      <td class="c-name"><span class="name">${esc(m.name)}<span class="gx">${m.gen}</span></span>${m.forms&&m.forms.length&&!m.is_form?'<span class="formflag" title="Has alternate forms">forms</span>':''}</td>
       <td data-label="Category"><span class="cattag">${m.category}${m.is_form?` · form of ${esc(m.base)}`:''}</span></td>
       <td data-label="Shiny exists">${m.shiny_exists?'Yes':'<span class="go-n">No</span>'}</td>
       <td data-label="Hunt status">${m.huntable_now?'<span class="pill A"><span class="dot" style="background:var(--a)"></span>Now</span>':
@@ -600,12 +621,11 @@ function render(){
     const dtd=document.createElement('td'); dtd.colSpan=9; dtr.appendChild(dtd);
     tr.onkeydown=e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault();toggleDetail(tr);} };
     tr.querySelectorAll('.app').forEach(btn=>{
-      btn.onclick=(e)=>{ e.stopPropagation(); if(btn.disabled) return;
-        const n=btn.dataset.name, app=btn.dataset.app;
-        toggleApp(n,app); btn.setAttribute('aria-pressed', hasApp(n,app));
-        tr.classList.toggle('owned', isOwned(n)); tr.classList.toggle('both', isBoth(n));
-        const ld=tr.querySelector('.legdot'); if(ld) ld.remove();
-        if(['inhome','ingo','both','owned','need'].some(k=>state.flag.has(k))) render();
+      btn.onclick=(e)=>{ e.stopPropagation();
+        const n=btn.dataset.name, ch=btn.dataset.app;
+        toggleApp(n,ch); btn.setAttribute('aria-pressed', hasApp(n,ch));
+        tr.classList.toggle('owned', isOwned(n));
+        if(['ot','rwd','evt','ingo','owned','need'].some(k=>state.flag.has(k))) render();
       };
       btn.onkeydown=e=>{ if(e.key==='Enter'||e.key===' ') e.stopPropagation(); };
     });
@@ -626,9 +646,9 @@ document.getElementById('legend').innerHTML = LEG.map(([c,t,d])=>
 /* ---- export / import backup ---- */
 document.getElementById('exportbtn').onclick = async () => {
   const items={};
-  MONS.forEach(m=>{ const r=store[m.name]; if(r && (r.home||r.go||r.legacy))
-    items[m.name]={home:!!r.home, go:!!r.go}; });
-  const payload = {app:'legendary-mythical-shiny-hunt', version:2,
+  MONS.forEach(m=>{ const r=store[m.name]; if(r && (r.ot||r.rwd||r.evt||r.go))
+    items[m.name]={ot:!!r.ot, rwd:!!r.rwd, evt:!!r.evt, go:!!r.go}; });
+  const payload = {app:'legendary-mythical-shiny-hunt', version:3,
     exported:new Date().toISOString(), total:SHINY_TOTAL, owned:ownedCount(), items};
   const data = JSON.stringify(payload, null, 2);
   if(window.claude && window.claude.downloads){
@@ -646,12 +666,17 @@ document.getElementById('importfile').onchange = (e) => {
   const f=e.target.files[0]; if(!f) return;
   const r=new FileReader();
   r.onload=()=>{ try{ const o=JSON.parse(r.result); const known=new Set(MONS.map(m=>m.name)); let n=0;
-      if(o && o.items && typeof o.items==='object'){                 // v2 format
+      if(o && o.items && typeof o.items==='object'){
         Object.entries(o.items).forEach(([name,v])=>{ if(!known.has(name)) return;
-          store[name]={home:!!v.home, go:!!v.go}; if(!v.home&&!v.go) store[name].legacy=true; n++; });
+          if('ot' in v || 'rwd' in v || 'evt' in v){                  // v3 format
+            store[name]={ot:!!v.ot, rwd:!!v.rwd, evt:!!v.evt, go:!!v.go};
+          } else {                                                    // v2 {home,go}
+            store[name]={ot:!!(v.home), rwd:false, evt:false, go:!!v.go};
+          }
+          n++; });
       } else {                                                        // v1 (list or {caught:[]})
         const list=Array.isArray(o)?o:(o.caught||[]);
-        list.forEach(name=>{ if(known.has(name)){ store[name]=store[name]||{home:false,go:false,legacy:true}; n++; } });
+        list.forEach(name=>{ if(known.has(name)){ store[name]={ot:true,rwd:false,evt:false,go:false}; n++; } });
       }
       saveStore(); updateProgress(); render();
       alert('Imported '+n+' Pokémon from the backup.');
