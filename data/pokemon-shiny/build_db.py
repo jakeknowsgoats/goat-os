@@ -1022,6 +1022,12 @@ for _p in DATA:
         _WARN.append(f"{_p['name']}: has a source channel but shiny_exists=False")
     _p["shiny_exists"] = _p["shiny_exists"] or _derived
 
+# targeted override: Manaphy also gets the Reward channel (per request) — the Manaphy Egg
+# is received as a gift/reward (Pokémon Ranger), separate from the self-hatched OT shiny.
+for _p in DATA:
+    if _p["name"] == "Manaphy":
+        _p["src_home_reward"] = True
+
 
 # ============================================================================
 # Derived helpers & emission
