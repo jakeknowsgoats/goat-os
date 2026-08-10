@@ -80,7 +80,11 @@ h1 .spark{position:relative;background:linear-gradient(100deg,var(--accent),var(
 .search{flex:1 1 260px;display:flex;align-items:center;gap:8px;background:var(--surface-2);
   border:1px solid var(--line);border-radius:10px;padding:9px 12px;}
 .search input{border:0;background:transparent;color:var(--ink);font:inherit;width:100%;outline:none;}
+.search input::-webkit-search-cancel-button{-webkit-appearance:none;}
 .search svg{flex:0 0 auto;color:var(--faint);}
+.qclear{flex:0 0 auto;border:0;background:var(--surface);color:var(--faint);cursor:pointer;
+  border-radius:50%;width:20px;height:20px;line-height:1;font-size:12px;padding:0;}
+.qclear:hover{color:var(--ink);background:var(--line);}
 .sortsel{background:var(--surface-2);border:1px solid var(--line);color:var(--ink);border-radius:10px;
   padding:9px 10px;font:inherit;font-size:13px;}
 .chipset{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;align-items:center;}
@@ -243,8 +247,10 @@ tr.row.both .name::after{content:"✦";color:var(--accent-2);margin-left:6px;fon
     <div class="searchrow">
       <label class="search">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-        <input id="q" type="search" placeholder="Search a Pokémon or a note…" autocomplete="off" />
+        <input id="q" type="search" list="ponames" placeholder="Search a Pokémon by name…" aria-label="Search for a Pokémon" autocomplete="off" />
+        <button id="qclear" class="qclear" type="button" hidden aria-label="Clear search">✕</button>
       </label>
+      <datalist id="ponames"></datalist>
       <select class="sortsel" id="sort" aria-label="Sort">
         <option value="dex">Sort: National order</option>
         <option value="name">Sort: Name A–Z</option>
@@ -402,10 +408,17 @@ function syncChips(){
   document.querySelectorAll('.kpi[data-grp]').forEach(b=>{
     const s=state[b.dataset.grp]; b.setAttribute('aria-pressed', s&&s.has(b.dataset.val)?'true':'false'); });
 }
-function resetAll(){ state.q=''; document.getElementById('q').value='';
+function resetAll(){ state.q=''; const qi=document.getElementById('q'); qi.value='';
+  const qc=document.getElementById('qclear'); if(qc) qc.hidden=true;
   ['cat','bucket','method','gen','flag'].forEach(k=>state[k].clear()); syncChips(); render(); }
 
-document.getElementById('q').addEventListener('input', e=>{ state.q=e.target.value.toLowerCase().trim(); render(); });
+const qEl=document.getElementById('q'), qClear=document.getElementById('qclear');
+(function(){ const dl=document.getElementById('ponames');
+  Array.from(new Set(MONS.map(m=>m.name))).sort().forEach(n=>{
+    const o=document.createElement('option'); o.value=n; dl.appendChild(o); }); })();
+qEl.addEventListener('input', e=>{ state.q=e.target.value.toLowerCase().trim(); qClear.hidden=!e.target.value; render(); });
+qEl.addEventListener('keydown', e=>{ if(e.key==='Escape'){ qEl.value=''; state.q=''; qClear.hidden=true; render(); } });
+qClear.onclick=()=>{ qEl.value=''; state.q=''; qClear.hidden=true; qEl.focus(); render(); };
 document.getElementById('sort').addEventListener('change', e=>{ state.sort=e.target.value; render(); });
 
 /* ---- filtering ---- */
@@ -443,8 +456,8 @@ function match(m){
   if(state.bucket.size && !state.bucket.has(m.bucket)) return false;
   if(state.gen.size && !state.gen.has(m.gen)) return false;
   if(!flagOK(m) || !methodOK(m)) return false;
-  if(state.q){ if(!(m.name.toLowerCase().includes(state.q) || (m.notes||'').toLowerCase().includes(state.q) ||
-     (m.go||'').toLowerCase().includes(state.q))) return false; }
+  if(state.q){ if(!(m.name.toLowerCase().includes(state.q) || (m.base||'').toLowerCase().includes(state.q) ||
+     (m.notes||'').toLowerCase().includes(state.q) || (m.go||'').toLowerCase().includes(state.q))) return false; }
   return true;
 }
 const BORD={A:0,E:1,B:2,C:3,D:4};
