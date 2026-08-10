@@ -25,6 +25,7 @@
 | …shiny exists **only via distribution / guaranteed reward** (never a hunt) | 7 |
 | …shiny has **never** been legitimately obtainable | 29 |
 | *(Appendix)* Ultra Beasts total / currently huntable | 11 / 9 |
+| *(Appendix)* Distinct alternate-form rows (e.g. Galarian birds) / huntable | 3 / 3 |
 
 *Integrity checks (asserted at build time): shiny-exists + shiny-never = total; RNG-hunt-ever = currently-huntable + historical-only.*
 
@@ -141,6 +142,9 @@ Bucket key: **A** = true hunt available now · **E** = hunt historical only · *
 | Blacephalon | VII | Ultra Beast | Yes | Yes | Yes | A | Yes (RNG) | No | No | DA, USUM, GO-raid/box |
 | Poipole | VII | Ultra Beast | No | No | No | D | No | No | No | — |
 | Naganadel | VII | Ultra Beast | No | No | No | D | No | No | No | — |
+| Galarian Articuno | VIII | Legendary | Yes | Yes | Yes | A | Yes (RNG) | No | No | GO-raid/box |
+| Galarian Zapdos | VIII | Legendary | Yes | Yes | Yes | A | Yes (RNG) | No | No | GO-raid/box |
+| Galarian Moltres | VIII | Legendary | Yes | Yes | Yes | A | Yes (RNG) | No | No | GO-raid/box |
 
 ---
 
@@ -157,6 +161,7 @@ Bucket key: **A** = true hunt available now · **E** = hunt historical only · *
 - **Currently shiny-huntable (RNG):** Yes
 - **Bucket:** A (true hunt, current)
 - **HOME guaranteed-shiny reward:** No  |  **Event-only shiny:** No
+- **Alternate forms:** Galarian Articuno — see its own row (Gen VIII, GO-only shiny)
 
 **Hunting / shiny methods:**
 
@@ -287,6 +292,7 @@ Bucket key: **A** = true hunt available now · **E** = hunt historical only · *
 - **Currently shiny-huntable (RNG):** Yes
 - **Bucket:** A (true hunt, current)
 - **HOME guaranteed-shiny reward:** No  |  **Event-only shiny:** No
+- **Alternate forms:** Galarian Moltres — see its own row (Gen VIII, GO-only shiny)
 
 **Hunting / shiny methods:**
 
@@ -337,6 +343,7 @@ Bucket key: **A** = true hunt available now · **E** = hunt historical only · *
 - **Currently shiny-huntable (RNG):** Yes
 - **Bucket:** A (true hunt, current)
 - **HOME guaranteed-shiny reward:** No  |  **Event-only shiny:** No
+- **Alternate forms:** Galarian Zapdos — see its own row (Gen VIII, GO-only shiny)
 
 **Hunting / shiny methods:**
 
@@ -693,6 +700,7 @@ Bucket key: **A** = true hunt available now · **E** = hunt historical only · *
 - **Currently shiny-huntable (RNG):** Yes
 - **Bucket:** A (true hunt, current)
 - **HOME guaranteed-shiny reward:** No  |  **Event-only shiny:** No
+- **Alternate forms:** Normal, Attack, Defense, Speed — all four shiny in GO raids (separate 2020–2022 dates); main-series forme is set by in-game meteorites/version, all huntable
 
 **Hunting / shiny methods:**
 
@@ -1403,6 +1411,7 @@ Bucket key: **A** = true hunt available now · **E** = hunt historical only · *
 - **Currently shiny-huntable (RNG):** Yes
 - **Bucket:** A (true hunt, current)
 - **HOME guaranteed-shiny reward:** No  |  **Event-only shiny:** No
+- **Alternate forms:** Origin Forme — shiny available (GO; main-series via Adamant Crystal in PLA, shiny-locked there)
 
 **Hunting / shiny methods:**
 
@@ -1466,6 +1475,7 @@ Bucket key: **A** = true hunt available now · **E** = hunt historical only · *
 - **Currently shiny-huntable (RNG):** Yes
 - **Bucket:** A (true hunt, current)
 - **HOME guaranteed-shiny reward:** No  |  **Event-only shiny:** No
+- **Alternate forms:** Altered Forme & Origin Forme — both shiny in GO
 
 **Hunting / shiny methods:**
 
@@ -1669,6 +1679,7 @@ Bucket key: **A** = true hunt available now · **E** = hunt historical only · *
 - **Currently shiny-huntable (RNG):** Yes
 - **Bucket:** A (true hunt, current)
 - **HOME guaranteed-shiny reward:** No  |  **Event-only shiny:** No
+- **Alternate forms:** Origin Forme — shiny available in GO (Lustrous Globe in PLA is shiny-locked)
 
 **Hunting / shiny methods:**
 
@@ -1799,6 +1810,7 @@ Bucket key: **A** = true hunt available now · **E** = hunt historical only · *
 - **Currently shiny-huntable (RNG):** No (historical only)
 - **Bucket:** E (hunt, historical only)
 - **HOME guaranteed-shiny reward:** No  |  **Event-only shiny:** No
+- **Alternate forms:** Land Forme — shiny (GO Masterwork, guaranteed). Sky Forme — shiny status unconfirmed
 
 **Hunting / shiny methods:**
 
@@ -1952,6 +1964,7 @@ Bucket key: **A** = true hunt available now · **E** = hunt historical only · *
 - **Currently shiny-huntable (RNG):** Yes
 - **Bucket:** A (true hunt, current)
 - **HOME guaranteed-shiny reward:** No  |  **Event-only shiny:** No
+- **Alternate forms:** Normal/Shock/Burn/Chill/Douse Drives — shiny in GO raids; Drives are held-item variants (separate raid dates)
 
 **Hunting / shiny methods:**
 
@@ -1981,6 +1994,7 @@ Bucket key: **A** = true hunt available now · **E** = hunt historical only · *
 - **Currently shiny-huntable (RNG):** No
 - **Bucket:** B (guaranteed reward)
 - **HOME guaranteed-shiny reward:** Yes  |  **Event-only shiny:** Yes
+- **Alternate forms:** Ordinary & Resolute — shiny is guaranteed (HOME/GO Masterwork), applies to both
 
 **Hunting / shiny methods:**
 
@@ -2017,6 +2031,7 @@ Bucket key: **A** = true hunt available now · **E** = hunt historical only · *
 - **Currently shiny-huntable (RNG):** Yes
 - **Bucket:** A (true hunt, current)
 - **HOME guaranteed-shiny reward:** No  |  **Event-only shiny:** No
+- **Alternate forms:** Black Kyurem & White Kyurem — fusion formes (with Zekrom/Reshiram); shiny via the base Kyurem
 
 **Hunting / shiny methods:**
 
@@ -2061,6 +2076,7 @@ Bucket key: **A** = true hunt available now · **E** = hunt historical only · *
 - **Currently shiny-huntable (RNG):** Yes
 - **Bucket:** A (true hunt, current)
 - **HOME guaranteed-shiny reward:** No  |  **Event-only shiny:** No
+- **Alternate forms:** Incarnate & Therian — both shiny in GO (Therian released 2022)
 
 **Hunting / shiny methods:**
 
@@ -2112,6 +2128,7 @@ Bucket key: **A** = true hunt available now · **E** = hunt historical only · *
 - **Currently shiny-huntable (RNG):** No
 - **Bucket:** B (guaranteed reward)
 - **HOME guaranteed-shiny reward:** Yes  |  **Event-only shiny:** Yes
+- **Alternate forms:** Aria & Pirouette — shiny is guaranteed (HOME/GO), applies to both
 
 **Hunting / shiny methods:**
 
@@ -2250,6 +2267,7 @@ Bucket key: **A** = true hunt available now · **E** = hunt historical only · *
 - **Currently shiny-huntable (RNG):** Yes
 - **Bucket:** A (true hunt, current)
 - **HOME guaranteed-shiny reward:** No  |  **Event-only shiny:** No
+- **Alternate forms:** Incarnate & Therian — both shiny in GO (Therian released 2022)
 
 **Hunting / shiny methods:**
 
@@ -2301,6 +2319,7 @@ Bucket key: **A** = true hunt available now · **E** = hunt historical only · *
 - **Currently shiny-huntable (RNG):** Yes
 - **Bucket:** A (true hunt, current)
 - **HOME guaranteed-shiny reward:** No  |  **Event-only shiny:** No
+- **Alternate forms:** Incarnate & Therian — both shiny in GO (Therian released 2022)
 
 **Hunting / shiny methods:**
 
@@ -2505,6 +2524,7 @@ Bucket key: **A** = true hunt available now · **E** = hunt historical only · *
 - **Currently shiny-huntable (RNG):** No
 - **Bucket:** D (shiny unavailable)
 - **HOME guaranteed-shiny reward:** No  |  **Event-only shiny:** No
+- **Alternate forms:** Confined & Unbound — both shiny-unavailable
 
 **Hunting / shiny methods:**
 
@@ -2642,6 +2662,7 @@ Bucket key: **A** = true hunt available now · **E** = hunt historical only · *
 - **Currently shiny-huntable (RNG):** No
 - **Bucket:** D (shiny unavailable)
 - **HOME guaranteed-shiny reward:** No  |  **Event-only shiny:** No
+- **Alternate forms:** 10% / 50% / Complete Forme — all shiny-unavailable
 
 **Hunting / shiny methods:**
 
@@ -2841,6 +2862,7 @@ Bucket key: **A** = true hunt available now · **E** = hunt historical only · *
 - **Currently shiny-huntable (RNG):** Yes
 - **Bucket:** A (true hunt, current)
 - **HOME guaranteed-shiny reward:** No  |  **Event-only shiny:** No
+- **Alternate forms:** Dusk Mane / Dawn Wings (fusions with Solgaleo/Lunala) & Ultra Necrozma — shiny via base Necrozma
 
 **Hunting / shiny methods:**
 
@@ -3127,6 +3149,7 @@ Bucket key: **A** = true hunt available now · **E** = hunt historical only · *
 - **Currently shiny-huntable (RNG):** No
 - **Bucket:** D (shiny unavailable)
 - **HOME guaranteed-shiny reward:** No  |  **Event-only shiny:** No
+- **Alternate forms:** Ice Rider / Shadow Rider (fusions with Glastrier/Spectrier) — all shiny-unavailable
 
 **Hunting / shiny methods:**
 
@@ -3149,6 +3172,7 @@ Bucket key: **A** = true hunt available now · **E** = hunt historical only · *
 - **Currently shiny-huntable (RNG):** No
 - **Bucket:** D (shiny unavailable)
 - **HOME guaranteed-shiny reward:** No  |  **Event-only shiny:** No
+- **Alternate forms:** Incarnate & Therian — both shiny-unavailable as of Aug 2026 (GO shiny not released)
 
 **Hunting / shiny methods:**
 
@@ -3312,6 +3336,7 @@ Bucket key: **A** = true hunt available now · **E** = hunt historical only · *
 - **Currently shiny-huntable (RNG):** No
 - **Bucket:** D (shiny unavailable)
 - **HOME guaranteed-shiny reward:** No  |  **Event-only shiny:** No
+- **Alternate forms:** Single Strike & Rapid Strike Style — both shiny-locked (from the locked Kubfu)
 
 **Hunting / shiny methods:**
 
@@ -3334,6 +3359,7 @@ Bucket key: **A** = true hunt available now · **E** = hunt historical only · *
 - **Currently shiny-huntable (RNG):** Yes
 - **Bucket:** A (true hunt, current)
 - **HOME guaranteed-shiny reward:** No  |  **Event-only shiny:** No
+- **Alternate forms:** Hero of Many Battles & Crowned Sword — shiny carries across the form change
 
 **Hunting / shiny methods:**
 
@@ -3363,6 +3389,7 @@ Bucket key: **A** = true hunt available now · **E** = hunt historical only · *
 - **Currently shiny-huntable (RNG):** Yes
 - **Bucket:** A (true hunt, current)
 - **HOME guaranteed-shiny reward:** No  |  **Event-only shiny:** No
+- **Alternate forms:** Hero of Many Battles & Crowned Shield — shiny carries across the form change
 
 **Hunting / shiny methods:**
 
@@ -3558,6 +3585,7 @@ Bucket key: **A** = true hunt available now · **E** = hunt historical only · *
 - **Currently shiny-huntable (RNG):** No
 - **Bucket:** D (shiny unavailable)
 - **HOME guaranteed-shiny reward:** No  |  **Event-only shiny:** No
+- **Alternate forms:** Teal / Wellspring / Hearthflame / Cornerstone Mask — all shiny-locked
 
 **Hunting / shiny methods:**
 
@@ -3624,6 +3652,7 @@ Bucket key: **A** = true hunt available now · **E** = hunt historical only · *
 - **Currently shiny-huntable (RNG):** No
 - **Bucket:** D (shiny unavailable)
 - **HOME guaranteed-shiny reward:** No  |  **Event-only shiny:** No
+- **Alternate forms:** Normal / Terastal / Stellar Forme — shiny-locked
 
 **Hunting / shiny methods:**
 
@@ -4063,6 +4092,99 @@ Bucket key: **A** = true hunt available now · **E** = hunt historical only · *
 **Notes:** Ultra Beast (own class). Shiny-locked in SM; unlocked in USUM wormholes, Dynamax Adventures, and GO raids.
 
 
+## Alternate forms (appendix — distinct shiny status)
+
+### Galarian Articuno
+
+- **Classification:** Legendary
+- **Generation:** VIII
+- **Shiny exists:** Yes
+- **Currently shiny-huntable (RNG):** Yes
+- **Bucket:** A (true hunt, current)
+- **HOME guaranteed-shiny reward:** No  |  **Event-only shiny:** No
+- **Form of:** Articuno (distinct alternate form)
+
+**Hunting / shiny methods:**
+
+1. **Sword/Shield (Crown Tundra)** — Roaming static (Legendary Clue 1)
+    - Shiny locked: **Shiny-LOCKED**
+    - Shiny Charm: n/a
+    - Currently accessible: Yes
+    - Type: C (event distribution)
+    - Note: Galarian bird roamer is shiny-LOCKED in the main series
+2. **Pokémon GO** — Daily Adventure Incense wild spawn (RNG)
+    - Shiny locked: Not shiny-locked
+    - Odds (base): ~1/20 per encounter
+    - Shiny Charm: n/a (GO has no Shiny Charm)
+    - Currently accessible: Yes
+    - Type: A (true RNG hunt)
+    - Note: Shiny since Oct 4 2024; wild-ONLY via Daily Adventure Incense (never in raids). Boosted ~1/20 shiny rate, but DAI yields only ~1 bird encounter per day, so it is a slow grind
+
+**Pokémon GO:** Daily Adventure Incense wild (shiny since Oct 2024) — RNG, wild-only (not raids)
+
+**Notes:** Galarian form of Articuno (Psychic/Flying) — a distinct Pokémon introduced in Gen VIII, NOT the Kanto bird. Main-series Crown Tundra roamer is shiny-locked; the ONLY shiny route is Pokémon GO Daily Adventure Incense wild spawns.
+
+### Galarian Moltres
+
+- **Classification:** Legendary
+- **Generation:** VIII
+- **Shiny exists:** Yes
+- **Currently shiny-huntable (RNG):** Yes
+- **Bucket:** A (true hunt, current)
+- **HOME guaranteed-shiny reward:** No  |  **Event-only shiny:** No
+- **Form of:** Moltres (distinct alternate form)
+
+**Hunting / shiny methods:**
+
+1. **Sword/Shield (Crown Tundra)** — Roaming static (Legendary Clue 1)
+    - Shiny locked: **Shiny-LOCKED**
+    - Shiny Charm: n/a
+    - Currently accessible: Yes
+    - Type: C (event distribution)
+    - Note: Galarian bird roamer is shiny-LOCKED in the main series
+2. **Pokémon GO** — Daily Adventure Incense wild spawn (RNG)
+    - Shiny locked: Not shiny-locked
+    - Odds (base): ~1/20 per encounter
+    - Shiny Charm: n/a (GO has no Shiny Charm)
+    - Currently accessible: Yes
+    - Type: A (true RNG hunt)
+    - Note: Shiny since Oct 4 2024; wild-ONLY via Daily Adventure Incense (never in raids). Boosted ~1/20 shiny rate, but DAI yields only ~1 bird encounter per day, so it is a slow grind
+
+**Pokémon GO:** Daily Adventure Incense wild (shiny since Oct 2024) — RNG, wild-only (not raids)
+
+**Notes:** Galarian form of Moltres (Dark/Flying) — a distinct Pokémon introduced in Gen VIII, NOT the Kanto bird. Main-series Crown Tundra roamer is shiny-locked; the ONLY shiny route is Pokémon GO Daily Adventure Incense wild spawns.
+
+### Galarian Zapdos
+
+- **Classification:** Legendary
+- **Generation:** VIII
+- **Shiny exists:** Yes
+- **Currently shiny-huntable (RNG):** Yes
+- **Bucket:** A (true hunt, current)
+- **HOME guaranteed-shiny reward:** No  |  **Event-only shiny:** No
+- **Form of:** Zapdos (distinct alternate form)
+
+**Hunting / shiny methods:**
+
+1. **Sword/Shield (Crown Tundra)** — Roaming static (Legendary Clue 1)
+    - Shiny locked: **Shiny-LOCKED**
+    - Shiny Charm: n/a
+    - Currently accessible: Yes
+    - Type: C (event distribution)
+    - Note: Galarian bird roamer is shiny-LOCKED in the main series
+2. **Pokémon GO** — Daily Adventure Incense wild spawn (RNG)
+    - Shiny locked: Not shiny-locked
+    - Odds (base): ~1/20 per encounter
+    - Shiny Charm: n/a (GO has no Shiny Charm)
+    - Currently accessible: Yes
+    - Type: A (true RNG hunt)
+    - Note: Shiny since Oct 4 2024; wild-ONLY via Daily Adventure Incense (never in raids). Boosted ~1/20 shiny rate, but DAI yields only ~1 bird encounter per day, so it is a slow grind
+
+**Pokémon GO:** Daily Adventure Incense wild (shiny since Oct 2024) — RNG, wild-only (not raids)
+
+**Notes:** Galarian form of Zapdos (Fighting/Flying) — a distinct Pokémon introduced in Gen VIII, NOT the Kanto bird. Main-series Crown Tundra roamer is shiny-locked; the ONLY shiny route is Pokémon GO Daily Adventure Incense wild spawns.
+
+
 ---
 
 # FILTERED LISTS
@@ -4088,8 +4210,8 @@ Regirock, Regice, Registeel, Tornadus, Thundurus, Landorus, Regieleki, Regidrago
 Latias, Latios, Cobalion, Terrakion, Virizion
 
 ### 5. Ever genuinely **RNG shiny-huntable in Pokémon GO** (raids / Mystery Box / wild)
-*(61 species — mostly ~1/20 legendary raids; Meltan/Galarian birds ~1/125)*  
-Articuno, Zapdos, Moltres, Mewtwo, Raikou, Entei, Suicune, Lugia, Ho-Oh, Regirock, Regice, Registeel, Latias, Latios, Kyogre, Groudon, Rayquaza, Deoxys, Uxie, Mesprit, Azelf, Dialga, Palkia, Heatran, Regigigas, Giratina, Cresselia, Darkrai, Cobalion, Terrakion, Virizion, Tornadus, Thundurus, Landorus, Reshiram, Zekrom, Kyurem, Genesect, Xerneas, Yveltal, Tapu Koko, Tapu Lele, Tapu Bulu, Tapu Fini, Solgaleo, Lunala, Necrozma, Meltan, Melmetal, Zacian, Zamazenta, Regieleki, Nihilego, Buzzwole, Pheromosa, Xurkitree, Celesteela, Kartana, Guzzlord, Stakataka, Blacephalon
+*(64 species — mostly ~1/20 legendary raids; Meltan/Galarian birds ~1/125)*  
+Articuno, Zapdos, Moltres, Mewtwo, Raikou, Entei, Suicune, Lugia, Ho-Oh, Regirock, Regice, Registeel, Latias, Latios, Kyogre, Groudon, Rayquaza, Deoxys, Uxie, Mesprit, Azelf, Dialga, Palkia, Heatran, Regigigas, Giratina, Cresselia, Darkrai, Cobalion, Terrakion, Virizion, Tornadus, Thundurus, Landorus, Reshiram, Zekrom, Kyurem, Genesect, Xerneas, Yveltal, Tapu Koko, Tapu Lele, Tapu Bulu, Tapu Fini, Solgaleo, Lunala, Necrozma, Meltan, Melmetal, Zacian, Zamazenta, Regieleki, Nihilego, Buzzwole, Pheromosa, Xurkitree, Celesteela, Kartana, Guzzlord, Stakataka, Blacephalon, Galarian Articuno, Galarian Zapdos, Galarian Moltres
 
 > Guaranteed-only GO shinies (NOT hunts): Mew, Celebi, Jirachi, Shaymin, Keldeo, Meloetta, Diancie.
 
@@ -4106,13 +4228,18 @@ Arceus, Victini, Zygarde, Hoopa, Type: Null, Silvally, Cosmog, Cosmoem, Magearna
 Mew, Keldeo, Meloetta, Diancie, Volcanion, Koraidon, Miraidon
 
 ### 9. **Currently huntable** without needing an expired event (as of Aug 2026)
-*(63 species incl. Ultra Beasts; 54 core Legendary/Mythical)*  
-Articuno, Zapdos, Moltres, Mewtwo, Raikou, Entei, Suicune, Lugia, Ho-Oh, Regirock, Regice, Registeel, Latias, Latios, Kyogre, Groudon, Rayquaza, Deoxys, Uxie, Mesprit, Azelf, Dialga, Palkia, Heatran, Regigigas, Giratina, Cresselia, Phione, Darkrai, Cobalion, Terrakion, Virizion, Tornadus, Thundurus, Landorus, Reshiram, Zekrom, Kyurem, Genesect, Xerneas, Yveltal, Tapu Koko, Tapu Lele, Tapu Bulu, Tapu Fini, Solgaleo, Lunala, Necrozma, Meltan, Melmetal, Zacian, Zamazenta, Regieleki, Regidrago, Nihilego, Buzzwole, Pheromosa, Xurkitree, Celesteela, Kartana, Guzzlord, Stakataka, Blacephalon
+*(66 species incl. Ultra Beasts; 54 core Legendary/Mythical)*  
+Articuno, Zapdos, Moltres, Mewtwo, Raikou, Entei, Suicune, Lugia, Ho-Oh, Regirock, Regice, Registeel, Latias, Latios, Kyogre, Groudon, Rayquaza, Deoxys, Uxie, Mesprit, Azelf, Dialga, Palkia, Heatran, Regigigas, Giratina, Cresselia, Phione, Darkrai, Cobalion, Terrakion, Virizion, Tornadus, Thundurus, Landorus, Reshiram, Zekrom, Kyurem, Genesect, Xerneas, Yveltal, Tapu Koko, Tapu Lele, Tapu Bulu, Tapu Fini, Solgaleo, Lunala, Necrozma, Meltan, Melmetal, Zacian, Zamazenta, Regieleki, Regidrago, Nihilego, Buzzwole, Pheromosa, Xurkitree, Celesteela, Kartana, Guzzlord, Stakataka, Blacephalon, Galarian Articuno, Galarian Zapdos, Galarian Moltres
+
+### 9b. Distinct alternate **forms** with their own shiny status (broken out as separate rows)
+*(3 forms)*  
+Galarian Articuno (form of Articuno — yes), Galarian Zapdos (form of Zapdos — yes), Galarian Moltres (form of Moltres — yes).  
+Other legendaries with alternate formes that share their base species' shiny status (documented in each entry, not split out): Deoxys, Dialga, Palkia, Giratina, Shaymin, Tornadus, Thundurus, Landorus, Kyurem, Zacian, Zamazenta, Necrozma, Calyrex, Urshifu, Zygarde, Hoopa, Meloetta, Genesect, Enamorus, Keldeo, Ogerpon, Terapagos.
 
 ### 10. Best games / platforms for hunting the most Legendary/Mythical shinies
 | Rank | Platform | # Legendary/Mythical/UB shinies huntable |
 |---:|---|---:|
-| 1 | Pokémon GO (raids/box, RNG) | 61 |
+| 1 | Pokémon GO (raids/box, RNG) | 64 |
 | 2 | Sword/Shield Dynamax Adventures | 51 |
 | 3 | Ultra Sun/Ultra Moon Ultra Wormholes | 45 |
 | 4 | Brilliant Diamond/Shining Pearl | 23 |
@@ -4127,7 +4254,7 @@ Articuno, Zapdos, Moltres, Mewtwo, Raikou, Entei, Suicune, Lugia, Ho-Oh, Regiroc
 
 # VALIDATION PASS
 
-- **Every species appears exactly once:** PASS (105 rows, 105 unique names).
+- **Every species appears exactly once:** PASS (108 rows, 108 unique names).
 - **Counts reconcile:** shiny-exists (65) + shiny-never (29) = 94 = total (94) — PASS.
 - **Hunt counts reconcile:** current (54) + historical-only (4) = 58 = RNG-hunt-ever (58) — PASS.
 - **Guaranteed rewards are never counted as hunts:** HOME dex-reward shinies (Meloetta, Keldeo, Meltan*, Volcanion) and GO Masterwork shinies (Mew, Celebi, Jirachi, Shaymin, Meloetta, Keldeo, Diancie) are recorded as Bucket B, and are excluded from `rng_hunt`. (*Meltan also has a real Mystery Box RNG hunt, so it is Bucket A.)

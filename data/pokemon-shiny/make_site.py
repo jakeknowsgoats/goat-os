@@ -107,6 +107,9 @@ tbody tr.row{cursor:pointer;}
 tbody tr.row:hover{background:var(--surface-2);}
 .name{font-weight:650;}
 .name .gx{font-family:ui-monospace,Menlo,monospace;font-size:11px;color:var(--faint);margin-left:7px;}
+.formflag{font-family:ui-monospace,Menlo,monospace;font-size:9.5px;letter-spacing:.04em;text-transform:uppercase;
+  color:var(--c);border:1px solid color-mix(in srgb,var(--c) 35%,transparent);border-radius:5px;
+  padding:1px 5px;margin-left:8px;vertical-align:1px;}
 .cattag{font-size:11px;color:var(--muted);}
 .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:1px;}
 .pill{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:650;
@@ -326,7 +329,7 @@ const CHIPS = [
   {sep:1},
   {g:'Quick', items:[['flag','huntable','Huntable now'],['flag','go','GO shiny'],['flag','gorng','RNG in GO'],
     ['flag','home','HOME guaranteed'],['flag','eventonly','Event-only'],
-    ['flag','caught','★ Caught'],['flag','notcaught','Still to hunt']]},
+    ['flag','caught','★ Caught'],['flag','notcaught','Still to hunt'],['flag','form','Alt forms']]},
   {sep:1},
   {g:'Method', items:[['method','da','Dynamax Adv.'],['method','uw','Ultra Wormhole'],['method','bdsp','Ramanas Park'],
     ['method','swsh','SwSh static'],['method','za','Z-A Hyperspace'],['method','gorng','GO raid/box']]},
@@ -374,6 +377,7 @@ function flagOK(m){
     if(f==='eventonly' && !m.event_only) return false;
     if(f==='caught' && !isCaught(m.name)) return false;
     if(f==='notcaught' && (isCaught(m.name) || !m.shiny_exists)) return false;
+    if(f==='form' && !m.is_form) return false;
   }
   return true;
 }
@@ -442,7 +446,9 @@ function detailHTML(m){
       <span class="badge">Huntable now: <b>${m.huntable_now?'Yes':'No'}</b></span>
       <span class="badge">HOME guaranteed: <b>${m.home_guaranteed?'Yes':'No'}</b></span>
       <span class="badge">Event-only: <b>${m.event_only?'Yes':'No'}</b></span>
+      ${m.is_form?`<span class="badge">Form of <b>${esc(m.base)}</b></span>`:''}
     </div>
+    ${m.forms&&m.forms.length?`<div class="pnote"><b>Alternate forms:</b> ${m.forms.map(esc).join(' &nbsp;·&nbsp; ')}</div>`:''}
     <div class="methods">${meth}</div>
     <div class="gorow"><b>Pokémon GO:</b> ${esc(m.go)||'Not in Pokémon GO.'}</div>
     <div class="pnote">${esc(m.notes)}</div>
@@ -461,8 +467,8 @@ function render(){
       <td class="center gotcol">${m.shiny_exists
         ? `<button class="starbtn" aria-pressed="${isCaught(m.name)}" data-name="${esc(m.name)}" aria-label="Mark ${esc(m.name)} caught shiny">${STAR_SVG}</button>`
         : '<span class="go-n" title="No shiny exists to catch">—</span>'}</td>
-      <td><span class="name">${esc(m.name)}<span class="gx">${m.gen}</span></span></td>
-      <td><span class="cattag">${m.category}</span></td>
+      <td><span class="name">${esc(m.name)}<span class="gx">${m.gen}</span></span>${m.forms&&m.forms.length&&!m.is_form?'<span class="formflag" title="Has alternate forms">forms</span>':''}</td>
+      <td><span class="cattag">${m.category}${m.is_form?` · form of ${esc(m.base)}`:''}</span></td>
       <td>${m.shiny_exists?'Yes':'<span class="go-n">No</span>'}</td>
       <td>${m.huntable_now?'<span class="pill A"><span class="dot" style="background:var(--a)"></span>Now</span>':
             (m.rng_hunt?'<span class="pill E">Historical</span>':'<span class="go-n">—</span>')}</td>

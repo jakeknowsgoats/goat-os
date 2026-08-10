@@ -830,6 +830,68 @@ add(name="Naganadel", gen="VII", category="Ultra Beast",
     notes="Ultra Beast. Shiny UNAVAILABLE (only from shiny-locked Poipole).")
 
 
+# ---------- REGIONAL FORMS (distinct shiny status -> own rows) ----------
+def go_dai(first):
+    return M("Pokémon GO", "Daily Adventure Incense wild spawn (RNG)", False, "~1/20 per encounter", "n/a",
+             "n/a (GO has no Shiny Charm)", True, "A",
+             f"Shiny since {first}; wild-ONLY via Daily Adventure Incense (never in raids). Boosted ~1/20 shiny rate, "
+             f"but DAI yields only ~1 bird encounter per day, so it is a slow grind")
+
+def galar_lock():
+    return M("Sword/Shield (Crown Tundra)", "Roaming static (Legendary Clue 1)", True, "n/a", "n/a", "n/a",
+             True, "C", "Galarian bird roamer is shiny-LOCKED in the main series")
+
+_GAL = [("Galarian Articuno", "Articuno", "Psychic/Flying"),
+        ("Galarian Zapdos", "Zapdos", "Fighting/Flying"),
+        ("Galarian Moltres", "Moltres", "Dark/Flying")]
+for nm, base, typ in _GAL:
+    add(name=nm, gen="VIII", category="Legendary", is_form=True, base=base,
+        shiny_exists=True, rng_hunt=True, huntable_now=True, event_only=False,
+        home_guaranteed=False, go_shiny=True, go_rng_hunt=True,
+        methods=[galar_lock(), go_dai("Oct 4 2024")],
+        go="Daily Adventure Incense wild (shiny since Oct 2024) — RNG, wild-only (not raids)",
+        notes=f"Galarian form of {base} ({typ}) — a distinct Pokémon introduced in Gen VIII, NOT the Kanto bird. "
+              f"Main-series Crown Tundra roamer is shiny-locked; the ONLY shiny route is Pokémon GO Daily "
+              f"Adventure Incense wild spawns.")
+
+# ---------- alternate FORMES (documented on the base species row, not split out) ----------
+FORMS = {
+    "Articuno": ["Galarian Articuno — see its own row (Gen VIII, GO-only shiny)"],
+    "Zapdos": ["Galarian Zapdos — see its own row (Gen VIII, GO-only shiny)"],
+    "Moltres": ["Galarian Moltres — see its own row (Gen VIII, GO-only shiny)"],
+    "Deoxys": ["Normal, Attack, Defense, Speed — all four shiny in GO raids (separate 2020–2022 dates); "
+               "main-series forme is set by in-game meteorites/version, all huntable"],
+    "Dialga": ["Origin Forme — shiny available (GO; main-series via Adamant Crystal in PLA, shiny-locked there)"],
+    "Palkia": ["Origin Forme — shiny available in GO (Lustrous Globe in PLA is shiny-locked)"],
+    "Giratina": ["Altered Forme & Origin Forme — both shiny in GO"],
+    "Shaymin": ["Land Forme — shiny (GO Masterwork, guaranteed). Sky Forme — shiny status unconfirmed"],
+    "Tornadus": ["Incarnate & Therian — both shiny in GO (Therian released 2022)"],
+    "Thundurus": ["Incarnate & Therian — both shiny in GO (Therian released 2022)"],
+    "Landorus": ["Incarnate & Therian — both shiny in GO (Therian released 2022)"],
+    "Kyurem": ["Black Kyurem & White Kyurem — fusion formes (with Zekrom/Reshiram); shiny via the base Kyurem"],
+    "Zacian": ["Hero of Many Battles & Crowned Sword — shiny carries across the form change"],
+    "Zamazenta": ["Hero of Many Battles & Crowned Shield — shiny carries across the form change"],
+    "Necrozma": ["Dusk Mane / Dawn Wings (fusions with Solgaleo/Lunala) & Ultra Necrozma — shiny via base Necrozma"],
+    "Calyrex": ["Ice Rider / Shadow Rider (fusions with Glastrier/Spectrier) — all shiny-unavailable"],
+    "Urshifu": ["Single Strike & Rapid Strike Style — both shiny-locked (from the locked Kubfu)"],
+    "Zygarde": ["10% / 50% / Complete Forme — all shiny-unavailable"],
+    "Hoopa": ["Confined & Unbound — both shiny-unavailable"],
+    "Meloetta": ["Aria & Pirouette — shiny is guaranteed (HOME/GO), applies to both"],
+    "Genesect": ["Normal/Shock/Burn/Chill/Douse Drives — shiny in GO raids; Drives are held-item variants (separate raid dates)"],
+    "Enamorus": ["Incarnate & Therian — both shiny-unavailable as of Aug 2026 (GO shiny not released)"],
+    "Keldeo": ["Ordinary & Resolute — shiny is guaranteed (HOME/GO Masterwork), applies to both"],
+    "Ogerpon": ["Teal / Wellspring / Hearthflame / Cornerstone Mask — all shiny-locked"],
+    "Terapagos": ["Normal / Terastal / Stellar Forme — shiny-locked"],
+    "Tornadus": ["Incarnate & Therian — both shiny in GO (Therian released 2022)"],
+}
+
+# normalize: every entry gets is_form / base / forms fields
+for _p in DATA:
+    _p.setdefault("is_form", False)
+    _p.setdefault("base", None)
+    _p.setdefault("forms", FORMS.get(_p["name"], []))
+
+
 # ============================================================================
 # Derived helpers & emission
 # ============================================================================
@@ -896,9 +958,10 @@ def method_col_value(p, col):
 
 
 def write_csv(path):
-    cols = ["Pokémon", "Gen", "Category", "Shiny Exists?", "RNG Shiny Hunt Possible?",
+    cols = ["Pokémon", "Gen", "Category", "Form Of", "Shiny Exists?", "RNG Shiny Hunt Possible?",
             "Currently Huntable?", "Bucket(A-E)", "Games / Platforms", "Hunting Methods", "Odds",
-            "Shiny Charm?", "Pokémon GO Method", "HOME Guaranteed Shiny?", "Event-Only Shiny?", "Notes"]
+            "Shiny Charm?", "Pokémon GO Method", "HOME Guaranteed Shiny?", "Event-Only Shiny?",
+            "Notable Forms", "Notes"]
     with open(path, "w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
         w.writerow(cols)
@@ -910,9 +973,10 @@ def write_csv(path):
                 f"{m['game']} {m['odds_base']}" + (f"->{m['odds_charm']}" if m['odds_charm'] not in ('n/a', '') else "")
                 for m in p["methods"] if m["odds_base"] not in ("n/a", ""))
             charm = "; ".join(dict.fromkeys(m["charm"] for m in p["methods"] if m["charm"] not in ("n/a", "")))
-            w.writerow([p["name"], p["gen"], p["category"], yn(p["shiny_exists"]), yn(p["rng_hunt"]),
+            w.writerow([p["name"], p["gen"], p["category"], p["base"] or "—", yn(p["shiny_exists"]), yn(p["rng_hunt"]),
                         status_now(p), bucket(p), ", ".join(games), methods, odds or "n/a",
-                        charm or "n/a", p["go"] or "—", yn(p["home_guaranteed"]), yn(p["event_only"]), p["notes"]])
+                        charm or "n/a", p["go"] or "—", yn(p["home_guaranteed"]), yn(p["event_only"]),
+                        " ; ".join(p["forms"]) or "—", p["notes"]])
     return cols
 
 
@@ -924,17 +988,18 @@ def write_xlsx(path):
     wb = Workbook()
     ws = wb.active
     ws.title = "Master"
-    base_cols = ["Pokémon", "Gen", "Category", "Shiny Exists?", "RNG Hunt Ever?", "Currently Huntable?",
+    base_cols = ["Pokémon", "Gen", "Category", "Form Of", "Shiny Exists?", "RNG Hunt Ever?", "Currently Huntable?",
                  "Bucket(A-E)", "Event-Only Shiny?", "HOME Guaranteed Shiny?", "GO Shiny?", "GO RNG-Huntable?"]
-    cols = base_cols + METHOD_COLS + ["GO Summary", "Notes"]
+    cols = base_cols + METHOD_COLS + ["GO Summary", "Notable Forms", "Notes"]
     ws.append(cols)
     for p in DATA:
-        row = [p["name"], p["gen"], p["category"], yn(p["shiny_exists"]), yn(p["rng_hunt"]),
+        row = [p["name"], p["gen"], p["category"], p["base"] or "—", yn(p["shiny_exists"]), yn(p["rng_hunt"]),
                status_now(p), bucket(p), yn(p["event_only"]), yn(p["home_guaranteed"]),
                yn(p["go_shiny"]), yn(p["go_rng_hunt"])]
         for col in METHOD_COLS:
             row.append(method_col_value(p, col))
         row.append(p["go"] or "—")
+        row.append(" ; ".join(p["forms"]) or "—")
         row.append(p["notes"])
         ws.append(row)
 
@@ -975,10 +1040,13 @@ def write_xlsx(path):
 
 
 def compute_summary():
-    core = [p for p in DATA if p["category"] in ("Legendary", "Mythical")]
+    # species counts exclude alternate-form rows (e.g. Galarian birds) so the
+    # canonical 71/23 species totals stay correct.
+    core = [p for p in DATA if p["category"] in ("Legendary", "Mythical") and not p["is_form"]]
     leg = [p for p in core if p["category"] == "Legendary"]
     myth = [p for p in core if p["category"] == "Mythical"]
-    ub = [p for p in DATA if p["category"] == "Ultra Beast"]
+    ub = [p for p in DATA if p["category"] == "Ultra Beast" and not p["is_form"]]
+    forms = [p for p in DATA if p["is_form"]]
     s = dict(
         total_legendary=len(leg),
         total_mythical=len(myth),
@@ -991,6 +1059,8 @@ def compute_summary():
         shiny_never=sum(1 for p in core if not p["shiny_exists"]),
         ub_total=len(ub),
         ub_huntable=sum(1 for p in ub if p["huntable_now"]),
+        forms_total=len(forms),
+        forms_huntable=sum(1 for p in forms if p["huntable_now"]),
     )
     # integrity check
     assert s["shiny_exists"] + s["shiny_never"] == s["total_combined"]
@@ -1059,6 +1129,7 @@ def write_report(path, s, core, leg, myth, ub):
     w(f"| …shiny exists **only via distribution / guaranteed reward** (never a hunt) | {s['event_or_reward_only']} |")
     w(f"| …shiny has **never** been legitimately obtainable | {s['shiny_never']} |")
     w(f"| *(Appendix)* Ultra Beasts total / currently huntable | {s['ub_total']} / {s['ub_huntable']} |")
+    w(f"| *(Appendix)* Distinct alternate-form rows (e.g. Galarian birds) / huntable | {s['forms_total']} / {s['forms_huntable']} |")
     w("\n*Integrity checks (asserted at build time): shiny-exists + shiny-never = total; "
       "RNG-hunt-ever = currently-huntable + historical-only.*\n")
 
@@ -1090,7 +1161,10 @@ def write_report(path, s, core, leg, myth, ub):
     # ---------------- PART 2 ----------------
     w("\n---\n\n# PART 2 — DETAILED ENTRY FOR EVERY POKÉMON\n")
     gen_order = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"]
-    for cat_label, group in [("Legendary & Mythical", core), ("Ultra Beasts (appendix — separate class)", ub)]:
+    form_rows_all = [p for p in DATA if p["is_form"]]
+    for cat_label, group in [("Legendary & Mythical", core),
+                             ("Ultra Beasts (appendix — separate class)", ub),
+                             ("Alternate forms (appendix — distinct shiny status)", form_rows_all)]:
         w(f"\n## {cat_label}\n")
         ordered = sorted(group, key=lambda p: (gen_order.index(p["gen"]), p["name"]))
         for p in ordered:
@@ -1102,6 +1176,10 @@ def write_report(path, s, core, leg, myth, ub):
             w(f"- **Bucket:** {bucket(p)}")
             w(f"- **HOME guaranteed-shiny reward:** {yn(p['home_guaranteed'])}  |  "
               f"**Event-only shiny:** {yn(p['event_only'])}")
+            if p["is_form"]:
+                w(f"- **Form of:** {p['base']} (distinct alternate form)")
+            if p["forms"]:
+                w(f"- **Alternate forms:** {'; '.join(p['forms'])}")
             w("\n**Hunting / shiny methods:**\n")
             for i, m in enumerate(p["methods"], 1):
                 lock = "**Shiny-LOCKED**" if m["shiny_locked"] else "Not shiny-locked"
@@ -1175,6 +1253,15 @@ def write_report(path, s, core, leg, myth, ub):
     now = [p for p in DATA if p["huntable_now"]]
     w(f"*({len(now)} species incl. Ultra Beasts; {sum(1 for p in core if p['huntable_now'])} core Legendary/Mythical)*  \n"
       + ", ".join(p["name"] for p in now) + "\n")
+
+    w("### 9b. Distinct alternate **forms** with their own shiny status (broken out as separate rows)")
+    form_rows = [p for p in DATA if p["is_form"]]
+    w(f"*({len(form_rows)} forms)*  \n"
+      + ", ".join(f"{p['name']} (form of {p['base']} — {status_now(p).split(' ')[0].lower()})" for p in form_rows)
+      + ".  \nOther legendaries with alternate formes that share their base species' shiny status "
+        "(documented in each entry, not split out): Deoxys, Dialga, Palkia, Giratina, Shaymin, "
+        "Tornadus, Thundurus, Landorus, Kyurem, Zacian, Zamazenta, Necrozma, Calyrex, Urshifu, "
+        "Zygarde, Hoopa, Meloetta, Genesect, Enamorus, Keldeo, Ogerpon, Terapagos.\n")
 
     w("### 10. Best games / platforms for hunting the most Legendary/Mythical shinies")
     plat = {
@@ -1317,13 +1404,35 @@ not be pinned to an exact date, it is flagged *(verify)* in the report notes.
         f.write(src)
 
 
+def write_json(path, s):
+    import json
+    mons = []
+    for p in DATA:
+        mons.append(dict(
+            name=p["name"], gen=p["gen"], category=p["category"],
+            is_form=p["is_form"], base=p["base"], forms=p["forms"],
+            shiny_exists=p["shiny_exists"], rng_hunt=p["rng_hunt"], huntable_now=p["huntable_now"],
+            event_only=p["event_only"], home_guaranteed=p["home_guaranteed"],
+            go_shiny=p["go_shiny"], go_rng_hunt=p["go_rng_hunt"],
+            bucket=bucket(p)[0], bucket_full=bucket(p), status=status_now(p),
+            in_da=in_da(p), in_uw=in_uw(p), in_bdsp=in_bdsp(p), in_swsh=in_swsh_static(p), in_za=in_za(p),
+            go=p["go"], notes=p["notes"],
+            methods=[dict(game=m["game"], encounter=m["encounter"], locked=m["shiny_locked"],
+                          base=m["odds_base"], charm=m["odds_charm"], charm_eff=m["charm"],
+                          accessible=m["accessible"], cat=m["cat"], note=m["note"]) for m in p["methods"]],
+        ))
+    json.dump(dict(access_date=ACCESS_DATE, summary=s, mons=mons),
+              open(path, "w", encoding="utf-8"), ensure_ascii=False)
+
+
 if __name__ == "__main__":
     write_csv(os.path.join(HERE, "legendary_mythical_shiny_master.csv"))
     write_xlsx(os.path.join(HERE, "legendary_mythical_shiny_master.xlsx"))
     s, core, leg, myth, ub = compute_summary()
     write_report(os.path.join(HERE, "legendary_mythical_shiny_report.md"), s, core, leg, myth, ub)
     write_sources(os.path.join(HERE, "sources.md"))
-    print(f"Total rows: {len(DATA)} (core {len(core)}, UB {len(ub)})")
+    write_json(os.path.join(HERE, "data.json"), s)
+    print(f"Total rows: {len(DATA)} (species core {len(core)}, UB {len(ub)}, forms {s['forms_total']})")
     for k, v in s.items():
         print(f"  {k}: {v}")
-    print("Wrote: CSV, XLSX, report.md, sources.md")
+    print("Wrote: CSV, XLSX, report.md, sources.md, data.json")
