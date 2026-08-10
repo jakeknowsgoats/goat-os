@@ -4,6 +4,7 @@
   --ink:#1b1a24; --muted:#5d5b6c; --faint:#8a8798; --line:#e3e0ec;
   --accent:#9c7414; --accent-2:#c79a3b; --accent-soft:#f4ead0;
   --a:#1f8a5b; --e:#a9741a; --b:#2f6fbf; --c:#6f57c7; --d:#7c7a88;
+  --home:#2f6fbf; --gogo:#d1472e;
   --shadow:0 1px 2px rgba(20,18,30,.06),0 8px 24px rgba(20,18,30,.06);
   --radius:14px;
 }
@@ -14,6 +15,7 @@
     --ink:#ecebf4; --muted:#9c99ac; --faint:#726f81; --line:#2e2b3b;
     --accent:#e6c368; --accent-2:#c9a34e; --accent-soft:#3a331f;
     --a:#4fd39f; --e:#e0b25a; --b:#5aa2e6; --c:#a892f0; --d:#9a97a8;
+    --home:#3f83d6; --gogo:#e3563b;
     --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.35);
   }
 }
@@ -22,6 +24,7 @@
   --ink:#ecebf4; --muted:#9c99ac; --faint:#726f81; --line:#2e2b3b;
   --accent:#e6c368; --accent-2:#c9a34e; --accent-soft:#3a331f;
   --a:#4fd39f; --e:#e0b25a; --b:#5aa2e6; --c:#a892f0; --d:#9a97a8;
+  --home:#3f83d6; --gogo:#e3563b;
   --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.35);
 }
 *{box-sizing:border-box}
@@ -164,16 +167,27 @@ footer a{color:var(--accent);}
   padding:7px 11px;font:inherit;font-size:12.5px;cursor:pointer;display:inline-flex;gap:6px;align-items:center;}
 .mini:hover{color:var(--ink);border-color:var(--accent);}
 .lswarn{font-size:11.5px;color:var(--e);flex-basis:100%;}
-/* caught star */
-th.gotcol,td.gotcol{width:46px;}
-.starbtn{border:0;background:none;cursor:pointer;padding:5px;line-height:0;border-radius:8px;color:var(--faint);}
-.starbtn:hover{color:var(--accent-2);background:var(--surface-2);}
-.starbtn[aria-pressed="true"]{color:var(--accent-2);}
-.starbtn[aria-pressed="true"] svg{fill:currentColor;}
-.starbtn svg{width:21px;height:21px;}
-tr.row.caught{background:color-mix(in srgb,var(--accent) 8%,transparent);}
-tr.row.caught:hover{background:color-mix(in srgb,var(--accent) 13%,transparent);}
-tr.row.caught .name{color:var(--accent);}
+/* ownership toggles (HOME / GO) */
+th.gotcol,td.gotcol{width:122px;}
+.apps{display:flex;gap:5px;justify-content:center;}
+.app{font-family:ui-monospace,Menlo,monospace;font-size:10px;font-weight:700;letter-spacing:.03em;
+  border:1px solid var(--line);background:var(--surface-2);color:var(--faint);border-radius:7px;
+  padding:5px 7px;cursor:pointer;line-height:1;transition:all .12s ease;}
+.app:hover{color:var(--ink);border-color:var(--accent);}
+.app.home[aria-pressed="true"]{background:var(--home);border-color:var(--home);color:#fff;}
+.app.go[aria-pressed="true"]{background:var(--gogo);border-color:var(--gogo);color:#fff;}
+.app:disabled{opacity:.25;cursor:not-allowed;}
+tr.row.owned{background:color-mix(in srgb,var(--accent) 8%,transparent);}
+tr.row.owned:hover{background:color-mix(in srgb,var(--accent) 13%,transparent);}
+tr.row.owned .name{color:var(--accent);}
+tr.row.both .name::after{content:"✦";color:var(--accent-2);margin-left:6px;font-size:11px;}
+.legdot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent-2);
+  margin-left:7px;vertical-align:1px;}
+.progress .brk{font-family:ui-monospace,Menlo,monospace;font-size:12px;color:var(--muted);
+  display:flex;gap:14px;flex-wrap:wrap;align-items:center;}
+.progress .brk b{color:var(--ink);}
+.progress .brk .h{color:var(--home);} .progress .brk .g{color:var(--gogo);}
+.progress .brk .swatch{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:5px;vertical-align:0;}
 @media (max-width:560px){
   .kpi .n{font-size:24px;} .wrap{padding:18px 12px 60px;}
   .name .gx{display:none;}
@@ -198,9 +212,14 @@ tr.row.caught .name{color:var(--accent);}
   <section class="kpis" id="kpis"></section>
 
   <section class="progress">
-    <div class="phead">Your shiny collection&nbsp; <b><span id="pcount">0</span> / <span id="ptotal">0</span></b> caught</div>
+    <div class="phead">Your shiny collection&nbsp; <b><span id="pcount">0</span> / <span id="ptotal">0</span></b> owned</div>
     <div class="bar"><div class="fill" id="pfill"></div></div>
     <div class="pct" id="ppct">0%</div>
+    <div class="brk">
+      <span class="h"><span class="swatch" style="background:var(--home)"></span>HOME <b id="nhome">0</b></span>
+      <span class="g"><span class="swatch" style="background:var(--gogo)"></span>GO <b id="ngo">0</b></span>
+      <span><span class="swatch" style="background:var(--accent-2)"></span>Both <b id="nboth">0</b></span>
+    </div>
     <div class="exportbtns">
       <button class="mini" id="exportbtn" title="Download a backup of your caught list">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12M8 11l4 4 4-4M4 21h16"/></svg>Export</button>
@@ -230,7 +249,7 @@ tr.row.caught .name{color:var(--accent);}
   <div class="tablewrap">
     <table>
       <thead><tr>
-        <th class="center gotcol" title="Mark the ones you've caught shiny">Got</th>
+        <th class="center gotcol" title="Mark where you have this shiny stored">In HOME / GO</th>
         <th>Pokémon</th><th>Category</th><th>Shiny</th><th>Status</th>
         <th>Bucket</th><th>Pokémon GO</th><th>Methods</th><th class="center"></th>
       </tr></thead>
@@ -247,9 +266,10 @@ tr.row.caught .name{color:var(--accent);}
     Counts are computed from the dataset. Ultra Beasts are shown as a separate class and excluded from the
     Legendary/Mythical totals. Sources &amp; verification caveats live in <span class="mono">sources.md</span>.
     Post-Jan-2026 Pokémon GO specifics verified by web search where possible; a few exact dates are approximate.
-    <br><br><b>Your caught picks</b> (the ★ column) are saved locally in this browser on this device — reopening in
-    Safari keeps them. They don't sync across devices; use <b>Export</b> to save a backup file and <b>Import</b> to
-    restore it here or on another device.
+    <br><br><b>Your collection</b> — tap <b>HOME</b> and/or <b>GO</b> on any row to record where you have that shiny
+    (light up both for a "both" ✦). It's saved locally in this browser on this device, so reopening in Safari keeps it;
+    it doesn't sync across devices — use <b>Export</b> to save a backup file and <b>Import</b> to restore it here or on
+    another device. The GO toggle is disabled for shinies not available in Pokémon GO.
   </footer>
 </div>
 
@@ -274,24 +294,46 @@ tbtn.onclick = () => setTheme(curTheme()==='dark'?'light':'dark');
 /* ---- state ---- */
 const state = { q:'', sort:'dex', cat:new Set(), bucket:new Set(), method:new Set(), gen:new Set(), flag:new Set() };
 
-/* ---- caught tracker (persisted per-device via localStorage) ---- */
+/* ---- ownership tracker: where you have each shiny (HOME / GO), per-device ---- */
 const SHINY_TOTAL = MONS.filter(m=>m.shiny_exists).length;
-const LS_KEY='shinydex.caught.v1';
-let caught={}, lsOK=true;
-try{ caught = JSON.parse(localStorage.getItem(LS_KEY)||'{}') || {}; }catch(e){ caught={}; }
+const LS_KEY='shinydex.store.v2';
+const LS_OLD='shinydex.caught.v1';
+let store={}, lsOK=true;   // store[name] = {home:bool, go:bool, legacy:bool}
+try{ store = JSON.parse(localStorage.getItem(LS_KEY)||'{}') || {}; }catch(e){ store={}; }
+// one-time migration from the old single-"caught" model -> legacy-owned (app unspecified)
+try{
+  const old = JSON.parse(localStorage.getItem(LS_OLD)||'null');
+  if(old && typeof old==='object'){
+    Object.keys(old).forEach(n=>{ if(!store[n]) store[n]={home:false,go:false,legacy:true}; });
+    localStorage.removeItem(LS_OLD);
+  }
+}catch(e){}
 try{ localStorage.setItem('__t','1'); localStorage.removeItem('__t'); }catch(e){ lsOK=false; }
-function saveCaught(){ try{ localStorage.setItem(LS_KEY, JSON.stringify(caught)); }catch(e){} }
-const isCaught = n => !!caught[n];
-const caughtCount = () => MONS.filter(m=>m.shiny_exists && caught[m.name]).length;
-function setCaught(n,v){ if(v) caught[n]=1; else delete caught[n]; saveCaught(); updateProgress(); }
+function saveStore(){ try{ localStorage.setItem(LS_KEY, JSON.stringify(store)); }catch(e){} }
+const rec = n => store[n] || null;
+const hasApp = (n,app) => !!(store[n] && store[n][app]);
+const isOwned = n => { const r=store[n]; return !!(r && (r.home||r.go||r.legacy)); };
+const isBoth = n => { const r=store[n]; return !!(r && r.home && r.go); };
+function toggleApp(n,app){
+  const r = store[n] || (store[n]={home:false,go:false});
+  r[app] = !r[app];
+  if(r.legacy) r.legacy=false;               // once a real app is set, drop the legacy marker
+  if(!r.home && !r.go && !r.legacy) delete store[n];
+  saveStore(); updateProgress();
+}
+const ownedCount = () => MONS.filter(m=>m.shiny_exists && isOwned(m.name)).length;
+const appCount = app => MONS.filter(m=>m.shiny_exists && hasApp(m.name,app)).length;
+const bothCount = () => MONS.filter(m=>m.shiny_exists && isBoth(m.name)).length;
 function updateProgress(){
-  const c=caughtCount(), pct= SHINY_TOTAL ? Math.round(c/SHINY_TOTAL*100):0;
+  const c=ownedCount(), pct= SHINY_TOTAL ? Math.round(c/SHINY_TOTAL*100):0;
   document.getElementById('pcount').textContent=c;
   document.getElementById('ptotal').textContent=SHINY_TOTAL;
   document.getElementById('pfill').style.width=pct+'%';
   document.getElementById('ppct').textContent=pct+'%';
+  document.getElementById('nhome').textContent=appCount('home');
+  document.getElementById('ngo').textContent=appCount('go');
+  document.getElementById('nboth').textContent=bothCount();
 }
-const STAR_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M12 2.6l2.9 6 6.5.9-4.7 4.6 1.1 6.5L12 18.9 6.2 21.6l1.1-6.5L2.6 9.5l6.5-.9z"/></svg>';
 
 /* ---- KPI tiles (clickable) ---- */
 const KPIS = [
@@ -320,7 +362,8 @@ const CHIPS = [
   {sep:1},
   {g:'Quick', items:[['flag','huntable','Huntable now'],['flag','go','GO shiny'],['flag','gorng','RNG in GO'],
     ['flag','home','HOME guaranteed'],['flag','eventonly','Event-only'],
-    ['flag','caught','★ Caught'],['flag','notcaught','Still to hunt'],['flag','form','Alt forms']]},
+    ['flag','inhome','In HOME'],['flag','ingo','In GO'],['flag','both','In both'],
+    ['flag','owned','Owned (any)'],['flag','need','Not in either app'],['flag','form','Alt forms']]},
   {sep:1},
   {g:'Method', items:[['method','da','Dynamax Adv.'],['method','uw','Ultra Wormhole'],['method','bdsp','Ramanas Park'],
     ['method','swsh','SwSh static'],['method','za','Z-A Hyperspace'],['method','gorng','GO raid/box']]},
@@ -366,8 +409,11 @@ function flagOK(m){
     if(f==='gorng' && !m.go_rng_hunt) return false;
     if(f==='home' && !m.home_guaranteed) return false;
     if(f==='eventonly' && !m.event_only) return false;
-    if(f==='caught' && !isCaught(m.name)) return false;
-    if(f==='notcaught' && (isCaught(m.name) || !m.shiny_exists)) return false;
+    if(f==='inhome' && !hasApp(m.name,'home')) return false;
+    if(f==='ingo' && !hasApp(m.name,'go')) return false;
+    if(f==='both' && !isBoth(m.name)) return false;
+    if(f==='owned' && !isOwned(m.name)) return false;
+    if(f==='need' && (isOwned(m.name) || !m.shiny_exists)) return false;
     if(f==='form' && !m.is_form) return false;
   }
   return true;
@@ -453,12 +499,14 @@ function render(){
   document.getElementById('empty').hidden = rows.length>0;
   const frag=document.createDocumentFragment();
   rows.forEach(m=>{
-    const tr=document.createElement('tr'); tr.className='row'+(isCaught(m.name)?' caught':''); tr.tabIndex=0;
+    const tr=document.createElement('tr'); tr.className='row'+(isOwned(m.name)?' owned':'')+(isBoth(m.name)?' both':''); tr.tabIndex=0;
+    const legacy = rec(m.name) && rec(m.name).legacy;
     tr.innerHTML = `
-      <td class="center gotcol">${m.shiny_exists
-        ? `<button class="starbtn" aria-pressed="${isCaught(m.name)}" data-name="${esc(m.name)}" aria-label="Mark ${esc(m.name)} caught shiny">${STAR_SVG}</button>`
-        : '<span class="go-n" title="No shiny exists to catch">—</span>'}</td>
-      <td><span class="name">${esc(m.name)}<span class="gx">${m.gen}</span></span>${m.forms&&m.forms.length&&!m.is_form?'<span class="formflag" title="Has alternate forms">forms</span>':''}</td>
+      <td class="center gotcol">${m.shiny_exists ? `<div class="apps">
+        <button class="app home" data-name="${esc(m.name)}" data-app="home" aria-pressed="${hasApp(m.name,'home')}" aria-label="${esc(m.name)} in Pokémon HOME">HOME</button>
+        <button class="app go" data-name="${esc(m.name)}" data-app="go" aria-pressed="${hasApp(m.name,'go')}" ${m.go_shiny?'':'disabled title="Shiny not available in Pokémon GO"'} aria-label="${esc(m.name)} in Pokémon GO">GO</button>
+      </div>` : '<span class="go-n" title="No shiny exists to store">—</span>'}</td>
+      <td><span class="name">${esc(m.name)}<span class="gx">${m.gen}</span></span>${legacy?'<span class="legdot" title="Marked owned earlier — set HOME or GO"></span>':''}${m.forms&&m.forms.length&&!m.is_form?'<span class="formflag" title="Has alternate forms">forms</span>':''}</td>
       <td><span class="cattag">${m.category}${m.is_form?` · form of ${esc(m.base)}`:''}</span></td>
       <td>${m.shiny_exists?'Yes':'<span class="go-n">No</span>'}</td>
       <td>${m.huntable_now?'<span class="pill A"><span class="dot" style="background:var(--a)"></span>Now</span>':
@@ -472,13 +520,16 @@ function render(){
     const openIt=()=>{ const now=dtr.hidden; if(now){ dtd.innerHTML=detailHTML(m); }
       dtr.hidden=!now; tr.querySelector('.exp').textContent = now?'▾':'▸'; };
     tr.onclick=openIt; tr.onkeydown=e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault();openIt();} };
-    const star=tr.querySelector('.starbtn');
-    if(star){
-      star.onclick=(e)=>{ e.stopPropagation(); const n=star.dataset.name, nv=!isCaught(n);
-        setCaught(n,nv); star.setAttribute('aria-pressed',nv); tr.classList.toggle('caught',nv);
-        if(state.flag.has('caught')||state.flag.has('notcaught')) render(); };
-      star.onkeydown=e=>{ if(e.key==='Enter'||e.key===' ') e.stopPropagation(); };
-    }
+    tr.querySelectorAll('.app').forEach(btn=>{
+      btn.onclick=(e)=>{ e.stopPropagation(); if(btn.disabled) return;
+        const n=btn.dataset.name, app=btn.dataset.app;
+        toggleApp(n,app); btn.setAttribute('aria-pressed', hasApp(n,app));
+        tr.classList.toggle('owned', isOwned(n)); tr.classList.toggle('both', isBoth(n));
+        const ld=tr.querySelector('.legdot'); if(ld) ld.remove();
+        if(['inhome','ingo','both','owned','need'].some(k=>state.flag.has(k))) render();
+      };
+      btn.onkeydown=e=>{ if(e.key==='Enter'||e.key===' ') e.stopPropagation(); };
+    });
     frag.appendChild(tr); frag.appendChild(dtr);
   });
   tb.appendChild(frag);
@@ -495,17 +546,19 @@ document.getElementById('legend').innerHTML = LEG.map(([c,t,d])=>
 
 /* ---- export / import backup ---- */
 document.getElementById('exportbtn').onclick = async () => {
-  const payload = {app:'legendary-mythical-shiny-hunt', version:1,
-    exported:new Date().toISOString(), total:SHINY_TOTAL, count:caughtCount(),
-    caught:MONS.filter(m=>caught[m.name]).map(m=>m.name)};
+  const items={};
+  MONS.forEach(m=>{ const r=store[m.name]; if(r && (r.home||r.go||r.legacy))
+    items[m.name]={home:!!r.home, go:!!r.go}; });
+  const payload = {app:'legendary-mythical-shiny-hunt', version:2,
+    exported:new Date().toISOString(), total:SHINY_TOTAL, owned:ownedCount(), items};
   const data = JSON.stringify(payload, null, 2);
   if(window.claude && window.claude.downloads){
-    try{ await window.claude.downloads.save({filename:'shiny-caught-progress.json', data}); }
+    try{ await window.claude.downloads.save({filename:'shiny-collection.json', data}); }
     catch(err){ if(err && err.code!=='declined')
       alert('Could not export here — but your picks are still saved in this browser.'); }
   } else {
     try{ const url=URL.createObjectURL(new Blob([data],{type:'application/json'}));
-      const a=document.createElement('a'); a.href=url; a.download='shiny-caught-progress.json'; a.click();
+      const a=document.createElement('a'); a.href=url; a.download='shiny-collection.json'; a.click();
       URL.revokeObjectURL(url);
     }catch(e){ alert('Export is not supported in this view.'); }
   }
@@ -513,12 +566,17 @@ document.getElementById('exportbtn').onclick = async () => {
 document.getElementById('importfile').onchange = (e) => {
   const f=e.target.files[0]; if(!f) return;
   const r=new FileReader();
-  r.onload=()=>{ try{ const o=JSON.parse(r.result); const list=Array.isArray(o)?o:(o.caught||[]);
-      const known=new Set(MONS.map(m=>m.name)); let n=0;
-      list.forEach(name=>{ if(known.has(name)){ caught[name]=1; n++; } });
-      saveCaught(); updateProgress(); render();
-      alert('Imported '+n+' caught Pokémon.');
-    }catch(err){ alert('That file could not be read as a caught-list backup.'); } };
+  r.onload=()=>{ try{ const o=JSON.parse(r.result); const known=new Set(MONS.map(m=>m.name)); let n=0;
+      if(o && o.items && typeof o.items==='object'){                 // v2 format
+        Object.entries(o.items).forEach(([name,v])=>{ if(!known.has(name)) return;
+          store[name]={home:!!v.home, go:!!v.go}; if(!v.home&&!v.go) store[name].legacy=true; n++; });
+      } else {                                                        // v1 (list or {caught:[]})
+        const list=Array.isArray(o)?o:(o.caught||[]);
+        list.forEach(name=>{ if(known.has(name)){ store[name]=store[name]||{home:false,go:false,legacy:true}; n++; } });
+      }
+      saveStore(); updateProgress(); render();
+      alert('Imported '+n+' Pokémon from the backup.');
+    }catch(err){ alert('That file could not be read as a collection backup.'); } };
   r.readAsText(f); e.target.value='';
 };
 
