@@ -323,11 +323,12 @@ tr.row.both .name::after{content:"✦";color:var(--accent-2);margin-left:6px;fon
     Legendary/Mythical totals. Sources &amp; verification caveats live in <span class="mono">sources.md</span>.
     Post-Jan-2026 Pokémon GO specifics verified by web search where possible; a few exact dates are approximate.
     <br><br><b>Your collection</b> — on each row, tap the channels you own it through:
-    <b>OT</b> = a Home shiny you caught yourself · <b>RWD</b> = a Home Pokédex-completion reward ·
-    <b>EVT</b> = a Home event/distribution shiny · <b>GO</b> = a shiny in Pokémon GO. Only the channels that
-    are actually possible for a species are shown (e.g. a HOME-reward-only Mythical shows just RWD). It's saved
-    locally in this browser on this device, so reopening in Safari keeps it; it doesn't sync across devices —
-    use <b>Export</b> to back it up and <b>Import</b> to restore it here or on another device.
+    <b>OT</b> = a Home shiny you obtained yourself (a main-series catch <i>or</i> one transferred from GO, where
+    you're the OT) · <b>RWD</b> = a Home Pokédex-completion reward · <b>EVT</b> = a Home event/distribution shiny ·
+    <b>GO</b> = a shiny in Pokémon GO. Every channel a species is actually eligible for is shown, and only those
+    (e.g. a HOME-reward-only Mythical shows just RWD; a GO-obtainable one shows OT + GO since it can move to HOME).
+    It's saved locally in this browser on this device, so reopening in Safari keeps it; it doesn't sync across
+    devices — use <b>Export</b> to back it up and <b>Import</b> to restore it here or on another device.
   </footer>
 </div>
 
@@ -359,9 +360,14 @@ const state = { q:'', sort:'dex', cat:new Set(), bucket:new Set(), method:new Se
 const CH = ['ot','rwd','evt','go'];
 const CH_LABEL = {ot:'Home OT', rwd:'Home Reward', evt:'Home Event', go:'Pokémon GO'};
 const srcOf = m => ({ot:m.src_home_ot, rwd:m.src_home_reward, evt:m.src_home_event, go:m.src_go});
-// A Home Event copy is redundant when you can self-catch it (OT) — both just sit in HOME —
-// so only offer the Event channel when OT is NOT available.
-const canHave = (m,ch) => { const s=srcOf(m); if(ch==='evt' && s.ot) return false; return !!s[ch]; };
+// Show every channel a species is actually eligible for. A shiny caught in GO can be
+// transferred GO -> HOME (where you're the OT), so a GO shiny also makes the OT channel eligible.
+const canHave = (m,ch) => { const s=srcOf(m);
+  // OT copy in HOME: a main-series catch, OR transferred from GO — but a GO-only held-item form
+  // (Origin Dialga/Palkia) reverts to base forme on transfer, so it can't be a HOME shiny.
+  if(ch==='ot') return !!(s.ot || (s.go && !m.go_form_only));
+  return !!s[ch];
+};
 const effChannels = m => CH.filter(ch=>canHave(m,ch));
 const SHINY_TOTAL = MONS.filter(m=>m.shiny_exists).length;
 const LS_KEY='shinydex.store.v3';

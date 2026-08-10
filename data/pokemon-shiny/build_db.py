@@ -916,7 +916,7 @@ add(name="Giratina (Origin Forme)", gen="IV", category="Legendary", is_form=True
     notes="Separate shiny raid boss in GO; in the main series it's a Griseous Orb/Core form-change of your Giratina.")
 add(name="Dialga (Origin Forme)", gen="IV", category="Legendary", is_form=True, base="Dialga",
     shiny_exists=True, rng_hunt=True, huntable_now=True, event_only=False,
-    home_guaranteed=False, go_shiny=True, go_rng_hunt=True,
+    home_guaranteed=False, go_shiny=True, go_rng_hunt=True, go_form_only=True,
     methods=[go_raid_form("~2023", "Origin Forme"),
              M("Legends: Arceus (Adamant Crystal)", "Origin form-change", True, "n/a", "n/a", "n/a", True, "C",
                "The Adamant Crystal is PLA-exclusive and the PLA Dialga is shiny-locked, so a shiny Origin Dialga "
@@ -926,7 +926,7 @@ add(name="Dialga (Origin Forme)", gen="IV", category="Legendary", is_form=True, 
           "is PLA-exclusive and the PLA Dialga is shiny-locked, so it can't be paired with a huntable shiny.")
 add(name="Palkia (Origin Forme)", gen="IV", category="Legendary", is_form=True, base="Palkia",
     shiny_exists=True, rng_hunt=True, huntable_now=True, event_only=False,
-    home_guaranteed=False, go_shiny=True, go_rng_hunt=True,
+    home_guaranteed=False, go_shiny=True, go_rng_hunt=True, go_form_only=True,
     methods=[go_raid_form("~2023", "Origin Forme"),
              M("Legends: Arceus (Lustrous Globe)", "Origin form-change", True, "n/a", "n/a", "n/a", True, "C",
                "The Lustrous Globe is PLA-exclusive and the PLA Palkia is shiny-locked, so a shiny Origin Palkia "
@@ -1008,6 +1008,7 @@ _WARN = []
 for _p in DATA:
     _p.setdefault("is_form", False)
     _p.setdefault("base", None)
+    _p.setdefault("go_form_only", False)   # form exists only in GO; reverts on GO->HOME transfer (no HOME channel)
     _p.setdefault("forms", FORMS.get(_p["name"], []))
     _p["home_event"] = _p.get("home_event", False) or (_p["name"] in HOME_EVENT_SHINY)
     # four obtainment channels (for the collection tracker)
@@ -1557,7 +1558,7 @@ def write_json(path, s):
     for p in DATA:
         mons.append(dict(
             name=p["name"], gen=p["gen"], category=p["category"],
-            is_form=p["is_form"], base=p["base"], forms=p["forms"],
+            is_form=p["is_form"], base=p["base"], forms=p["forms"], go_form_only=p["go_form_only"],
             shiny_exists=p["shiny_exists"], rng_hunt=p["rng_hunt"], huntable_now=p["huntable_now"],
             event_only=p["event_only"], home_guaranteed=p["home_guaranteed"],
             go_shiny=p["go_shiny"], go_rng_hunt=p["go_rng_hunt"],
