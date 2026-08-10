@@ -918,16 +918,22 @@ add(name="Dialga (Origin Forme)", gen="IV", category="Legendary", is_form=True, 
     shiny_exists=True, rng_hunt=True, huntable_now=True, event_only=False,
     home_guaranteed=False, go_shiny=True, go_rng_hunt=True,
     methods=[go_raid_form("~2023", "Origin Forme"),
-             form_change("Legends: Arceus (Adamant Crystal)", "Adamant Crystal", "huntable via DA/USUM/Ramanas Park then transferred")],
+             M("Legends: Arceus (Adamant Crystal)", "Origin form-change", True, "n/a", "n/a", "n/a", True, "C",
+               "The Adamant Crystal is PLA-exclusive and the PLA Dialga is shiny-locked, so a shiny Origin Dialga "
+               "cannot be self-caught in the main series")],
     go="Origin Forme raids — RNG; ~1/20",
-    notes="Separate shiny raid boss in GO; main-series Origin form via the Adamant Crystal.")
+    notes="GO-ONLY shiny. Unlike Giratina, a shiny Origin Dialga can only come from Pokémon GO: the Adamant Crystal "
+          "is PLA-exclusive and the PLA Dialga is shiny-locked, so it can't be paired with a huntable shiny.")
 add(name="Palkia (Origin Forme)", gen="IV", category="Legendary", is_form=True, base="Palkia",
     shiny_exists=True, rng_hunt=True, huntable_now=True, event_only=False,
     home_guaranteed=False, go_shiny=True, go_rng_hunt=True,
     methods=[go_raid_form("~2023", "Origin Forme"),
-             form_change("Legends: Arceus (Lustrous Globe)", "Lustrous Globe", "huntable via DA/USUM/Ramanas Park then transferred")],
+             M("Legends: Arceus (Lustrous Globe)", "Origin form-change", True, "n/a", "n/a", "n/a", True, "C",
+               "The Lustrous Globe is PLA-exclusive and the PLA Palkia is shiny-locked, so a shiny Origin Palkia "
+               "cannot be self-caught in the main series")],
     go="Origin Forme raids — RNG; ~1/20",
-    notes="Separate shiny raid boss in GO; main-series Origin form via the Lustrous Globe.")
+    notes="GO-ONLY shiny. Unlike Giratina, a shiny Origin Palkia can only come from Pokémon GO: the Lustrous Globe "
+          "is PLA-exclusive and the PLA Palkia is shiny-locked, so it can't be paired with a huntable shiny.")
 
 # Therian Formes (separate shiny raids in GO, 2022)
 for nm, base, first in [("Tornadus (Therian Forme)", "Tornadus", "Mar 15 2022"),

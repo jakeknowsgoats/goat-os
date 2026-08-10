@@ -4254,16 +4254,16 @@ Bucket key: **A** = true hunt available now · **E** = hunt historical only · *
     - Currently accessible: Yes
     - Type: A (true RNG hunt)
     - Note: Shiny Origin Forme since ~2023; a separate raid encounter/shiny from the base forme
-2. **Legends: Arceus (Adamant Crystal)** — Form change (Adamant Crystal)
-    - Shiny locked: Not shiny-locked
-    - Shiny Charm: Same shiny as the base — huntable via DA/USUM/Ramanas Park then transferred
+2. **Legends: Arceus (Adamant Crystal)** — Origin form-change
+    - Shiny locked: **Shiny-LOCKED**
+    - Shiny Charm: n/a
     - Currently accessible: Yes
-    - Type: A (true RNG hunt)
-    - Note: Not a separate main-series hunt: the form-change item just re-shapes your (huntable) base Pokémon
+    - Type: C (event distribution)
+    - Note: The Adamant Crystal is PLA-exclusive and the PLA Dialga is shiny-locked, so a shiny Origin Dialga cannot be self-caught in the main series
 
 **Pokémon GO:** Origin Forme raids — RNG; ~1/20
 
-**Notes:** Separate shiny raid boss in GO; main-series Origin form via the Adamant Crystal.
+**Notes:** GO-ONLY shiny. Unlike Giratina, a shiny Origin Dialga can only come from Pokémon GO: the Adamant Crystal is PLA-exclusive and the PLA Dialga is shiny-locked, so it can't be paired with a huntable shiny.
 
 ### Giratina (Origin Forme)
 
@@ -4314,16 +4314,16 @@ Bucket key: **A** = true hunt available now · **E** = hunt historical only · *
     - Currently accessible: Yes
     - Type: A (true RNG hunt)
     - Note: Shiny Origin Forme since ~2023; a separate raid encounter/shiny from the base forme
-2. **Legends: Arceus (Lustrous Globe)** — Form change (Lustrous Globe)
-    - Shiny locked: Not shiny-locked
-    - Shiny Charm: Same shiny as the base — huntable via DA/USUM/Ramanas Park then transferred
+2. **Legends: Arceus (Lustrous Globe)** — Origin form-change
+    - Shiny locked: **Shiny-LOCKED**
+    - Shiny Charm: n/a
     - Currently accessible: Yes
-    - Type: A (true RNG hunt)
-    - Note: Not a separate main-series hunt: the form-change item just re-shapes your (huntable) base Pokémon
+    - Type: C (event distribution)
+    - Note: The Lustrous Globe is PLA-exclusive and the PLA Palkia is shiny-locked, so a shiny Origin Palkia cannot be self-caught in the main series
 
 **Pokémon GO:** Origin Forme raids — RNG; ~1/20
 
-**Notes:** Separate shiny raid boss in GO; main-series Origin form via the Lustrous Globe.
+**Notes:** GO-ONLY shiny. Unlike Giratina, a shiny Origin Palkia can only come from Pokémon GO: the Lustrous Globe is PLA-exclusive and the PLA Palkia is shiny-locked, so it can't be paired with a huntable shiny.
 
 ### Landorus (Therian Forme)
 
