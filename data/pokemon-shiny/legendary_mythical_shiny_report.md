@@ -18,14 +18,14 @@
 | Total **Legendary** Pokémon | 71 |
 | Total **Mythical** Pokémon | 23 |
 | **Total combined** (Legendary + Mythical) | 94 |
-| …with a legitimately obtainable **shiny form** | 65 |
-| …with at least one **true RNG shiny hunt** (ever) | 58 |
-| …**currently** shiny-huntable (as of Aug 2026) | 54 |
+| …with a legitimately obtainable **shiny form** | 66 |
+| …with at least one **true RNG shiny hunt** (ever) | 59 |
+| …**currently** shiny-huntable (as of Aug 2026) | 55 |
 | …historically huntable but **no longer normally accessible** | 4 |
 | …shiny exists **only via distribution / guaranteed reward** (never a hunt) | 7 |
-| …shiny has **never** been legitimately obtainable | 29 |
+| …shiny has **never** been legitimately obtainable | 28 |
 | *(Appendix)* Ultra Beasts total / currently huntable | 11 / 9 |
-| *(Appendix)* Distinct alternate-form rows (e.g. Galarian birds) / huntable | 3 / 3 |
+| *(Appendix)* Distinct alternate-form rows (e.g. Galarian birds) / huntable | 12 / 12 |
 
 *Integrity checks (asserted at build time): shiny-exists + shiny-never = total; RNG-hunt-ever = currently-huntable + historical-only.*
 
@@ -71,7 +71,7 @@ Bucket key: **A** = true hunt available now · **E** = hunt historical only · *
 | Manaphy | IV | Mythical | Yes | Yes | No (historical only) | E | No | No | No | legacy |
 | Darkrai | IV | Mythical | Yes | Yes | Yes | A | Yes (RNG) | No | No | GO-raid/box, legacy |
 | Shaymin | IV | Mythical | Yes | Yes | No (historical only) | E | Yes (guar.) | No | No | legacy |
-| Arceus | IV | Mythical | No | No | No | D | No | No | No | — |
+| Arceus | IV | Mythical | Yes | Yes | Yes | A | No | No | No | BDSP |
 | Victini | V | Mythical | No | No | No | D | No | No | No | — |
 | Cobalion | V | Legendary | Yes | Yes | Yes | A | Yes (RNG) | No | No | DA, USUM, Z-A, GO-raid/box, legacy |
 | Terrakion | V | Legendary | Yes | Yes | Yes | A | Yes (RNG) | No | No | DA, USUM, Z-A, GO-raid/box, legacy |
@@ -145,6 +145,15 @@ Bucket key: **A** = true hunt available now · **E** = hunt historical only · *
 | Galarian Articuno | VIII | Legendary | Yes | Yes | Yes | A | Yes (RNG) | No | No | GO-raid/box |
 | Galarian Zapdos | VIII | Legendary | Yes | Yes | Yes | A | Yes (RNG) | No | No | GO-raid/box |
 | Galarian Moltres | VIII | Legendary | Yes | Yes | Yes | A | Yes (RNG) | No | No | GO-raid/box |
+| Deoxys (Attack Forme) | III | Mythical | Yes | Yes | Yes | A | Yes (RNG) | No | No | GO-raid/box, legacy |
+| Deoxys (Defense Forme) | III | Mythical | Yes | Yes | Yes | A | Yes (RNG) | No | No | GO-raid/box, legacy |
+| Deoxys (Speed Forme) | III | Mythical | Yes | Yes | Yes | A | Yes (RNG) | No | No | GO-raid/box, legacy |
+| Giratina (Origin Forme) | IV | Legendary | Yes | Yes | Yes | A | Yes (RNG) | No | No | GO-raid/box |
+| Dialga (Origin Forme) | IV | Legendary | Yes | Yes | Yes | A | Yes (RNG) | No | No | GO-raid/box |
+| Palkia (Origin Forme) | IV | Legendary | Yes | Yes | Yes | A | Yes (RNG) | No | No | GO-raid/box |
+| Tornadus (Therian Forme) | V | Legendary | Yes | Yes | Yes | A | Yes (RNG) | No | No | GO-raid/box |
+| Thundurus (Therian Forme) | V | Legendary | Yes | Yes | Yes | A | Yes (RNG) | No | No | GO-raid/box |
+| Landorus (Therian Forme) | V | Legendary | Yes | Yes | Yes | A | Yes (RNG) | No | No | GO-raid/box |
 
 ---
 
@@ -700,7 +709,7 @@ Bucket key: **A** = true hunt available now · **E** = hunt historical only · *
 - **Currently shiny-huntable (RNG):** Yes
 - **Bucket:** A (true hunt, current)
 - **HOME guaranteed-shiny reward:** No  |  **Event-only shiny:** No
-- **Alternate forms:** Normal, Attack, Defense, Speed — all four shiny in GO raids (separate 2020–2022 dates); main-series forme is set by in-game meteorites/version, all huntable
+- **Alternate forms:** This row is the Normal Forme. Attack / Defense / Speed Formes each have their OWN row (each a separate GO shiny with its own release date)
 
 **Hunting / shiny methods:**
 
@@ -1232,23 +1241,36 @@ Bucket key: **A** = true hunt available now · **E** = hunt historical only · *
 
 - **Classification:** Mythical
 - **Generation:** IV
-- **Shiny exists:** No
-- **Currently shiny-huntable (RNG):** No
-- **Bucket:** D (shiny unavailable)
+- **Shiny exists:** Yes
+- **Currently shiny-huntable (RNG):** Yes
+- **Bucket:** A (true hunt, current)
 - **HOME guaranteed-shiny reward:** No  |  **Event-only shiny:** No
 
 **Hunting / shiny methods:**
 
-1. **Legends: Arceus / events** — Story static / distribution
+1. **Brilliant Diamond/Shining Pearl** — Hall of Origin static (soft-reset)
+    - Shiny locked: Not shiny-locked
+    - Odds (base): 1/4096  |  with Shiny Charm: 1/4096
+    - Shiny Charm: No effect (BDSP Charm boosts Masuda eggs only)
+    - Currently accessible: Yes
+    - Type: A (true RNG hunt)
+    - Note: NOT shiny-locked -> genuine soft-reset hunt. Requires the Azure Flute: have Legends: Arceus save data with all missions done + BDSP updated to v1.3.0 + be in the Hall of Fame; flute appears in Twinleaf Town, played at Spear Pillar after catching Dialga/Palkia + National Dex
+2. **Legends: Arceus** — Story static
     - Shiny locked: **Shiny-LOCKED**
     - Shiny Charm: n/a
     - Currently accessible: Yes
-    - Type: D (shiny unavailable)
-    - Note: Shiny-locked in PLA and all distributions; not in GO. (One BDSP Azure-Flute claim exists but is disputed/unreliable)
+    - Type: C (event distribution)
+    - Note: PLA Arceus is shiny-locked
+3. **Events (Toys R Us, etc.)** — Distribution
+    - Shiny locked: **Shiny-LOCKED**
+    - Shiny Charm: n/a
+    - Currently accessible: No (historical / discontinued)
+    - Type: C (event distribution)
+    - Note: All event Arceus were shiny-locked
 
 **Pokémon GO:** Not in Pokémon GO.
 
-**Notes:** No legitimate shiny Arceus as of Aug 2026 (a disputed BDSP claim aside). Classified SHINY UNAVAILABLE.
+**Notes:** Shiny Arceus IS legitimately huntable — the BDSP Hall of Origin encounter (Azure Flute) is not shiny-locked, so you can soft-reset for it (flat 1/4096; BDSP Shiny Charm does not help). PLA and all distributions are locked.
 
 ### Azelf
 
@@ -1411,7 +1433,7 @@ Bucket key: **A** = true hunt available now · **E** = hunt historical only · *
 - **Currently shiny-huntable (RNG):** Yes
 - **Bucket:** A (true hunt, current)
 - **HOME guaranteed-shiny reward:** No  |  **Event-only shiny:** No
-- **Alternate forms:** Origin Forme — shiny available (GO; main-series via Adamant Crystal in PLA, shiny-locked there)
+- **Alternate forms:** Origin Forme — see its own row (separate GO shiny)
 
 **Hunting / shiny methods:**
 
@@ -1475,7 +1497,7 @@ Bucket key: **A** = true hunt available now · **E** = hunt historical only · *
 - **Currently shiny-huntable (RNG):** Yes
 - **Bucket:** A (true hunt, current)
 - **HOME guaranteed-shiny reward:** No  |  **Event-only shiny:** No
-- **Alternate forms:** Altered Forme & Origin Forme — both shiny in GO
+- **Alternate forms:** This row is the Altered Forme. Origin Forme — see its own row (separate GO shiny)
 
 **Hunting / shiny methods:**
 
@@ -1679,7 +1701,7 @@ Bucket key: **A** = true hunt available now · **E** = hunt historical only · *
 - **Currently shiny-huntable (RNG):** Yes
 - **Bucket:** A (true hunt, current)
 - **HOME guaranteed-shiny reward:** No  |  **Event-only shiny:** No
-- **Alternate forms:** Origin Forme — shiny available in GO (Lustrous Globe in PLA is shiny-locked)
+- **Alternate forms:** Origin Forme — see its own row (separate GO shiny)
 
 **Hunting / shiny methods:**
 
@@ -2076,7 +2098,7 @@ Bucket key: **A** = true hunt available now · **E** = hunt historical only · *
 - **Currently shiny-huntable (RNG):** Yes
 - **Bucket:** A (true hunt, current)
 - **HOME guaranteed-shiny reward:** No  |  **Event-only shiny:** No
-- **Alternate forms:** Incarnate & Therian — both shiny in GO (Therian released 2022)
+- **Alternate forms:** This row is the Incarnate Forme. Therian Forme — see its own row (separate GO shiny)
 
 **Hunting / shiny methods:**
 
@@ -2267,7 +2289,7 @@ Bucket key: **A** = true hunt available now · **E** = hunt historical only · *
 - **Currently shiny-huntable (RNG):** Yes
 - **Bucket:** A (true hunt, current)
 - **HOME guaranteed-shiny reward:** No  |  **Event-only shiny:** No
-- **Alternate forms:** Incarnate & Therian — both shiny in GO (Therian released 2022)
+- **Alternate forms:** This row is the Incarnate Forme. Therian Forme — see its own row (separate GO shiny)
 
 **Hunting / shiny methods:**
 
@@ -2319,7 +2341,7 @@ Bucket key: **A** = true hunt available now · **E** = hunt historical only · *
 - **Currently shiny-huntable (RNG):** Yes
 - **Bucket:** A (true hunt, current)
 - **HOME guaranteed-shiny reward:** No  |  **Event-only shiny:** No
-- **Alternate forms:** Incarnate & Therian — both shiny in GO (Therian released 2022)
+- **Alternate forms:** This row is the Incarnate Forme. Therian Forme — see its own row (separate GO shiny)
 
 **Hunting / shiny methods:**
 
@@ -4094,6 +4116,279 @@ Bucket key: **A** = true hunt available now · **E** = hunt historical only · *
 
 ## Alternate forms (appendix — distinct shiny status)
 
+### Deoxys (Attack Forme)
+
+- **Classification:** Mythical
+- **Generation:** III
+- **Shiny exists:** Yes
+- **Currently shiny-huntable (RNG):** Yes
+- **Bucket:** A (true hunt, current)
+- **HOME guaranteed-shiny reward:** No  |  **Event-only shiny:** No
+- **Form of:** Deoxys (distinct alternate form)
+
+**Hunting / shiny methods:**
+
+1. **Pokémon GO** — Raid — this Forme (RNG)
+    - Shiny locked: Not shiny-locked
+    - Odds (base): ~1/20
+    - Shiny Charm: n/a (GO has no Shiny Charm)
+    - Currently accessible: Yes
+    - Type: A (true RNG hunt)
+    - Note: Shiny this Forme since Feb 19 2022; a separate raid encounter/shiny from the base forme
+2. **FireRed (Gen 3)** — Birth Island static (soft-reset)
+    - Shiny locked: Not shiny-locked
+    - Odds (base): 1/8192
+    - Shiny Charm: No charm pre-Gen6
+    - Currently accessible: No (historical / discontinued)
+    - Type: A (true RNG hunt)
+    - Note: This Forme was the FireRed version in Gen 3; Birth Island Deoxys is NOT shiny-locked -> historical soft-reset hunt. ORAS Deoxys is shiny-locked
+
+**Pokémon GO:** Forme-specific raids (shiny since Feb 19 2022) — RNG; ~1/20
+
+**Notes:** Alternate Forme of Deoxys — a separate shiny collectible in GO (own release date). In the main series the Forme is fixed by game/meteorite.
+
+### Deoxys (Defense Forme)
+
+- **Classification:** Mythical
+- **Generation:** III
+- **Shiny exists:** Yes
+- **Currently shiny-huntable (RNG):** Yes
+- **Bucket:** A (true hunt, current)
+- **HOME guaranteed-shiny reward:** No  |  **Event-only shiny:** No
+- **Form of:** Deoxys (distinct alternate form)
+
+**Hunting / shiny methods:**
+
+1. **Pokémon GO** — Raid — this Forme (RNG)
+    - Shiny locked: Not shiny-locked
+    - Odds (base): ~1/20
+    - Shiny Charm: n/a (GO has no Shiny Charm)
+    - Currently accessible: Yes
+    - Type: A (true RNG hunt)
+    - Note: Shiny this Forme since Feb 22 2022; a separate raid encounter/shiny from the base forme
+2. **LeafGreen (Gen 3)** — Birth Island static (soft-reset)
+    - Shiny locked: Not shiny-locked
+    - Odds (base): 1/8192
+    - Shiny Charm: No charm pre-Gen6
+    - Currently accessible: No (historical / discontinued)
+    - Type: A (true RNG hunt)
+    - Note: This Forme was the LeafGreen version in Gen 3; Birth Island Deoxys is NOT shiny-locked -> historical soft-reset hunt. ORAS Deoxys is shiny-locked
+
+**Pokémon GO:** Forme-specific raids (shiny since Feb 22 2022) — RNG; ~1/20
+
+**Notes:** Alternate Forme of Deoxys — a separate shiny collectible in GO (own release date). In the main series the Forme is fixed by game/meteorite.
+
+### Deoxys (Speed Forme)
+
+- **Classification:** Mythical
+- **Generation:** III
+- **Shiny exists:** Yes
+- **Currently shiny-huntable (RNG):** Yes
+- **Bucket:** A (true hunt, current)
+- **HOME guaranteed-shiny reward:** No  |  **Event-only shiny:** No
+- **Form of:** Deoxys (distinct alternate form)
+
+**Hunting / shiny methods:**
+
+1. **Pokémon GO** — Raid — this Forme (RNG)
+    - Shiny locked: Not shiny-locked
+    - Odds (base): ~1/20
+    - Shiny Charm: n/a (GO has no Shiny Charm)
+    - Currently accessible: Yes
+    - Type: A (true RNG hunt)
+    - Note: Shiny this Forme since Feb 25 2022; a separate raid encounter/shiny from the base forme
+2. **Emerald (Gen 3)** — Birth Island static (soft-reset)
+    - Shiny locked: Not shiny-locked
+    - Odds (base): 1/8192
+    - Shiny Charm: No charm pre-Gen6
+    - Currently accessible: No (historical / discontinued)
+    - Type: A (true RNG hunt)
+    - Note: This Forme was the Emerald version in Gen 3; Birth Island Deoxys is NOT shiny-locked -> historical soft-reset hunt. ORAS Deoxys is shiny-locked
+
+**Pokémon GO:** Forme-specific raids (shiny since Feb 25 2022) — RNG; ~1/20
+
+**Notes:** Alternate Forme of Deoxys — a separate shiny collectible in GO (own release date). In the main series the Forme is fixed by game/meteorite.
+
+### Dialga (Origin Forme)
+
+- **Classification:** Legendary
+- **Generation:** IV
+- **Shiny exists:** Yes
+- **Currently shiny-huntable (RNG):** Yes
+- **Bucket:** A (true hunt, current)
+- **HOME guaranteed-shiny reward:** No  |  **Event-only shiny:** No
+- **Form of:** Dialga (distinct alternate form)
+
+**Hunting / shiny methods:**
+
+1. **Pokémon GO** — Raid — Origin Forme (RNG)
+    - Shiny locked: Not shiny-locked
+    - Odds (base): ~1/20
+    - Shiny Charm: n/a (GO has no Shiny Charm)
+    - Currently accessible: Yes
+    - Type: A (true RNG hunt)
+    - Note: Shiny Origin Forme since ~2023; a separate raid encounter/shiny from the base forme
+2. **Legends: Arceus (Adamant Crystal)** — Form change (Adamant Crystal)
+    - Shiny locked: Not shiny-locked
+    - Shiny Charm: Same shiny as the base — huntable via DA/USUM/Ramanas Park then transferred
+    - Currently accessible: Yes
+    - Type: A (true RNG hunt)
+    - Note: Not a separate main-series hunt: the form-change item just re-shapes your (huntable) base Pokémon
+
+**Pokémon GO:** Origin Forme raids — RNG; ~1/20
+
+**Notes:** Separate shiny raid boss in GO; main-series Origin form via the Adamant Crystal.
+
+### Giratina (Origin Forme)
+
+- **Classification:** Legendary
+- **Generation:** IV
+- **Shiny exists:** Yes
+- **Currently shiny-huntable (RNG):** Yes
+- **Bucket:** A (true hunt, current)
+- **HOME guaranteed-shiny reward:** No  |  **Event-only shiny:** No
+- **Form of:** Giratina (distinct alternate form)
+
+**Hunting / shiny methods:**
+
+1. **Pokémon GO** — Raid — Origin Forme (RNG)
+    - Shiny locked: Not shiny-locked
+    - Odds (base): ~1/20
+    - Shiny Charm: n/a (GO has no Shiny Charm)
+    - Currently accessible: Yes
+    - Type: A (true RNG hunt)
+    - Note: Shiny Origin Forme since ~2021; a separate raid encounter/shiny from the base forme
+2. **Platinum/BDSP/SwSh/PLA** — Form change (Griseous Orb/Core)
+    - Shiny locked: Not shiny-locked
+    - Shiny Charm: Same shiny as the base — huntable via DA/USUM/Ramanas Park
+    - Currently accessible: Yes
+    - Type: A (true RNG hunt)
+    - Note: Not a separate main-series hunt: the form-change item just re-shapes your (huntable) base Pokémon
+
+**Pokémon GO:** Origin Forme raids — RNG; ~1/20
+
+**Notes:** Separate shiny raid boss in GO; in the main series it's a Griseous Orb/Core form-change of your Giratina.
+
+### Palkia (Origin Forme)
+
+- **Classification:** Legendary
+- **Generation:** IV
+- **Shiny exists:** Yes
+- **Currently shiny-huntable (RNG):** Yes
+- **Bucket:** A (true hunt, current)
+- **HOME guaranteed-shiny reward:** No  |  **Event-only shiny:** No
+- **Form of:** Palkia (distinct alternate form)
+
+**Hunting / shiny methods:**
+
+1. **Pokémon GO** — Raid — Origin Forme (RNG)
+    - Shiny locked: Not shiny-locked
+    - Odds (base): ~1/20
+    - Shiny Charm: n/a (GO has no Shiny Charm)
+    - Currently accessible: Yes
+    - Type: A (true RNG hunt)
+    - Note: Shiny Origin Forme since ~2023; a separate raid encounter/shiny from the base forme
+2. **Legends: Arceus (Lustrous Globe)** — Form change (Lustrous Globe)
+    - Shiny locked: Not shiny-locked
+    - Shiny Charm: Same shiny as the base — huntable via DA/USUM/Ramanas Park then transferred
+    - Currently accessible: Yes
+    - Type: A (true RNG hunt)
+    - Note: Not a separate main-series hunt: the form-change item just re-shapes your (huntable) base Pokémon
+
+**Pokémon GO:** Origin Forme raids — RNG; ~1/20
+
+**Notes:** Separate shiny raid boss in GO; main-series Origin form via the Lustrous Globe.
+
+### Landorus (Therian Forme)
+
+- **Classification:** Legendary
+- **Generation:** V
+- **Shiny exists:** Yes
+- **Currently shiny-huntable (RNG):** Yes
+- **Bucket:** A (true hunt, current)
+- **HOME guaranteed-shiny reward:** No  |  **Event-only shiny:** No
+- **Form of:** Landorus (distinct alternate form)
+
+**Hunting / shiny methods:**
+
+1. **Pokémon GO** — Raid — Therian Forme (RNG)
+    - Shiny locked: Not shiny-locked
+    - Odds (base): ~1/20
+    - Shiny Charm: n/a (GO has no Shiny Charm)
+    - Currently accessible: Yes
+    - Type: A (true RNG hunt)
+    - Note: Shiny Therian Forme since Apr 26 2022; a separate raid encounter/shiny from the base forme
+2. **Black2/White2 onward (Reveal Glass)** — Form change (Reveal Glass)
+    - Shiny locked: Not shiny-locked
+    - Shiny Charm: Same shiny as the base — huntable via Dynamax Adventures / SwSh roamer / GO
+    - Currently accessible: Yes
+    - Type: A (true RNG hunt)
+    - Note: Not a separate main-series hunt: the form-change item just re-shapes your (huntable) base Pokémon
+
+**Pokémon GO:** Therian Forme raids (shiny since Apr 26 2022) — RNG; ~1/20
+
+**Notes:** Separate shiny raid boss in GO; in the main series it's a Reveal Glass form-change of the Incarnate forme.
+
+### Thundurus (Therian Forme)
+
+- **Classification:** Legendary
+- **Generation:** V
+- **Shiny exists:** Yes
+- **Currently shiny-huntable (RNG):** Yes
+- **Bucket:** A (true hunt, current)
+- **HOME guaranteed-shiny reward:** No  |  **Event-only shiny:** No
+- **Form of:** Thundurus (distinct alternate form)
+
+**Hunting / shiny methods:**
+
+1. **Pokémon GO** — Raid — Therian Forme (RNG)
+    - Shiny locked: Not shiny-locked
+    - Odds (base): ~1/20
+    - Shiny Charm: n/a (GO has no Shiny Charm)
+    - Currently accessible: Yes
+    - Type: A (true RNG hunt)
+    - Note: Shiny Therian Forme since Apr 5 2022; a separate raid encounter/shiny from the base forme
+2. **Black2/White2 onward (Reveal Glass)** — Form change (Reveal Glass)
+    - Shiny locked: Not shiny-locked
+    - Shiny Charm: Same shiny as the base — huntable via Dynamax Adventures / SwSh roamer / GO
+    - Currently accessible: Yes
+    - Type: A (true RNG hunt)
+    - Note: Not a separate main-series hunt: the form-change item just re-shapes your (huntable) base Pokémon
+
+**Pokémon GO:** Therian Forme raids (shiny since Apr 5 2022) — RNG; ~1/20
+
+**Notes:** Separate shiny raid boss in GO; in the main series it's a Reveal Glass form-change of the Incarnate forme.
+
+### Tornadus (Therian Forme)
+
+- **Classification:** Legendary
+- **Generation:** V
+- **Shiny exists:** Yes
+- **Currently shiny-huntable (RNG):** Yes
+- **Bucket:** A (true hunt, current)
+- **HOME guaranteed-shiny reward:** No  |  **Event-only shiny:** No
+- **Form of:** Tornadus (distinct alternate form)
+
+**Hunting / shiny methods:**
+
+1. **Pokémon GO** — Raid — Therian Forme (RNG)
+    - Shiny locked: Not shiny-locked
+    - Odds (base): ~1/20
+    - Shiny Charm: n/a (GO has no Shiny Charm)
+    - Currently accessible: Yes
+    - Type: A (true RNG hunt)
+    - Note: Shiny Therian Forme since Mar 15 2022; a separate raid encounter/shiny from the base forme
+2. **Black2/White2 onward (Reveal Glass)** — Form change (Reveal Glass)
+    - Shiny locked: Not shiny-locked
+    - Shiny Charm: Same shiny as the base — huntable via Dynamax Adventures / SwSh roamer / GO
+    - Currently accessible: Yes
+    - Type: A (true RNG hunt)
+    - Note: Not a separate main-series hunt: the form-change item just re-shapes your (huntable) base Pokémon
+
+**Pokémon GO:** Therian Forme raids (shiny since Mar 15 2022) — RNG; ~1/20
+
+**Notes:** Separate shiny raid boss in GO; in the main series it's a Reveal Glass form-change of the Incarnate forme.
+
 ### Galarian Articuno
 
 - **Classification:** Legendary
@@ -4198,8 +4493,8 @@ Articuno, Zapdos, Moltres, Raikou, Entei, Suicune, Lugia, Ho-Oh, Regirock, Regic
 Articuno, Zapdos, Moltres, Mewtwo, Raikou, Entei, Suicune, Lugia, Ho-Oh, Regirock, Regice, Registeel, Latias, Latios, Kyogre, Groudon, Rayquaza, Uxie, Mesprit, Azelf, Dialga, Palkia, Heatran, Giratina, Cresselia, Cobalion, Terrakion, Virizion, Tornadus, Thundurus, Landorus, Reshiram, Zekrom, Kyurem, Xerneas, Yveltal, Nihilego, Buzzwole, Pheromosa, Xurkitree, Celesteela, Kartana, Guzzlord, Stakataka, Blacephalon
 
 ### 3. Huntable in **Brilliant Diamond / Shining Pearl** (Ramanas Park & wild statics)
-*(23 species — 1/4096 flat; Shiny Charm does NOT help wild/legendary hunts in BDSP)*  
-Articuno, Zapdos, Moltres, Mewtwo, Raikou, Entei, Suicune, Lugia, Ho-Oh, Regirock, Regice, Registeel, Kyogre, Groudon, Uxie, Mesprit, Azelf, Dialga, Palkia, Heatran, Regigigas, Giratina, Cresselia
+*(24 species — 1/4096 flat; Shiny Charm does NOT help wild/legendary hunts in BDSP)*  
+Articuno, Zapdos, Moltres, Mewtwo, Raikou, Entei, Suicune, Lugia, Ho-Oh, Regirock, Regice, Registeel, Kyogre, Groudon, Uxie, Mesprit, Azelf, Dialga, Palkia, Heatran, Regigigas, Giratina, Cresselia, Arceus
 
 ### 4. Huntable through **Sword/Shield static** encounters (non-DA)
 *(8 species — Crown Tundra Regis/Regieleki/Regidrago + roaming Forces of Nature; 1/4096, 1/1365 charm)*  
@@ -4210,39 +4505,39 @@ Regirock, Regice, Registeel, Tornadus, Thundurus, Landorus, Regieleki, Regidrago
 Latias, Latios, Cobalion, Terrakion, Virizion
 
 ### 5. Ever genuinely **RNG shiny-huntable in Pokémon GO** (raids / Mystery Box / wild)
-*(64 species — mostly ~1/20 legendary raids; Meltan/Galarian birds ~1/125)*  
-Articuno, Zapdos, Moltres, Mewtwo, Raikou, Entei, Suicune, Lugia, Ho-Oh, Regirock, Regice, Registeel, Latias, Latios, Kyogre, Groudon, Rayquaza, Deoxys, Uxie, Mesprit, Azelf, Dialga, Palkia, Heatran, Regigigas, Giratina, Cresselia, Darkrai, Cobalion, Terrakion, Virizion, Tornadus, Thundurus, Landorus, Reshiram, Zekrom, Kyurem, Genesect, Xerneas, Yveltal, Tapu Koko, Tapu Lele, Tapu Bulu, Tapu Fini, Solgaleo, Lunala, Necrozma, Meltan, Melmetal, Zacian, Zamazenta, Regieleki, Nihilego, Buzzwole, Pheromosa, Xurkitree, Celesteela, Kartana, Guzzlord, Stakataka, Blacephalon, Galarian Articuno, Galarian Zapdos, Galarian Moltres
+*(73 species — mostly ~1/20 legendary raids; Meltan/Galarian birds ~1/125)*  
+Articuno, Zapdos, Moltres, Mewtwo, Raikou, Entei, Suicune, Lugia, Ho-Oh, Regirock, Regice, Registeel, Latias, Latios, Kyogre, Groudon, Rayquaza, Deoxys, Uxie, Mesprit, Azelf, Dialga, Palkia, Heatran, Regigigas, Giratina, Cresselia, Darkrai, Cobalion, Terrakion, Virizion, Tornadus, Thundurus, Landorus, Reshiram, Zekrom, Kyurem, Genesect, Xerneas, Yveltal, Tapu Koko, Tapu Lele, Tapu Bulu, Tapu Fini, Solgaleo, Lunala, Necrozma, Meltan, Melmetal, Zacian, Zamazenta, Regieleki, Nihilego, Buzzwole, Pheromosa, Xurkitree, Celesteela, Kartana, Guzzlord, Stakataka, Blacephalon, Galarian Articuno, Galarian Zapdos, Galarian Moltres, Deoxys (Attack Forme), Deoxys (Defense Forme), Deoxys (Speed Forme), Giratina (Origin Forme), Dialga (Origin Forme), Palkia (Origin Forme), Tornadus (Therian Forme), Thundurus (Therian Forme), Landorus (Therian Forme)
 
 > Guaranteed-only GO shinies (NOT hunts): Mew, Celebi, Jirachi, Shaymin, Keldeo, Meloetta, Diancie.
 
 ### 6. **Mythical** Pokémon that can legitimately be shiny-**hunted** (true RNG, ever)
-*(10 of 23 Mythicals)*  
-Celebi (historical), Jirachi (historical), Deoxys (current), Phione (current), Manaphy (historical), Darkrai (current), Shaymin (historical), Genesect (current), Meltan (current), Melmetal (current)
+*(11 of 23 Mythicals)*  
+Celebi (historical), Jirachi (historical), Deoxys (current), Phione (current), Manaphy (historical), Darkrai (current), Shaymin (historical), Arceus (current), Genesect (current), Meltan (current), Melmetal (current)
 
 ### 7. Shiny **still completely unavailable** (no legitimate shiny ever)
-*(31 species incl. Ultra Beasts)*  
-Arceus, Victini, Zygarde, Hoopa, Type: Null, Silvally, Cosmog, Cosmoem, Magearna, Marshadow, Zeraora, Eternatus, Kubfu, Urshifu, Glastrier, Spectrier, Calyrex, Enamorus, Zarude, Wo-Chien, Chien-Pao, Ting-Lu, Chi-Yu, Okidogi, Munkidori, Fezandipiti, Ogerpon, Terapagos, Pecharunt, Poipole, Naganadel
+*(30 species incl. Ultra Beasts)*  
+Victini, Zygarde, Hoopa, Type: Null, Silvally, Cosmog, Cosmoem, Magearna, Marshadow, Zeraora, Eternatus, Kubfu, Urshifu, Glastrier, Spectrier, Calyrex, Enamorus, Zarude, Wo-Chien, Chien-Pao, Ting-Lu, Chi-Yu, Okidogi, Munkidori, Fezandipiti, Ogerpon, Terapagos, Pecharunt, Poipole, Naganadel
 
 ### 8. Shiny **exists but only via guaranteed / event distribution** (never a hunt)
 *(7 species)*  
 Mew, Keldeo, Meloetta, Diancie, Volcanion, Koraidon, Miraidon
 
 ### 9. **Currently huntable** without needing an expired event (as of Aug 2026)
-*(66 species incl. Ultra Beasts; 54 core Legendary/Mythical)*  
-Articuno, Zapdos, Moltres, Mewtwo, Raikou, Entei, Suicune, Lugia, Ho-Oh, Regirock, Regice, Registeel, Latias, Latios, Kyogre, Groudon, Rayquaza, Deoxys, Uxie, Mesprit, Azelf, Dialga, Palkia, Heatran, Regigigas, Giratina, Cresselia, Phione, Darkrai, Cobalion, Terrakion, Virizion, Tornadus, Thundurus, Landorus, Reshiram, Zekrom, Kyurem, Genesect, Xerneas, Yveltal, Tapu Koko, Tapu Lele, Tapu Bulu, Tapu Fini, Solgaleo, Lunala, Necrozma, Meltan, Melmetal, Zacian, Zamazenta, Regieleki, Regidrago, Nihilego, Buzzwole, Pheromosa, Xurkitree, Celesteela, Kartana, Guzzlord, Stakataka, Blacephalon, Galarian Articuno, Galarian Zapdos, Galarian Moltres
+*(76 species incl. Ultra Beasts; 55 core Legendary/Mythical)*  
+Articuno, Zapdos, Moltres, Mewtwo, Raikou, Entei, Suicune, Lugia, Ho-Oh, Regirock, Regice, Registeel, Latias, Latios, Kyogre, Groudon, Rayquaza, Deoxys, Uxie, Mesprit, Azelf, Dialga, Palkia, Heatran, Regigigas, Giratina, Cresselia, Phione, Darkrai, Arceus, Cobalion, Terrakion, Virizion, Tornadus, Thundurus, Landorus, Reshiram, Zekrom, Kyurem, Genesect, Xerneas, Yveltal, Tapu Koko, Tapu Lele, Tapu Bulu, Tapu Fini, Solgaleo, Lunala, Necrozma, Meltan, Melmetal, Zacian, Zamazenta, Regieleki, Regidrago, Nihilego, Buzzwole, Pheromosa, Xurkitree, Celesteela, Kartana, Guzzlord, Stakataka, Blacephalon, Galarian Articuno, Galarian Zapdos, Galarian Moltres, Deoxys (Attack Forme), Deoxys (Defense Forme), Deoxys (Speed Forme), Giratina (Origin Forme), Dialga (Origin Forme), Palkia (Origin Forme), Tornadus (Therian Forme), Thundurus (Therian Forme), Landorus (Therian Forme)
 
 ### 9b. Distinct alternate **forms** with their own shiny status (broken out as separate rows)
-*(3 forms)*  
-Galarian Articuno (form of Articuno — yes), Galarian Zapdos (form of Zapdos — yes), Galarian Moltres (form of Moltres — yes).  
+*(12 forms)*  
+Galarian Articuno (form of Articuno — yes), Galarian Zapdos (form of Zapdos — yes), Galarian Moltres (form of Moltres — yes), Deoxys (Attack Forme) (form of Deoxys — yes), Deoxys (Defense Forme) (form of Deoxys — yes), Deoxys (Speed Forme) (form of Deoxys — yes), Giratina (Origin Forme) (form of Giratina — yes), Dialga (Origin Forme) (form of Dialga — yes), Palkia (Origin Forme) (form of Palkia — yes), Tornadus (Therian Forme) (form of Tornadus — yes), Thundurus (Therian Forme) (form of Thundurus — yes), Landorus (Therian Forme) (form of Landorus — yes).  
 Other legendaries with alternate formes that share their base species' shiny status (documented in each entry, not split out): Deoxys, Dialga, Palkia, Giratina, Shaymin, Tornadus, Thundurus, Landorus, Kyurem, Zacian, Zamazenta, Necrozma, Calyrex, Urshifu, Zygarde, Hoopa, Meloetta, Genesect, Enamorus, Keldeo, Ogerpon, Terapagos.
 
 ### 10. Best games / platforms for hunting the most Legendary/Mythical shinies
 | Rank | Platform | # Legendary/Mythical/UB shinies huntable |
 |---:|---|---:|
-| 1 | Pokémon GO (raids/box, RNG) | 64 |
+| 1 | Pokémon GO (raids/box, RNG) | 73 |
 | 2 | Sword/Shield Dynamax Adventures | 51 |
 | 3 | Ultra Sun/Ultra Moon Ultra Wormholes | 45 |
-| 4 | Brilliant Diamond/Shining Pearl | 23 |
+| 4 | Brilliant Diamond/Shining Pearl | 24 |
 | 5 | Omega Ruby/Alpha Sapphire (Mirage Spots) | 16 |
 | 6 | Sword/Shield static (Crown Tundra) | 8 |
 | 7 | Legends Z-A Mega Dimension | 5 |
@@ -4254,9 +4549,9 @@ Other legendaries with alternate formes that share their base species' shiny sta
 
 # VALIDATION PASS
 
-- **Every species appears exactly once:** PASS (108 rows, 108 unique names).
-- **Counts reconcile:** shiny-exists (65) + shiny-never (29) = 94 = total (94) — PASS.
-- **Hunt counts reconcile:** current (54) + historical-only (4) = 58 = RNG-hunt-ever (58) — PASS.
+- **Every species appears exactly once:** PASS (117 rows, 117 unique names).
+- **Counts reconcile:** shiny-exists (66) + shiny-never (28) = 94 = total (94) — PASS.
+- **Hunt counts reconcile:** current (55) + historical-only (4) = 59 = RNG-hunt-ever (59) — PASS.
 - **Guaranteed rewards are never counted as hunts:** HOME dex-reward shinies (Meloetta, Keldeo, Meltan*, Volcanion) and GO Masterwork shinies (Mew, Celebi, Jirachi, Shaymin, Meloetta, Keldeo, Diancie) are recorded as Bucket B, and are excluded from `rng_hunt`. (*Meltan also has a real Mystery Box RNG hunt, so it is Bucket A.)
 - **'Currently huntable' claims** are based on Aug-2026 game/service availability: SwSh+DLC, BDSP, USUM/ORAS (3DS cartridge; eShop closed Mar 2023 but carts play), Legends Z-A + Mega Dimension DLC, and GO raid rotations. Discontinued-only routes (Gen 2 VC, Gen 3/4 event-island tickets, Pokémon Ranger egg) are marked historical.
 - **Known uncertainties (flagged in notes):** exact GO first-shiny dates for a few long-standing raid legendaries; Regidrago/Cosmog GO shiny status; the disputed BDSP Azure-Flute Arceus claim (treated as no-legit-shiny). Negative 'no shiny' claims for in-GO species can flip at any future event.

@@ -396,12 +396,19 @@ add(name="Shaymin", gen="IV", category="Mythical",
     go="Shiny (Land) via Masterwork (guaranteed). Not RNG in GO.",
     notes="Historical Gen4 RNG hunt (Flower Paradise) no longer accessible; GO shiny is guaranteed-only.")
 add(name="Arceus", gen="IV", category="Mythical",
-    shiny_exists=False, rng_hunt=False, huntable_now=False, event_only=False,
+    shiny_exists=True, rng_hunt=True, huntable_now=True, event_only=False,
     home_guaranteed=False, go_shiny=False, go_rng_hunt=False,
-    methods=[M("Legends: Arceus / events", "Story static / distribution", True, "n/a", "n/a", "n/a", True, "D",
-               "Shiny-locked in PLA and all distributions; not in GO. (One BDSP Azure-Flute claim exists but is disputed/unreliable)")],
+    methods=[M("Brilliant Diamond/Shining Pearl", "Hall of Origin static (soft-reset)", False, FULL, FULL,
+               "No effect (BDSP Charm boosts Masuda eggs only)", True, "A",
+               "NOT shiny-locked -> genuine soft-reset hunt. Requires the Azure Flute: have Legends: Arceus save "
+               "data with all missions done + BDSP updated to v1.3.0 + be in the Hall of Fame; flute appears in "
+               "Twinleaf Town, played at Spear Pillar after catching Dialga/Palkia + National Dex"),
+             M("Legends: Arceus", "Story static", True, "n/a", "n/a", "n/a", True, "C", "PLA Arceus is shiny-locked"),
+             M("Events (Toys R Us, etc.)", "Distribution", True, "n/a", "n/a", "n/a", False, "C",
+               "All event Arceus were shiny-locked")],
     go="Not in Pokémon GO.",
-    notes="No legitimate shiny Arceus as of Aug 2026 (a disputed BDSP claim aside). Classified SHINY UNAVAILABLE.")
+    notes="Shiny Arceus IS legitimately huntable — the BDSP Hall of Origin encounter (Azure Flute) is not shiny-locked, "
+          "so you can soft-reset for it (flat 1/4096; BDSP Shiny Charm does not help). PLA and all distributions are locked.")
 
 # ---------- GENERATION V ----------
 add(name="Victini", gen="V", category="Mythical",
@@ -854,20 +861,83 @@ for nm, base, typ in _GAL:
               f"Main-series Crown Tundra roamer is shiny-locked; the ONLY shiny route is Pokémon GO Daily "
               f"Adventure Incense wild spawns.")
 
+# ---------- alternate FORMES broken out as their own rows (separate shiny collectibles) ----------
+def go_raid_form(first, label):
+    return M("Pokémon GO", f"Raid — {label} (RNG)", False, GO_R, "n/a", "n/a (GO has no Shiny Charm)", True, "A",
+             f"Shiny {label} since {first}; a separate raid encounter/shiny from the base forme")
+
+def form_change(games, item, huntable_via):
+    return M(games, f"Form change ({item})", False, "n/a", "n/a",
+             f"Same shiny as the base — {huntable_via}", True, "A",
+             "Not a separate main-series hunt: the form-change item just re-shapes your (huntable) base Pokémon")
+
+# Deoxys formes (Attack/Defense/Speed) — 4 distinct shinies in GO; base row = Normal Forme
+_DEO = [("Deoxys (Attack Forme)", "Feb 19 2022", "FireRed"),
+        ("Deoxys (Defense Forme)", "Feb 22 2022", "LeafGreen"),
+        ("Deoxys (Speed Forme)", "Feb 25 2022", "Emerald")]
+for nm, first, g3 in _DEO:
+    add(name=nm, gen="III", category="Mythical", is_form=True, base="Deoxys",
+        shiny_exists=True, rng_hunt=True, huntable_now=True, event_only=False,
+        home_guaranteed=False, go_shiny=True, go_rng_hunt=True,
+        methods=[go_raid_form(first, "this Forme"),
+                 M(f"{g3} (Gen 3)", "Birth Island static (soft-reset)", False, FULL_OLD, "n/a",
+                   "No charm pre-Gen6", False, "A",
+                   f"This Forme was the {g3} version in Gen 3; Birth Island Deoxys is NOT shiny-locked -> historical "
+                   f"soft-reset hunt. ORAS Deoxys is shiny-locked")],
+        go=f"Forme-specific raids (shiny since {first}) — RNG; ~1/20",
+        notes="Alternate Forme of Deoxys — a separate shiny collectible in GO (own release date). "
+              "In the main series the Forme is fixed by game/meteorite.")
+
+# Origin Formes (separate shiny raids in GO)
+add(name="Giratina (Origin Forme)", gen="IV", category="Legendary", is_form=True, base="Giratina",
+    shiny_exists=True, rng_hunt=True, huntable_now=True, event_only=False,
+    home_guaranteed=False, go_shiny=True, go_rng_hunt=True,
+    methods=[go_raid_form("~2021", "Origin Forme"),
+             form_change("Platinum/BDSP/SwSh/PLA", "Griseous Orb/Core", "huntable via DA/USUM/Ramanas Park")],
+    go="Origin Forme raids — RNG; ~1/20",
+    notes="Separate shiny raid boss in GO; in the main series it's a Griseous Orb/Core form-change of your Giratina.")
+add(name="Dialga (Origin Forme)", gen="IV", category="Legendary", is_form=True, base="Dialga",
+    shiny_exists=True, rng_hunt=True, huntable_now=True, event_only=False,
+    home_guaranteed=False, go_shiny=True, go_rng_hunt=True,
+    methods=[go_raid_form("~2023", "Origin Forme"),
+             form_change("Legends: Arceus (Adamant Crystal)", "Adamant Crystal", "huntable via DA/USUM/Ramanas Park then transferred")],
+    go="Origin Forme raids — RNG; ~1/20",
+    notes="Separate shiny raid boss in GO; main-series Origin form via the Adamant Crystal.")
+add(name="Palkia (Origin Forme)", gen="IV", category="Legendary", is_form=True, base="Palkia",
+    shiny_exists=True, rng_hunt=True, huntable_now=True, event_only=False,
+    home_guaranteed=False, go_shiny=True, go_rng_hunt=True,
+    methods=[go_raid_form("~2023", "Origin Forme"),
+             form_change("Legends: Arceus (Lustrous Globe)", "Lustrous Globe", "huntable via DA/USUM/Ramanas Park then transferred")],
+    go="Origin Forme raids — RNG; ~1/20",
+    notes="Separate shiny raid boss in GO; main-series Origin form via the Lustrous Globe.")
+
+# Therian Formes (separate shiny raids in GO, 2022)
+for nm, base, first in [("Tornadus (Therian Forme)", "Tornadus", "Mar 15 2022"),
+                        ("Thundurus (Therian Forme)", "Thundurus", "Apr 5 2022"),
+                        ("Landorus (Therian Forme)", "Landorus", "Apr 26 2022")]:
+    add(name=nm, gen="V", category="Legendary", is_form=True, base=base,
+        shiny_exists=True, rng_hunt=True, huntable_now=True, event_only=False,
+        home_guaranteed=False, go_shiny=True, go_rng_hunt=True,
+        methods=[go_raid_form(first, "Therian Forme"),
+                 form_change("Black2/White2 onward (Reveal Glass)", "Reveal Glass",
+                             "huntable via Dynamax Adventures / SwSh roamer / GO")],
+        go=f"Therian Forme raids (shiny since {first}) — RNG; ~1/20",
+        notes="Separate shiny raid boss in GO; in the main series it's a Reveal Glass form-change of the Incarnate forme.")
+
 # ---------- alternate FORMES (documented on the base species row, not split out) ----------
 FORMS = {
     "Articuno": ["Galarian Articuno — see its own row (Gen VIII, GO-only shiny)"],
     "Zapdos": ["Galarian Zapdos — see its own row (Gen VIII, GO-only shiny)"],
     "Moltres": ["Galarian Moltres — see its own row (Gen VIII, GO-only shiny)"],
-    "Deoxys": ["Normal, Attack, Defense, Speed — all four shiny in GO raids (separate 2020–2022 dates); "
-               "main-series forme is set by in-game meteorites/version, all huntable"],
-    "Dialga": ["Origin Forme — shiny available (GO; main-series via Adamant Crystal in PLA, shiny-locked there)"],
-    "Palkia": ["Origin Forme — shiny available in GO (Lustrous Globe in PLA is shiny-locked)"],
-    "Giratina": ["Altered Forme & Origin Forme — both shiny in GO"],
+    "Deoxys": ["This row is the Normal Forme. Attack / Defense / Speed Formes each have their OWN row "
+               "(each a separate GO shiny with its own release date)"],
+    "Dialga": ["Origin Forme — see its own row (separate GO shiny)"],
+    "Palkia": ["Origin Forme — see its own row (separate GO shiny)"],
+    "Giratina": ["This row is the Altered Forme. Origin Forme — see its own row (separate GO shiny)"],
     "Shaymin": ["Land Forme — shiny (GO Masterwork, guaranteed). Sky Forme — shiny status unconfirmed"],
-    "Tornadus": ["Incarnate & Therian — both shiny in GO (Therian released 2022)"],
-    "Thundurus": ["Incarnate & Therian — both shiny in GO (Therian released 2022)"],
-    "Landorus": ["Incarnate & Therian — both shiny in GO (Therian released 2022)"],
+    "Tornadus": ["This row is the Incarnate Forme. Therian Forme — see its own row (separate GO shiny)"],
+    "Thundurus": ["This row is the Incarnate Forme. Therian Forme — see its own row (separate GO shiny)"],
+    "Landorus": ["This row is the Incarnate Forme. Therian Forme — see its own row (separate GO shiny)"],
     "Kyurem": ["Black Kyurem & White Kyurem — fusion formes (with Zekrom/Reshiram); shiny via the base Kyurem"],
     "Zacian": ["Hero of Many Battles & Crowned Sword — shiny carries across the form change"],
     "Zamazenta": ["Hero of Many Battles & Crowned Shield — shiny carries across the form change"],
@@ -882,7 +952,6 @@ FORMS = {
     "Keldeo": ["Ordinary & Resolute — shiny is guaranteed (HOME/GO Masterwork), applies to both"],
     "Ogerpon": ["Teal / Wellspring / Hearthflame / Cornerstone Mask — all shiny-locked"],
     "Terapagos": ["Normal / Terastal / Stellar Forme — shiny-locked"],
-    "Tornadus": ["Incarnate & Therian — both shiny in GO (Therian released 2022)"],
 }
 
 # normalize: every entry gets is_form / base / forms fields
