@@ -350,7 +350,10 @@ const state = { q:'', sort:'dex', cat:new Set(), bucket:new Set(), method:new Se
 const CH = ['ot','rwd','evt','go'];
 const CH_LABEL = {ot:'Home OT', rwd:'Home Reward', evt:'Home Event', go:'Pokémon GO'};
 const srcOf = m => ({ot:m.src_home_ot, rwd:m.src_home_reward, evt:m.src_home_event, go:m.src_go});
-const canHave = (m,ch) => !!srcOf(m)[ch];
+// A Home Event copy is redundant when you can self-catch it (OT) — both just sit in HOME —
+// so only offer the Event channel when OT is NOT available.
+const canHave = (m,ch) => { const s=srcOf(m); if(ch==='evt' && s.ot) return false; return !!s[ch]; };
+const effChannels = m => CH.filter(ch=>canHave(m,ch));
 const SHINY_TOTAL = MONS.filter(m=>m.shiny_exists).length;
 const LS_KEY='shinydex.store.v3';
 let store={}, lsOK=true;   // store[name] = {ot,rwd,evt,go}
