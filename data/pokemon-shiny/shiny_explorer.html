@@ -124,6 +124,7 @@ tbody tr.row:hover{background:var(--surface-2);}
 td.center,th.center{text-align:center;}
 
 /* detail panel */
+tr.detail{cursor:pointer;}
 tr.detail td{padding:0;border-bottom:1px solid var(--line);background:var(--raise);}
 .panel{padding:16px 18px;display:grid;gap:14px;}
 .closehint{justify-self:end;font-family:ui-monospace,Menlo,monospace;font-size:11px;letter-spacing:.04em;
@@ -218,7 +219,7 @@ tr.row.both .name::after{content:"✦";color:var(--accent-2);margin-left:6px;fon
   td.c-name .name{font-size:17px;}
   td.c-name::after{content:"›";margin-left:auto;color:var(--faint);font-size:22px;line-height:1;
     display:inline-block;transition:transform .15s ease;}
-  tr.row.open td.c-name::after{transform:rotate(90deg);}
+  tr.row.expanded td.c-name::after{transform:rotate(90deg);}
   tbody tr.row td.c-exp{display:none;}
   td.gotcol{width:auto;}
   .apps{justify-content:flex-end;} .mchips{justify-content:flex-end;}
@@ -513,6 +514,27 @@ function goCell(m){
 const esc = s => (s||'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
 const tb = document.getElementById('tb');
 
+/* one delegated toggle handler for the whole table — robust on iOS Safari and
+   survives re-renders (rows are rebuilt, this listener on <tbody> stays). */
+function toggleDetail(row){
+  if(!row) return;
+  const det=row.nextElementSibling;
+  if(!det || !det.classList.contains('detail')) return;
+  const willOpen=det.hidden;
+  if(willOpen && det.dataset.f!=='1' && det._mon){
+    det.firstElementChild.innerHTML=detailHTML(det._mon); det.dataset.f='1';
+  }
+  det.hidden=!willOpen;
+  row.classList.toggle('expanded', willOpen);
+  const ex=row.querySelector('.exp'); if(ex) ex.textContent=willOpen?'▾':'▸';
+}
+tb.addEventListener('click', e=>{
+  if(e.target.closest('.app')) return;                 // ownership buttons handle themselves
+  const det=e.target.closest('tr.detail');
+  if(det){ toggleDetail(det.previousElementSibling); return; }
+  toggleDetail(e.target.closest('tr.row'));
+});
+
 function detailHTML(m){
   const meth = m.methods.map(x=>{
     const lock = x.locked?'<span class="locked">Shiny-locked</span>':'<span class="open">Not locked</span>';
@@ -565,12 +587,9 @@ function render(){
       <td data-label="Pokémon GO">${goCell(m)}</td>
       <td data-label="Methods"><div class="mchips">${methodBadges(m).map(x=>`<span class="mchip">${x}</span>`).join('')||'<span class="go-n">—</span>'}</div></td>
       <td class="center exp c-exp">▸</td>`;
-    const dtr=document.createElement('tr'); dtr.className='detail'; dtr.hidden=true;
+    const dtr=document.createElement('tr'); dtr.className='detail'; dtr.hidden=true; dtr._mon=m;
     const dtd=document.createElement('td'); dtd.colSpan=9; dtr.appendChild(dtd);
-    const openIt=()=>{ const now=dtr.hidden; if(now){ dtd.innerHTML=detailHTML(m); }
-      dtr.hidden=!now; tr.classList.toggle('open', now); tr.querySelector('.exp').textContent = now?'▾':'▸'; };
-    tr.onclick=openIt; tr.onkeydown=e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault();openIt();} };
-    dtr.style.cursor='pointer'; dtr.onclick=openIt;   // tapping the open panel closes it too
+    tr.onkeydown=e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault();toggleDetail(tr);} };
     tr.querySelectorAll('.app').forEach(btn=>{
       btn.onclick=(e)=>{ e.stopPropagation(); if(btn.disabled) return;
         const n=btn.dataset.name, app=btn.dataset.app;
