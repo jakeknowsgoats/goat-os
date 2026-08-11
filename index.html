@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Tally">
+<meta name="theme-color" content="#000000">
+<meta name="format-detection" content="telephone=no">
+<title>Tally</title>
+<style>
+  :root {
+    --bg: #000000;
+    --panel: #111318;
+    --panel-2: #1a1d24;
+    --text: #ffffff;
+    --muted: #9aa3b2;
+    --approach: #00e0ff;
+    --approach-press: #7ff2ff;
+    --signup: #00e676;
+    --signup-press: #7dffb0;
+    --danger: #ff3b30;
+    --border: #2a2f3a;
+    --safe-top: env(safe-area-inset-top, 0px);
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -webkit-user-select: none;
+    user-select: none;
+    touch-action: manipulation;
+    overscroll-behavior: none;
+  }
+
+  button {
+    font-family: inherit;
+    -webkit-user-select: none;
+    user-select: none;
+    touch-action: manipulation;
+    cursor: pointer;
+    border: none;
+    color: inherit;
+    background: none;
+  }
+
+  .app {
+    height: 100vh;
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    padding: var(--safe-top) 0 var(--safe-bottom) 0;
+  }
+
+  .screen { flex: 1; display: none; flex-direction: column; min-height: 0; }
+  .screen.active { display: flex; }
+
+  /* ===== COUNTER SCREEN ===== */
+
+  .topbar {
+    display: flex;
+    align-items: stretch;
+    gap: 8px;
+    padding: 8px 10px 4px;
+  }
+
+  .undo-btn {
+    flex: 0 0 auto;
+    min-width: 74px;
+    background: var(--panel-2);
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    color: var(--text);
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 10px;
+    line-height: 1.1;
+  }
+  .undo-btn:disabled { opacity: 0.3; }
+  .undo-btn:active:not(:disabled) { background: var(--border); }
+  .undo-count { font-size: 11px; color: var(--muted); font-weight: 700; }
+
+  .stats {
+    flex: 1;
+    display: flex;
+    background: var(--panel);
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .stat {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 2px;
+  }
+  .stat + .stat { border-left: 2px solid var(--border); }
+  .stat-num {
+    font-size: 30px;
+    font-weight: 900;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .stat-num.approach { color: var(--approach); }
+  .stat-num.signup { color: var(--signup); }
+  .stat-label {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: var(--muted);
+    margin-top: 4px;
+    text-transform: uppercase;
+  }
+
+  .shiftbar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 10px;
+  }
+  .shift-timer {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--panel);
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    padding: 8px 12px;
+    min-height: 46px;
+  }
+  .shift-dot {
+    width: 12px; height: 12px; border-radius: 50%;
+    background: var(--danger); flex: 0 0 auto;
+  }
+  .shift-dot.live { background: var(--signup); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
+  .shift-info { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+  .shift-elapsed { font-size: 20px; font-weight: 900; font-variant-numeric: tabular-nums; line-height: 1; }
+  .shift-loc {
+    font-size: 12px; color: var(--muted); font-weight: 700;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 3px;
+  }
+  .shift-toggle {
+    flex: 0 0 auto;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+    padding: 0 16px;
+    min-height: 46px;
+    min-width: 96px;
+    text-transform: uppercase;
+  }
+  .shift-toggle.start { background: var(--panel-2); border: 2px solid var(--signup); color: var(--signup); }
+  .shift-toggle.end { background: var(--panel-2); border: 2px solid var(--danger); color: var(--danger); }
+  .shift-toggle:active { filter: brightness(1.4); }
+
+  .counters {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 6px 10px 10px;
+    min-height: 0;
+  }
+
+  .count-btn {
+    flex: 1;
+    min-height: 120px;
+    border-radius: 22px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    position: relative;
+    color: #001015;
+    transition: transform 0.04s ease-out, filter 0.04s ease-out;
+    will-change: transform;
+  }
+  .count-btn .cb-label {
+    font-size: 40px;
+    letter-spacing: 2px;
+    line-height: 1;
+  }
+  .count-btn .cb-sub {
+    font-size: 14px;
+    font-weight: 800;
+    margin-top: 8px;
+    opacity: 0.72;
+    letter-spacing: 0.5px;
+  }
+  .count-btn .cb-live {
+    position: absolute;
+    top: 14px; right: 20px;
+    font-size: 34px;
+    font-weight: 900;
+    font-variant-numeric: tabular-nums;
+    opacity: 0.85;
+  }
+  .count-btn.approach { background: var(--approach); flex: 1.35; }
+  .count-btn.signup { background: var(--signup); }
+  .count-btn.flash { transform: scale(0.97); filter: brightness(1.35); }
+  .count-btn:active { filter: brightness(1.2); }
+
+  /* ===== HISTORY SCREEN ===== */
+
+  .hist-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 14px 8px;
+    gap: 10px;
+  }
+  .hist-head h1 { font-size: 26px; font-weight: 900; letter-spacing: 0.5px; }
+  .hist-scroll {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 0 12px 20px;
+  }
+
+  .totals {
+    background: var(--panel);
+    border: 2px solid var(--border);
+    border-radius: 16px;
+    padding: 14px;
+    margin-bottom: 14px;
+  }
+  .totals-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px 8px;
+  }
+  .tcell { display: flex; flex-direction: column; }
+  .tcell .tnum {
+    font-size: 24px; font-weight: 900; line-height: 1; font-variant-numeric: tabular-nums;
+  }
+  .tcell .tlabel {
+    font-size: 10px; font-weight: 800; letter-spacing: 0.8px; color: var(--muted);
+    margin-top: 4px; text-transform: uppercase;
+  }
+  .tnum.hl-a { color: var(--approach); }
+  .tnum.hl-s { color: var(--signup); }
+
+  .shift-row {
+    background: var(--panel);
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    padding: 12px 14px;
+    margin-bottom: 10px;
+  }
+  .sr-top {
+    display: flex; justify-content: space-between; align-items: baseline; gap: 8px;
+  }
+  .sr-date { font-size: 15px; font-weight: 900; }
+  .sr-rate { font-size: 18px; font-weight: 900; color: var(--signup); font-variant-numeric: tabular-nums; }
+  .sr-loc { font-size: 14px; color: var(--approach); font-weight: 700; margin-top: 3px; }
+  .sr-loc.empty { color: var(--muted); font-style: italic; font-weight: 600; }
+  .sr-meta {
+    display: flex; gap: 14px; margin-top: 8px; font-size: 13px; color: var(--muted); font-weight: 700;
+    font-variant-numeric: tabular-nums; flex-wrap: wrap;
+  }
+  .sr-meta b { color: var(--text); font-weight: 900; }
+  .sr-actions { display: flex; gap: 8px; margin-top: 12px; }
+  .sr-actions button {
+    flex: 1;
+    background: var(--panel-2);
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--text);
+    min-height: 44px;
+  }
+  .sr-actions .del { color: var(--danger); border-color: var(--danger); }
+  .sr-actions button:active { filter: brightness(1.5); }
+
+  .empty-hist {
+    text-align: center;
+    color: var(--muted);
+    font-size: 16px;
+    font-weight: 700;
+    padding: 40px 20px;
+    line-height: 1.5;
+  }
+
+  /* ===== TAB BAR ===== */
+
+  .tabbar {
+    display: flex;
+    gap: 8px;
+    padding: 6px 10px 8px;
+    border-top: 2px solid var(--border);
+    background: var(--bg);
+  }
+  .tab {
+    flex: 1;
+    background: var(--panel);
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    padding: 12px;
+    font-size: 15px;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+    min-height: 50px;
+    text-transform: uppercase;
+  }
+  .tab.active { color: var(--text); border-color: var(--approach); background: var(--panel-2); }
+  .tab:active { filter: brightness(1.4); }
+
+  .btn-primary {
+    background: var(--panel-2);
+    border: 2px solid var(--approach);
+    border-radius: 12px;
+    color: var(--approach);
+    font-size: 14px;
+    font-weight: 900;
+    padding: 12px 16px;
+    min-height: 48px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .btn-primary:active { filter: brightness(1.4); }
+
+  /* ===== MODAL ===== */
+
+  .modal-back {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.82);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 100;
+  }
+  .modal-back.show { display: flex; }
+  .modal {
+    background: var(--panel);
+    border: 2px solid var(--border);
+    border-radius: 18px;
+    padding: 20px;
+    width: 100%;
+    max-width: 380px;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  .modal h2 { font-size: 20px; font-weight: 900; margin-bottom: 16px; }
+  .field { margin-bottom: 14px; }
+  .field label {
+    display: block; font-size: 12px; font-weight: 800; color: var(--muted);
+    letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 6px;
+  }
+  .field input {
+    width: 100%;
+    background: var(--bg);
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    padding: 12px;
+    font-size: 17px;
+    color: var(--text);
+    font-family: inherit;
+    -webkit-user-select: text;
+    user-select: text;
+  }
+  .field input:focus { outline: none; border-color: var(--approach); }
+  .modal-actions { display: flex; gap: 10px; margin-top: 8px; }
+  .modal-actions button {
+    flex: 1; border-radius: 12px; padding: 14px; font-size: 16px; font-weight: 900;
+    min-height: 52px;
+  }
+  .modal-actions .cancel { background: var(--panel-2); border: 2px solid var(--border); color: var(--text); }
+  .modal-actions .confirm { background: var(--approach); border: 2px solid var(--approach); color: #001015; }
+  .modal-actions .confirm.danger { background: var(--danger); border-color: var(--danger); color: #fff; }
+  .modal-actions button:active { filter: brightness(1.3); }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ============ COUNTER SCREEN ============ -->
+  <section class="screen active" id="screen-counter">
+    <div class="topbar">
+      <button class="undo-btn" id="undoBtn" disabled>
+        <span>UNDO</span>
+        <span class="undo-count" id="undoCount"></span>
+      </button>
+      <div class="stats">
+        <div class="stat">
+          <span class="stat-num approach" id="statApproach">0</span>
+          <span class="stat-label">Approach</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num signup" id="statSignup">0</span>
+          <span class="stat-label">Sign-ups</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num" id="statRate">0%</span>
+          <span class="stat-label">Rate</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="shiftbar">
+      <div class="shift-timer">
+        <div class="shift-dot" id="shiftDot"></div>
+        <div class="shift-info">
+          <span class="shift-elapsed" id="shiftElapsed">No shift</span>
+          <span class="shift-loc" id="shiftLoc">Tap Start to begin</span>
+        </div>
+      </div>
+      <button class="shift-toggle start" id="shiftToggle">START</button>
+    </div>
+
+    <div class="counters">
+      <button class="count-btn approach" id="btnApproach">
+        <span class="cb-live" id="liveApproach">0</span>
+        <span class="cb-label">APPROACH</span>
+        <span class="cb-sub">tap for each person</span>
+      </button>
+      <button class="count-btn signup" id="btnSignup">
+        <span class="cb-live" id="liveSignup">0</span>
+        <span class="cb-label">SIGN-UP</span>
+        <span class="cb-sub">counts as approach too</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ HISTORY SCREEN ============ -->
+  <section class="screen" id="screen-history">
+    <div class="hist-head">
+      <h1>History</h1>
+      <button class="btn-primary" id="exportBtn">Export CSV</button>
+    </div>
+    <div class="hist-scroll" id="histScroll"></div>
+  </section>
+
+  <!-- ============ TAB BAR ============ -->
+  <nav class="tabbar">
+    <button class="tab active" id="tabCounter">Counter</button>
+    <button class="tab" id="tabHistory">History</button>
+  </nav>
+</div>
+
+<!-- ============ MODAL ============ -->
+<div class="modal-back" id="modalBack">
+  <div class="modal" id="modal"></div>
+</div>
+
+<script>
+"use strict";
+(function () {
+  var LS_KEY = "tally.v1";
+
+  // ---------- State ----------
+  var state = {
+    current: null,   // active shift: {start, location, approaches, signups, actions:[]}
+    shifts: []       // completed shifts, each with id, start, end, hours, location, approaches, signups
+  };
+
+  // ---------- Persistence ----------
+  function save() {
+    try { localStorage.setItem(LS_KEY, JSON.stringify(state)); }
+    catch (e) { /* storage full / private mode — keep running in memory */ }
+  }
+  function load() {
+    try {
+      var raw = localStorage.getItem(LS_KEY);
+      if (raw) {
+        var parsed = JSON.parse(raw);
+        if (parsed && typeof parsed === "object") {
+          state.shifts = Array.isArray(parsed.shifts) ? parsed.shifts : [];
+          state.current = parsed.current || null;
+          if (state.current && !Array.isArray(state.current.actions)) {
+            state.current.actions = [];
+          }
+        }
+      }
+    } catch (e) { /* corrupt data — start fresh */ }
+  }
+
+  // ---------- Helpers ----------
+  function $(id) { return document.getElementById(id); }
+
+  function rate(approaches, signups) {
+    if (!approaches) return 0;
+    return (signups / approaches) * 100;
+  }
+  function ratePct(approaches, signups) {
+    return Math.round(rate(approaches, signups)) + "%";
+  }
+
+  function pad(n) { return n < 10 ? "0" + n : "" + n; }
+
+  function fmtElapsed(ms) {
+    if (ms < 0) ms = 0;
+    var s = Math.floor(ms / 1000);
+    var h = Math.floor(s / 3600);
+    var m = Math.floor((s % 3600) / 60);
+    var sec = s % 60;
+    return pad(h) + ":" + pad(m) + ":" + pad(sec);
+  }
+
+  function fmtDate(ts) {
+    var d = new Date(ts);
+    var days = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+    var mo = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+    return days[d.getDay()] + " " + mo[d.getMonth()] + " " + d.getDate();
+  }
+  function fmtTime(ts) {
+    var d = new Date(ts);
+    var h = d.getHours();
+    var m = d.getMinutes();
+    var ap = h >= 12 ? "PM" : "AM";
+    var h12 = h % 12; if (h12 === 0) h12 = 12;
+    return h12 + ":" + pad(m) + " " + ap;
+  }
+
+  function hoursBetween(start, end) {
+    return (end - start) / 3600000;
+  }
+
+  // ---------- Counter actions ----------
+  function currentCounts() {
+    if (state.current) {
+      return { a: state.current.approaches, s: state.current.signups };
+    }
+    return { a: 0, s: 0 };
+  }
+
+  function ensureShiftForCount() {
+    // Counting without an active shift auto-starts one so nothing is lost.
+    if (!state.current) startShift(null, true);
+  }
+
+  function doApproach() {
+    ensureShiftForCount();
+    state.current.approaches += 1;
+    state.current.actions.push("A");
+    save();
+    renderCounts();
+    flash($("btnApproach"));
+    vibrate(12);
+  }
+
+  function doSignup() {
+    ensureShiftForCount();
+    state.current.approaches += 1;
+    state.current.signups += 1;
+    state.current.actions.push("S");
+    save();
+    renderCounts();
+    flash($("btnSignup"));
+    vibrate(24);
+  }
+
+  function doUndo() {
+    if (!state.current || !state.current.actions.length) return;
+    var last = state.current.actions.pop();
+    if (last === "S") {
+      state.current.signups = Math.max(0, state.current.signups - 1);
+      state.current.approaches = Math.max(0, state.current.approaches - 1);
+    } else {
+      state.current.approaches = Math.max(0, state.current.approaches - 1);
+    }
+    save();
+    renderCounts();
+    vibrate(10);
+  }
+
+  // ---------- Shift lifecycle ----------
+  function startShift(location, silent) {
+    state.current = {
+      start: nowTs(),
+      location: location || "",
+      approaches: 0,
+      signups: 0,
+      actions: []
+    };
+    save();
+    renderAll();
+  }
+
+  function endShift() {
+    if (!state.current) return;
+    var finish = function (loc) {
+      var end = nowTs();
+      var cur = state.current;
+      var shift = {
+        id: "s" + cur.start + "_" + Math.floor(end % 100000),
+        start: cur.start,
+        end: end,
+        hours: +(hoursBetween(cur.start, end).toFixed(2)),
+        location: (loc || cur.location || "").trim(),
+        approaches: cur.approaches,
+        signups: cur.signups
+      };
+      state.shifts.push(shift);
+      state.current = null;
+      save();
+      renderAll();
+    };
+
+    if (!state.current.location) {
+      promptLocation(state.current.location, function (loc) {
+        finish(loc);
+      });
+    } else {
+      finish(state.current.location);
+    }
+  }
+
+  function nowTs() { return new Date().getTime(); }
+
+  // ---------- Feedback ----------
+  var flashTimers = new WeakMap();
+  function flash(el) {
+    el.classList.remove("flash");
+    // Force reflow so re-adding restarts the transition even on rapid taps.
+    void el.offsetWidth;
+    el.classList.add("flash");
+    var prev = flashTimers.get(el);
+    if (prev) clearTimeout(prev);
+    flashTimers.set(el, setTimeout(function () {
+      el.classList.remove("flash");
+    }, 90));
+  }
+  function vibrate(ms) {
+    if (navigator.vibrate) { try { navigator.vibrate(ms); } catch (e) {} }
+  }
+
+  // ---------- Rendering ----------
+  function renderCounts() {
+    var c = currentCounts();
+    $("statApproach").textContent = c.a;
+    $("statSignup").textContent = c.s;
+    $("statRate").textContent = ratePct(c.a, c.s);
+    $("liveApproach").textContent = c.a;
+    $("liveSignup").textContent = c.s;
+
+    var canUndo = state.current && state.current.actions.length > 0;
+    var undoBtn = $("undoBtn");
+    undoBtn.disabled = !canUndo;
+    $("undoCount").textContent = canUndo ? state.current.actions.length : "";
+  }
+
+  function renderShiftBar() {
+    var dot = $("shiftDot");
+    var elapsed = $("shiftElapsed");
+    var loc = $("shiftLoc");
+    var toggle = $("shiftToggle");
+
+    if (state.current) {
+      dot.classList.add("live");
+      elapsed.textContent = fmtElapsed(nowTs() - state.current.start);
+      loc.textContent = state.current.location
+        ? state.current.location
+        : "Started " + fmtTime(state.current.start) + " · tap End to name it";
+      toggle.textContent = "END";
+      toggle.className = "shift-toggle end";
+    } else {
+      dot.classList.remove("live");
+      elapsed.textContent = "No shift";
+      loc.textContent = "Tap Start to begin";
+      toggle.textContent = "START";
+      toggle.className = "shift-toggle start";
+    }
+  }
+
+  function renderHistory() {
+    var scroll = $("histScroll");
+    var shifts = state.shifts.slice().sort(function (a, b) { return b.start - a.start; });
+
+    var html = "";
+
+    // Totals (includes the in-progress shift live)
+    var tHours = 0, tA = 0, tS = 0;
+    for (var i = 0; i < state.shifts.length; i++) {
+      tHours += state.shifts[i].hours;
+      tA += state.shifts[i].approaches;
+      tS += state.shifts[i].signups;
+    }
+    if (state.current) {
+      tHours += hoursBetween(state.current.start, nowTs());
+      tA += state.current.approaches;
+      tS += state.current.signups;
+    }
+    var aph = tHours > 0 ? (tA / tHours) : 0;
+
+    html += '<div class="totals"><div class="totals-grid">';
+    html += tcell(tHours.toFixed(2), "Total Hrs", "");
+    html += tcell(tA, "Approaches", "hl-a");
+    html += tcell(tS, "Sign-ups", "hl-s");
+    html += tcell(ratePct(tA, tS), "Conv Rate", "hl-s");
+    html += tcell(aph.toFixed(1), "Appr / Hr", "");
+    html += tcell(String(state.shifts.length) + (state.current ? "+1" : ""), "Shifts", "");
+    html += '</div></div>';
+
+    if (!shifts.length && !state.current) {
+      html += '<div class="empty-hist">No shifts yet.<br>Start a shift on the Counter tab.</div>';
+    }
+
+    // In-progress shift banner (not editable/deletable while live)
+    if (state.current) {
+      var cA = state.current.approaches, cS = state.current.signups;
+      html += '<div class="shift-row" style="border-color:var(--signup)">';
+      html += '<div class="sr-top"><span class="sr-date">In progress · ' + fmtDate(state.current.start) + '</span>';
+      html += '<span class="sr-rate">' + ratePct(cA, cS) + '</span></div>';
+      html += '<div class="sr-loc' + (state.current.location ? '' : ' empty') + '">' +
+              esc(state.current.location || "No location yet") + '</div>';
+      html += '<div class="sr-meta"><span><b>' + fmtElapsed(nowTs() - state.current.start).slice(0,5) +
+              '</b> elapsed</span><span><b>' + cA + '</b> appr</span><span><b>' + cS + '</b> signups</span></div>';
+      html += '</div>';
+    }
+
+    for (var j = 0; j < shifts.length; j++) {
+      var s = shifts[j];
+      html += '<div class="shift-row" data-id="' + s.id + '">';
+      html += '<div class="sr-top"><span class="sr-date">' + fmtDate(s.start) + '</span>';
+      html += '<span class="sr-rate">' + ratePct(s.approaches, s.signups) + '</span></div>';
+      html += '<div class="sr-loc' + (s.location ? '' : ' empty') + '">' +
+              esc(s.location || "No location") + '</div>';
+      html += '<div class="sr-meta">';
+      html += '<span><b>' + s.hours.toFixed(2) + '</b> hrs</span>';
+      html += '<span><b>' + s.approaches + '</b> appr</span>';
+      html += '<span><b>' + s.signups + '</b> signups</span>';
+      html += '<span>' + fmtTime(s.start) + '–' + fmtTime(s.end) + '</span>';
+      html += '</div>';
+      html += '<div class="sr-actions">';
+      html += '<button class="edit" data-edit="' + s.id + '">Edit</button>';
+      html += '<button class="del" data-del="' + s.id + '">Delete</button>';
+      html += '</div></div>';
+    }
+
+    scroll.innerHTML = html;
+  }
+
+  function tcell(num, label, cls) {
+    return '<div class="tcell"><span class="tnum ' + cls + '">' + num +
+           '</span><span class="tlabel">' + label + '</span></div>';
+  }
+
+  function esc(str) {
+    return String(str).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  function renderAll() {
+    renderCounts();
+    renderShiftBar();
+    if ($("screen-history").classList.contains("active")) renderHistory();
+  }
+
+  // ---------- Modals ----------
+  function openModal(html) {
+    $("modal").innerHTML = html;
+    $("modalBack").classList.add("show");
+  }
+  function closeModal() {
+    $("modalBack").classList.remove("show");
+    $("modal").innerHTML = "";
+  }
+
+  function promptLocation(current, cb) {
+    openModal(
+      '<h2>Where was this shift?</h2>' +
+      '<div class="field"><label>Location / Site</label>' +
+      '<input id="locInput" type="text" placeholder="e.g. Costco Jersey City" ' +
+      'autocomplete="off" value="' + esc(current || "") + '"></div>' +
+      '<div class="modal-actions">' +
+      '<button class="cancel" id="locSkip">Skip</button>' +
+      '<button class="confirm" id="locSave">Save</button></div>'
+    );
+    var input = $("locInput");
+    input.focus();
+    $("locSave").addEventListener("click", function () {
+      var v = input.value; closeModal(); cb(v);
+    });
+    $("locSkip").addEventListener("click", function () {
+      closeModal(); cb(current || "");
+    });
+  }
+
+  function editShift(id) {
+    var s = null;
+    for (var i = 0; i < state.shifts.length; i++) if (state.shifts[i].id === id) s = state.shifts[i];
+    if (!s) return;
+    openModal(
+      '<h2>Edit shift</h2>' +
+      '<div class="field"><label>Location</label>' +
+      '<input id="eLoc" type="text" value="' + esc(s.location) + '" placeholder="Location"></div>' +
+      '<div class="field"><label>Hours (decimal)</label>' +
+      '<input id="eHours" type="number" inputmode="decimal" step="0.01" min="0" value="' + s.hours + '"></div>' +
+      '<div class="field"><label>Approaches</label>' +
+      '<input id="eAppr" type="number" inputmode="numeric" step="1" min="0" value="' + s.approaches + '"></div>' +
+      '<div class="field"><label>Sign-ups</label>' +
+      '<input id="eSign" type="number" inputmode="numeric" step="1" min="0" value="' + s.signups + '"></div>' +
+      '<div class="modal-actions">' +
+      '<button class="cancel" id="eCancel">Cancel</button>' +
+      '<button class="confirm" id="eSave">Save</button></div>'
+    );
+    $("eCancel").addEventListener("click", closeModal);
+    $("eSave").addEventListener("click", function () {
+      var loc = $("eLoc").value.trim();
+      var hrs = parseFloat($("eHours").value);
+      var appr = parseInt($("eAppr").value, 10);
+      var sign = parseInt($("eSign").value, 10);
+      if (isNaN(hrs) || hrs < 0) hrs = 0;
+      if (isNaN(appr) || appr < 0) appr = 0;
+      if (isNaN(sign) || sign < 0) sign = 0;
+      if (sign > appr) sign = appr; // a sign-up is always an approach
+      s.location = loc;
+      s.hours = +hrs.toFixed(2);
+      s.approaches = appr;
+      s.signups = sign;
+      save();
+      closeModal();
+      renderAll();
+    });
+  }
+
+  function deleteShift(id) {
+    openModal(
+      '<h2>Delete this shift?</h2>' +
+      '<div class="field"><label style="text-transform:none;font-size:14px;color:var(--text)">' +
+      'This permanently removes the shift and its counts. This cannot be undone.</label></div>' +
+      '<div class="modal-actions">' +
+      '<button class="cancel" id="dCancel">Cancel</button>' +
+      '<button class="confirm danger" id="dConfirm">Delete</button></div>'
+    );
+    $("dCancel").addEventListener("click", closeModal);
+    $("dConfirm").addEventListener("click", function () {
+      state.shifts = state.shifts.filter(function (x) { return x.id !== id; });
+      save();
+      closeModal();
+      renderAll();
+    });
+  }
+
+  // ---------- CSV export ----------
+  function exportCSV() {
+    var rows = [["Date","Start","End","Location","Hours","Approaches","Sign-ups","Conversion Rate %","Approaches/Hr"]];
+    var all = state.shifts.slice().sort(function (a, b) { return a.start - b.start; });
+    for (var i = 0; i < all.length; i++) {
+      var s = all[i];
+      var aph = s.hours > 0 ? (s.approaches / s.hours) : 0;
+      rows.push([
+        fmtDate(s.start),
+        fmtTime(s.start),
+        fmtTime(s.end),
+        s.location || "",
+        s.hours.toFixed(2),
+        s.approaches,
+        s.signups,
+        rate(s.approaches, s.signups).toFixed(1),
+        aph.toFixed(2)
+      ]);
+    }
+    // Totals row
+    var tHours = 0, tA = 0, tS = 0;
+    for (var j = 0; j < state.shifts.length; j++) {
+      tHours += state.shifts[j].hours; tA += state.shifts[j].approaches; tS += state.shifts[j].signups;
+    }
+    rows.push([]);
+    rows.push([
+      "TOTAL","","","",
+      tHours.toFixed(2), tA, tS,
+      rate(tA, tS).toFixed(1),
+      (tHours > 0 ? (tA / tHours).toFixed(2) : "0.00")
+    ]);
+
+    var csv = rows.map(function (r) {
+      return r.map(function (cell) {
+        var v = String(cell);
+        if (/[",\n]/.test(v)) v = '"' + v.replace(/"/g, '""') + '"';
+        return v;
+      }).join(",");
+    }).join("\r\n");
+
+    var stamp = new Date();
+    var name = "tally-shifts-" + stamp.getFullYear() + pad(stamp.getMonth() + 1) + pad(stamp.getDate()) + ".csv";
+    var blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url;
+    a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1500);
+  }
+
+  // ---------- Tabs ----------
+  function showScreen(which) {
+    var counter = which === "counter";
+    $("screen-counter").classList.toggle("active", counter);
+    $("screen-history").classList.toggle("active", !counter);
+    $("tabCounter").classList.toggle("active", counter);
+    $("tabHistory").classList.toggle("active", !counter);
+    if (!counter) renderHistory();
+  }
+
+  // ---------- Wire up events ----------
+  function bindTap(el, handler) {
+    // Use pointerdown for the counter buttons so the count feels instant —
+    // no waiting for the click event after touchend.
+    var fired = false;
+    el.addEventListener("pointerdown", function (e) {
+      if (e.pointerType === "mouse" && e.button !== 0) return;
+      fired = true;
+      handler();
+    });
+    // Fallback for browsers without pointer events.
+    el.addEventListener("click", function () {
+      if (fired) { fired = false; return; }
+      handler();
+    });
+  }
+
+  function init() {
+    load();
+
+    bindTap($("btnApproach"), doApproach);
+    bindTap($("btnSignup"), doSignup);
+    bindTap($("undoBtn"), function () { if (!$("undoBtn").disabled) doUndo(); });
+
+    $("shiftToggle").addEventListener("click", function () {
+      if (state.current) endShift();
+      else promptLocation("", function (loc) { startShift(loc); });
+    });
+
+    $("tabCounter").addEventListener("click", function () { showScreen("counter"); });
+    $("tabHistory").addEventListener("click", function () { showScreen("history"); });
+    $("exportBtn").addEventListener("click", exportCSV);
+
+    // Event delegation for history edit/delete.
+    $("histScroll").addEventListener("click", function (e) {
+      var t = e.target;
+      if (t.dataset && t.dataset.edit) editShift(t.dataset.edit);
+      else if (t.dataset && t.dataset.del) deleteShift(t.dataset.del);
+    });
+
+    // Tap outside modal to dismiss.
+    $("modalBack").addEventListener("click", function (e) {
+      if (e.target === $("modalBack")) closeModal();
+    });
+
+    // Prevent iOS double-tap zoom globally as a safety net.
+    var lastTouch = 0;
+    document.addEventListener("touchend", function (e) {
+      var now = nowTs();
+      if (now - lastTouch <= 300) e.preventDefault();
+      lastTouch = now;
+    }, { passive: false });
+
+    renderAll();
+
+    // Live timer tick.
+    setInterval(function () {
+      if (state.current) {
+        $("shiftElapsed").textContent = fmtElapsed(nowTs() - state.current.start);
+        if ($("screen-history").classList.contains("active")) renderHistory();
+      }
+    }, 1000);
+
+    // Re-persist on background/close as a belt-and-suspenders safeguard.
+    document.addEventListener("visibilitychange", function () {
+      if (document.visibilityState === "hidden") save();
+    });
+    window.addEventListener("pagehide", save);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+</script>
+</body>
+</html>
