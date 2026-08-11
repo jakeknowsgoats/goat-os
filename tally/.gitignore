@@ -1,0 +1,11 @@
+node_modules
+*.log
+.DS_Store
+
+# Architect
+/.arc
+.arc-env
+/dist
+/sam.json
+/sam.yaml
+preferences.arc

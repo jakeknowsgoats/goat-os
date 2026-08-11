@@ -1,0 +1,13 @@
+# Netlify still works too — it just publishes the same ./public folder that
+# Architect deploys. Point Netlify at the `tally` base directory, or deploy
+# this folder directly.
+[build]
+  base = "tally"
+  publish = "public"
+  command = ""
+
+# SPA-style fallback so any path serves the app (mirrors arc's `spa true`).
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
