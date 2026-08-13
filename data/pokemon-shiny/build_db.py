@@ -567,24 +567,28 @@ add(name="Volcanion", gen="VI", category="Mythical",
 
 # ---------- GENERATION VII ----------
 add(name="Type: Null", gen="VII", category="Legendary",
-    shiny_exists=False, rng_hunt=False, huntable_now=False, event_only=False,
+    shiny_exists=True, rng_hunt=True, huntable_now=True, event_only=False,
     home_guaranteed=False, go_shiny=False, go_rng_hunt=False,
-    methods=[M("Sun/Moon/USUM/SwSh", "Gift (Aether / Battle Tower)", True, "n/a", "n/a", "n/a", True, "D",
-               "Gift is shiny-locked in every game; only source; not in GO")],
+    methods=[M("Sun/Moon/Ultra Sun/Ultra Moon", "Gladion's gift (soft-reset)", False, FULL, "n/a",
+               "No effect (gift ignores Shiny Charm; full odds 1/4096)", True, "A",
+               "The Gen 7 Type: Null gift is NOT shiny-locked -> genuine soft-reset hunt at full odds. "
+               "Requires a 3DS cartridge (eShop closed Mar 2023)"),
+             M("Sword/Shield", "Gift (Battle Tower)", True, "n/a", "n/a", "n/a", True, "C",
+               "The SwSh Type: Null gift IS shiny-locked")],
     go="Not in Pokémon GO.",
-    notes="Officially 'Synthetic Pokémon'; Bulbapedia counts it as Legendary. No legit shiny Type: Null: the gift is "
-          "shiny-locked everywhere, and the 2017 event distributed the already-evolved Shiny SILVALLY (you cannot "
-          "devolve it). So shiny Silvally exists, but shiny Type: Null does not.")
+    notes="Correction: shiny Type: Null IS huntable — Gladion's gift in Sun/Moon & Ultra Sun/Ultra Moon is not "
+          "shiny-locked (soft-reset, full odds; gifts ignore the Shiny Charm). Only the SwSh gift is locked.")
 add(name="Silvally", gen="VII", category="Legendary",
-    shiny_exists=True, rng_hunt=False, huntable_now=False, event_only=True,
+    shiny_exists=True, rng_hunt=True, huntable_now=True, event_only=False,
     home_guaranteed=False, go_shiny=False, go_rng_hunt=False, home_event=True,
-    methods=[M("Event (GameStop/GAME/EB Games)", "Serial-code guaranteed shiny", False, "n/a", "n/a", "n/a", False, "C",
-               "A battle-ready Shiny Silvally was officially distributed Oct 23–Nov 13 2017 (for Sun/Moon); event over"),
-             M("Sun/Moon/USUM/SwSh", "Evolves from Type: Null gift", True, "n/a", "n/a", "n/a", True, "C",
-               "The in-game Type: Null gift is shiny-locked in every game")],
+    methods=[M("Sun/Moon/Ultra Sun/Ultra Moon", "Evolve a soft-reset shiny Type: Null (high friendship)", False,
+               FULL, "n/a", "No effect (via the huntable Type: Null gift)", True, "A",
+               "Evolve a shiny Type: Null — the Gen 7 gift is not shiny-locked, so this is a genuine hunt"),
+             M("Event (GameStop/GAME/EB Games)", "Serial-code guaranteed shiny", False, "n/a", "n/a", "n/a", False, "C",
+               "A battle-ready Shiny Silvally was also officially distributed Oct 23–Nov 13 2017 (for Sun/Moon)")],
     go="Not in Pokémon GO.",
-    notes="Correction: a legit shiny Silvally EXISTS via the official 2017 GameStop/GAME/EB event distribution "
-          "(already evolved) — but it is NOT RNG-huntable. The in-game Type: Null gift is shiny-locked everywhere.")
+    notes="Correction: shiny Silvally IS huntable — evolve a soft-reset shiny Type: Null from Sun/Moon or USUM (the "
+          "Gen 7 gift isn't locked). A guaranteed shiny was also officially distributed in 2017.")
 for nm, first in [("Tapu Koko", "Jan 25 2023"), ("Tapu Lele", "Feb 8 2023"),
                   ("Tapu Bulu", "Apr 17 2023"), ("Tapu Fini", "May 9 2023")]:
     add(name=nm, gen="VII", category="Legendary",
@@ -840,19 +844,27 @@ for nm, first in UB_HUNTABLE:
         go=f"Ultra Beast raids (shiny since {first}); ~1/20",
         notes="Ultra Beast (own class). Shiny-locked in SM; unlocked in USUM wormholes, Dynamax Adventures, and GO raids.")
 add(name="Poipole", gen="VII", category="Ultra Beast",
-    shiny_exists=False, rng_hunt=False, huntable_now=False, event_only=False,
+    shiny_exists=True, rng_hunt=True, huntable_now=True, event_only=False,
     home_guaranteed=False, go_shiny=False, go_rng_hunt=False,
-    methods=[M("USUM / GO", "Gift / research", True, "n/a", "n/a", "n/a", True, "D",
-               "USUM gift shiny-locked; confirmed shiny-locked in GO")],
+    methods=[M("Ultra Sun/Ultra Moon", "Ultra Recon Squad gift (soft-reset)", False, FULL, "n/a",
+               "No effect (gift ignores Shiny Charm; full odds 1/4096)", True, "A",
+               "The USUM Poipole gift is NOT shiny-locked -> genuine soft-reset hunt at full odds "
+               "(3DS cartridge; eShop closed Mar 2023)"),
+             M("Sword/Shield (Crown Tundra)", "Max Lair gift", True, "n/a", "n/a", "n/a", True, "C",
+               "The SwSh Crown Tundra Poipole gift is shiny-locked"),
+             M("Pokémon GO", "Research", True, "n/a", "n/a", "n/a", True, "C", "Shiny-locked in GO")],
     go="In GO; shiny-LOCKED.",
-    notes="Ultra Beast. Shiny UNAVAILABLE (shiny-locked in both USUM and GO).")
+    notes="Correction: shiny Poipole IS huntable — the Ultra Sun/Ultra Moon Ultra Recon Squad gift is not "
+          "shiny-locked (soft-reset, full odds). Shiny-locked in SwSh Crown Tundra and in GO.")
 add(name="Naganadel", gen="VII", category="Ultra Beast",
-    shiny_exists=False, rng_hunt=False, huntable_now=False, event_only=False,
+    shiny_exists=True, rng_hunt=True, huntable_now=True, event_only=False,
     home_guaranteed=False, go_shiny=False, go_rng_hunt=False,
-    methods=[M("USUM / GO", "Evolves from Poipole", True, "n/a", "n/a", "n/a", True, "D",
-               "Only from shiny-locked Poipole")],
+    methods=[M("Ultra Sun/Ultra Moon", "Evolve a soft-reset shiny Poipole", False, FULL, "n/a",
+               "No effect (via the huntable Poipole gift)", True, "A",
+               "Evolve a shiny Poipole (USUM gift soft-reset) — learn Dragon Pulse, then level up"),
+             M("Pokémon GO", "Evolve Poipole", True, "n/a", "n/a", "n/a", True, "C", "Shiny-locked in GO")],
     go="In GO; shiny-LOCKED.",
-    notes="Ultra Beast. Shiny UNAVAILABLE (only from shiny-locked Poipole).")
+    notes="Correction: shiny Naganadel IS huntable — evolve a soft-reset shiny Poipole from USUM. Shiny-locked in GO.")
 
 
 # ---------- REGIONAL FORMS (distinct shiny status -> own rows) ----------
@@ -1533,7 +1545,9 @@ not be pinned to an exact date, it is flagged *(verify)* in the report notes.
   - pokemonblog.com — Shiny Zeraora HOME distribution (Jun–Jul 2020); Dada Zarude & Shiny Celebi codes (2021).
   - Nintendo Life / PokéBeach — Shiny legendary beasts GameStop (2011).
 - Random-shiny (self-caught, NOT guaranteed) distributions: Jirachi (WISHMKR bonus disc, 2003–04) and Mew (Old Sea Map / Faraway Island, JP Emerald 2005) are soft-reset RNG, not shiny-locked — genuine (historical) hunts, not guaranteed shinies.
-- Verified NOT huntable / no shiny: Type: Null & Silvally's in-game gifts are shiny-locked in every game (SM/USUM/SwSh/SV Indigo Disk); Zygarde is shiny-locked in every story/static/cell encounter — BUT shiny Zygarde IS obtainable via Sword/Shield Dynamax Adventures (Max Lair), the sole hunt route.
+- Gen 7 GIFT shiny-lock correction (verified 2026-08): the **Type: Null** (Gladion) and **Poipole** (Ultra Recon Squad) gifts in Sun/Moon & Ultra Sun/Ultra Moon are NOT shiny-locked — both are soft-reset huntable at full odds (gifts ignore the Shiny Charm). That makes **Silvally** and **Naganadel** huntable too (evolve the hunted shiny pre-evo). Only the Sword/Shield gifts (Type: Null; SwSh Crown Tundra Poipole) and the GO versions are shiny-locked. **Cosmog** (Nebby), by contrast, IS shiny-locked in SM/USUM, so Cosmog/Cosmoem have no legit shiny.
+  - Sources: GameFAQs/PokémonDB/FBTB (Poipole USUM soft-reset, not locked); Project Pokemon / community (Type: Null Gen 7 gift can be shiny, SwSh locked); shiny-pokemon.fandom / Bulbapedia (Cosmog shiny-locked).
+- Zygarde is shiny-locked in every story/static/cell encounter — BUT shiny Zygarde IS obtainable via Sword/Shield Dynamax Adventures (Max Lair), the sole hunt route.
 
 ## Older-game historical hunts
 - PokéCommunity Daily — Gen 2 shiny guide (Crystal VC, roamers): https://daily.pokecommunity.com/2018/01/26/generation-2-shiny-guide/

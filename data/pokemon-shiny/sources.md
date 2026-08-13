@@ -83,7 +83,9 @@ not be pinned to an exact date, it is flagged *(verify)* in the report notes.
   - pokemonblog.com — Shiny Zeraora HOME distribution (Jun–Jul 2020); Dada Zarude & Shiny Celebi codes (2021).
   - Nintendo Life / PokéBeach — Shiny legendary beasts GameStop (2011).
 - Random-shiny (self-caught, NOT guaranteed) distributions: Jirachi (WISHMKR bonus disc, 2003–04) and Mew (Old Sea Map / Faraway Island, JP Emerald 2005) are soft-reset RNG, not shiny-locked — genuine (historical) hunts, not guaranteed shinies.
-- Verified NOT huntable / no shiny: Type: Null & Silvally's in-game gifts are shiny-locked in every game (SM/USUM/SwSh/SV Indigo Disk); Zygarde is shiny-locked in every story/static/cell encounter — BUT shiny Zygarde IS obtainable via Sword/Shield Dynamax Adventures (Max Lair), the sole hunt route.
+- Gen 7 GIFT shiny-lock correction (verified 2026-08): the **Type: Null** (Gladion) and **Poipole** (Ultra Recon Squad) gifts in Sun/Moon & Ultra Sun/Ultra Moon are NOT shiny-locked — both are soft-reset huntable at full odds (gifts ignore the Shiny Charm). That makes **Silvally** and **Naganadel** huntable too (evolve the hunted shiny pre-evo). Only the Sword/Shield gifts (Type: Null; SwSh Crown Tundra Poipole) and the GO versions are shiny-locked. **Cosmog** (Nebby), by contrast, IS shiny-locked in SM/USUM, so Cosmog/Cosmoem have no legit shiny.
+  - Sources: GameFAQs/PokémonDB/FBTB (Poipole USUM soft-reset, not locked); Project Pokemon / community (Type: Null Gen 7 gift can be shiny, SwSh locked); shiny-pokemon.fandom / Bulbapedia (Cosmog shiny-locked).
+- Zygarde is shiny-locked in every story/static/cell encounter — BUT shiny Zygarde IS obtainable via Sword/Shield Dynamax Adventures (Max Lair), the sole hunt route.
 
 ## Older-game historical hunts
 - PokéCommunity Daily — Gen 2 shiny guide (Crystal VC, roamers): https://daily.pokecommunity.com/2018/01/26/generation-2-shiny-guide/
