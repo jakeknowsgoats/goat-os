@@ -37,7 +37,7 @@
   .sub { color: var(--muted); margin: 2px 0 0; font-size: 13px; }
   header { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; flex-wrap: wrap; }
   .rate { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); }
-  .rate input { width: 72px; }
+  .rate input[type=number] { width: 80px; }
 
   .week-nav { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
   .week-nav strong { font-size: 16px; text-align: center; flex: 1; }
@@ -52,6 +52,25 @@
   .label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 600; }
   .big { font-family: var(--mono); font-size: 30px; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.2; }
   .pay .big { color: var(--money); }
+  .tile.owed { grid-column: 1 / -1; background: var(--accent-soft); border-color: transparent; display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .owed .big { color: var(--accent); }
+  .owed .breakdown { font-size: 12px; color: var(--muted); }
+
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; display: grid; gap: 12px; }
+  .card h2 { font-size: 14px; margin: 0; }
+  .exp-list { display: grid; gap: 0; }
+  .exp { display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 10px; padding: 8px 0; border-top: 1px solid var(--line); }
+  .exp:first-child { border-top: none; }
+  .exp .note { overflow-wrap: anywhere; }
+  .exp .when { font-size: 12px; color: var(--muted); }
+  .exp .amt { font-family: var(--mono); font-variant-numeric: tabular-nums; font-weight: 700; }
+  .exp button { padding: 4px 8px; font-size: 12px; color: var(--muted); }
+  .empty { color: var(--muted); font-size: 13px; }
+  form.add { display: grid; grid-template-columns: 1fr 110px; gap: 8px; }
+  form.add .note-in { grid-column: 1 / -1; }
+  form.add button { grid-column: 1 / -1; background: var(--accent); color: var(--card); border-color: var(--accent); font-weight: 600; }
+  input[type=text], input[type=date] { font: inherit; width: 100%; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); color: var(--ink); }
+  form.add input[type=number] { text-align: left; }
 
   .days { background: var(--card); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
   .day { display: grid; grid-template-columns: 1fr auto 84px; align-items: center; gap: 12px; padding: 12px 16px; border-top: 1px solid var(--line); }
@@ -94,19 +113,36 @@
 
   <div class="summary">
     <div class="tile"><div class="label">Hours this week</div><div class="big" id="totHours">0</div></div>
-    <div class="tile pay"><div class="label">Pay this week</div><div class="big" id="totPay">$0.00</div></div>
+    <div class="tile pay"><div class="label">Pay for hours</div><div class="big" id="totPay">$0.00</div></div>
+    <div class="tile owed">
+      <div><div class="label">Total owed this week</div><div class="breakdown" id="owedBreak">Pay + reimbursements</div></div>
+      <div class="big" id="totOwed">$0.00</div>
+    </div>
   </div>
 
   <div class="days" id="days"></div>
   <p class="hint">Type hours as decimals: 3.5 = 3 hrs 30 min, 3.25 = 3 hrs 15 min. Leave blank if you didn't work. Changes save automatically.</p>
+  <section class="card" aria-labelledby="expTitle">
+    <h2 id="expTitle">Reimbursements this week</h2>
+    <div class="exp-list" id="expList"></div>
+    <form class="add" id="expForm">
+      <input class="note-in" id="expNote" type="text" maxlength="120" placeholder="What was it for? (e.g. Giant, supplies)" aria-label="What was it for" required>
+      <input id="expDate" type="date" aria-label="Date">
+      <input id="expAmt" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="$0.00" aria-label="Amount" required>
+      <button type="submit">Add reimbursement</button>
+    </form>
+  </section>
+
   <div class="status" id="status"></div>
 
   <section class="history">
     <h2>Past weeks</h2>
+    <div style="overflow-x:auto">
     <table>
-      <thead><tr><th>Week of</th><th class="num">Hours</th><th class="num">Pay</th></tr></thead>
+      <thead><tr><th>Week of</th><th class="num">Hours</th><th class="num">Pay</th><th class="num">Reimb.</th><th class="num">Total</th></tr></thead>
       <tbody id="hist"></tbody>
     </table>
+    </div>
   </section>
 </div>
 
@@ -117,6 +153,7 @@
   const LS_KEY = "weekly-hours-v1";
 
   let entries = {};      // "YYYY-MM-DD" -> hours
+  let expenses = {};     // id -> {date, amount, note}
   let rate = 25;
   let weekStart = mondayOf(new Date());
   let db = null;
@@ -141,17 +178,68 @@
   function loadLocal() {
     try {
       const raw = localStorage.getItem(LS_KEY);
-      if (raw) { const o = JSON.parse(raw); entries = o.entries || {}; rate = o.rate ?? 25; }
+      if (raw) { const o = JSON.parse(raw); entries = o.entries || {}; expenses = o.expenses || {}; rate = o.rate ?? 25; }
     } catch (e) {}
   }
   function saveLocal() {
-    try { localStorage.setItem(LS_KEY, JSON.stringify({ entries, rate })); } catch (e) {}
+    try { localStorage.setItem(LS_KEY, JSON.stringify({ entries, expenses, rate })); } catch (e) {}
   }
 
   function weekTotal(start) {
     let t = 0;
     for (let i = 0; i < 5; i++) t += Number(entries[iso(addDays(start, i))] || 0);
     return t;
+  }
+
+  function parseIso(k) { const [y, m, d] = k.split("-").map(Number); return new Date(y, m - 1, d); }
+  function weekExpenses(start) {
+    const from = iso(start), to = iso(addDays(start, 6));
+    return Object.entries(expenses)
+      .filter(([, e]) => e.date >= from && e.date <= to)
+      .sort((a, b) => (a[1].date < b[1].date ? -1 : a[1].date > b[1].date ? 1 : 0));
+  }
+  function weekReimb(start) {
+    return weekExpenses(start).reduce((t, [, e]) => t + Number(e.amount || 0), 0);
+  }
+
+  function renderExpenses() {
+    const list = document.getElementById("expList");
+    list.innerHTML = "";
+    const items = weekExpenses(weekStart);
+    if (!items.length) {
+      const p = document.createElement("div");
+      p.className = "empty";
+      p.textContent = "Nothing to be paid back this week.";
+      list.appendChild(p);
+    }
+    for (const [id, e] of items) {
+      const row = document.createElement("div");
+      row.className = "exp";
+      const left = document.createElement("div");
+      const note = document.createElement("div");
+      note.className = "note";
+      note.textContent = e.note || "Reimbursement";
+      const when = document.createElement("div");
+      when.className = "when";
+      when.textContent = parseIso(e.date).toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" });
+      left.append(note, when);
+      const amt = document.createElement("span");
+      amt.className = "amt";
+      amt.textContent = money(Number(e.amount));
+      const del = document.createElement("button");
+      del.type = "button";
+      del.textContent = "Remove";
+      del.setAttribute("aria-label", "Remove " + (e.note || "reimbursement"));
+      del.addEventListener("click", () => removeExpense(id));
+      row.append(left, amt, del);
+      list.appendChild(row);
+    }
+    const dateIn = document.getElementById("expDate");
+    const today = iso(new Date());
+    const from = iso(weekStart), to = iso(addDays(weekStart, 6));
+    if (!(dateIn.value >= from && dateIn.value <= to)) {
+      dateIn.value = today >= from && today <= to ? today : from;
+    }
   }
 
   function renderDays() {
@@ -197,6 +285,9 @@
     const t = weekTotal(weekStart);
     document.getElementById("totHours").textContent = hrs(t);
     document.getElementById("totPay").textContent = money(t * rate);
+    const r = weekReimb(weekStart);
+    document.getElementById("totOwed").textContent = money(t * rate + r);
+    document.getElementById("owedBreak").textContent = money(t * rate) + " pay + " + money(r) + " reimbursements";
     for (let i = 0; i < 5; i++) {
       const key = iso(addDays(weekStart, i));
       const el = document.getElementById("earn-" + key);
@@ -215,15 +306,16 @@
     const weeks = {};
     for (const k of Object.keys(entries)) {
       if (!entries[k]) continue;
-      const [y, m, d] = k.split("-").map(Number);
-      const mon = iso(mondayOf(new Date(y, m - 1, d)));
-      weeks[mon] = true;
+      weeks[iso(mondayOf(parseIso(k)))] = true;
+    }
+    for (const e of Object.values(expenses)) {
+      if (e && e.date) weeks[iso(mondayOf(parseIso(e.date)))] = true;
     }
     const tb = document.getElementById("hist");
     tb.innerHTML = "";
     const keys = Object.keys(weeks).sort().reverse();
     if (!keys.length) {
-      tb.innerHTML = '<tr><td colspan="3" style="color:var(--muted)">No hours logged yet.</td></tr>';
+      tb.innerHTML = '<tr><td colspan="5" style="color:var(--muted)">Nothing logged yet.</td></tr>';
       return;
     }
     for (const k of keys) {
@@ -232,17 +324,20 @@
       const t = weekTotal(start);
       const tr = document.createElement("tr");
       tr.className = "clickable";
-      tr.innerHTML = "<td></td><td class='num'></td><td class='num'></td>";
+      const r = weekReimb(start);
+      tr.innerHTML = "<td></td><td class='num'></td><td class='num'></td><td class='num'></td><td class='num'></td>";
       tr.children[0].textContent = fmtShort(start);
       tr.children[1].textContent = hrs(t);
       tr.children[2].textContent = money(t * rate);
+      tr.children[3].textContent = r ? money(r) : "–";
+      tr.children[4].textContent = money(t * rate + r);
       tr.addEventListener("click", () => { weekStart = start; renderAll(); window.scrollTo({ top: 0 }); });
       tb.appendChild(tr);
     }
   }
 
   function renderAll() {
-    renderWeekLabel(); renderDays(); renderTotals(); renderHistory();
+    renderWeekLabel(); renderDays(); renderExpenses(); renderTotals(); renderHistory();
     document.getElementById("rate").value = rate;
   }
 
@@ -266,6 +361,35 @@
       status("Couldn't save. Check your connection and try again.");
     }
   }
+
+  async function removeExpense(id) {
+    delete expenses[id];
+    saveLocal(); renderExpenses(); renderTotals(); renderHistory();
+    if (!db) { status("Removed"); return; }
+    try { await db.collection("expenses").doc(id).delete(); status("Removed"); }
+    catch (e) { status("Couldn't remove it. Check your connection and try again."); }
+  }
+
+  document.getElementById("expForm").addEventListener("submit", async (ev) => {
+    ev.preventDefault();
+    const noteIn = document.getElementById("expNote");
+    const amtIn = document.getElementById("expAmt");
+    const dateIn = document.getElementById("expDate");
+    const amount = Math.round(Number(amtIn.value) * 100) / 100;
+    const note = noteIn.value.trim();
+    const date = dateIn.value || iso(new Date());
+    if (!note) { status("Add a note saying what it was for."); noteIn.focus(); return; }
+    if (!(amount > 0)) { status("Enter the amount you spent, like 14.46."); amtIn.focus(); return; }
+    const id = "e" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+    expenses[id] = { date, amount, note };
+    noteIn.value = ""; amtIn.value = "";
+    const [y, m, d] = date.split("-").map(Number);
+    weekStart = mondayOf(new Date(y, m - 1, d));
+    saveLocal(); renderAll();
+    if (!db) { status("Added"); return; }
+    try { await db.collection("expenses").doc(id).set(expenses[id]); status("Added " + money(amount)); }
+    catch (e) { status("Couldn't save it. Check your connection and try again."); }
+  });
 
   document.getElementById("rate").addEventListener("input", (e) => {
     const n = Number(e.target.value);
@@ -298,6 +422,17 @@
         const active = document.activeElement && document.activeElement.id;
         entries = next; saveLocal();
         renderAll();
+        if (active) { const el = document.getElementById(active); if (el) el.focus(); }
+      }, () => status("Live sync stopped. Reload to reconnect."));
+      db.collection("expenses").onSnapshot((snap) => {
+        const next = {};
+        for (const doc of snap.docs) {
+          const d = doc.data();
+          if (d && d.date && Number(d.amount) > 0) next[doc.id] = { date: String(d.date), amount: Number(d.amount), note: String(d.note || "") };
+        }
+        const active = document.activeElement && document.activeElement.id;
+        expenses = next; saveLocal();
+        renderExpenses(); renderTotals(); renderHistory();
         if (active) { const el = document.getElementById(active); if (el) el.focus(); }
       }, () => status("Live sync stopped. Reload to reconnect."));
       db.doc("settings/main").onSnapshot((s) => {
