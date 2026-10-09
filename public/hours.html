@@ -73,7 +73,7 @@
   form.add input[type=number] { text-align: left; }
 
   .days { background: var(--card); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
-  .day { display: grid; grid-template-columns: 1fr auto 84px; align-items: center; gap: 12px; padding: 12px 16px; border-top: 1px solid var(--line); }
+  .day { display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 12px; padding: 12px 16px; border-top: 1px solid var(--line); }
   .day:first-child { border-top: none; }
   .day.offday { background: var(--off); }
   .day .name { font-weight: 600; }
@@ -82,17 +82,20 @@
   .chip.none { background: transparent; color: var(--muted); font-weight: 400; }
   .day .earn { font-family: var(--mono); font-size: 12px; color: var(--money); font-variant-numeric: tabular-nums; }
   input[type=number] { font-family: var(--mono); font-size: 16px; width: 100%; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); color: var(--ink); text-align: right; font-variant-numeric: tabular-nums; }
+  .time { display: flex; align-items: center; gap: 6px; }
+  .time input[type=number] { width: 56px; padding: 8px 8px; }
+  .time .unit { font-size: 12px; color: var(--muted); }
   .hint { font-size: 12px; color: var(--muted); margin: 0; }
 
   .history h2 { font-size: 14px; margin: 0 0 8px; }
   table { width: 100%; border-collapse: collapse; font-size: 14px; }
-  td, th { padding: 8px 4px; border-bottom: 1px solid var(--line); text-align: left; }
+  td, th { white-space: nowrap; padding: 8px 4px; border-bottom: 1px solid var(--line); text-align: left; }
   th { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 600; }
   td.num, th.num { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; }
   tr.clickable { cursor: pointer; }
   tr.clickable:hover td { color: var(--accent); }
   .status { font-size: 12px; color: var(--muted); text-align: center; min-height: 18px; }
-  @media (max-width: 400px) { .big { font-size: 24px; } .day { grid-template-columns: 1fr 76px; } .day .chip { display: none; } }
+  @media (max-width: 400px) { .big { font-size: 24px; } .day { grid-template-columns: 1fr auto; } .day .chip { display: none; } }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style>
 
@@ -121,7 +124,7 @@
   </div>
 
   <div class="days" id="days"></div>
-  <p class="hint">Type hours as decimals: 3.5 = 3 hrs 30 min, 3.25 = 3 hrs 15 min. Leave blank if you didn't work. Changes save automatically.</p>
+  <p class="hint">Enter hours and minutes, like 1 hr 15 min. Leave blank if you didn't work. Changes save automatically.</p>
   <section class="card" aria-labelledby="expTitle">
     <h2 id="expTitle">Reimbursements this week</h2>
     <div class="exp-list" id="expList"></div>
@@ -170,7 +173,12 @@
   function addDays(d, n) { const x = new Date(d); x.setDate(x.getDate() + n); return x; }
   function fmtShort(d) { return d.toLocaleDateString(undefined, { month: "short", day: "numeric" }); }
   function money(n) { return "$" + n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
-  function hrs(n) { return (Math.round(n * 100) / 100).toString(); }
+  function splitHM(n) { const t = Math.round(n * 60); return [Math.floor(t / 60), t % 60]; }
+  function hrs(n) {
+    const [h, m] = splitHM(n);
+    if (!m) return h + "h";
+    return (h ? h + "h " : "") + m + "m";
+  }
 
   function status(msg) { document.getElementById("status").textContent = msg; }
 
@@ -268,15 +276,26 @@
       const chip = document.createElement("span");
       chip.className = "chip" + (REGULAR[i] ? "" : " none");
       chip.textContent = REGULAR[i] ? "Regular day" : "Off";
-      const input = document.createElement("input");
-      input.type = "number"; input.min = "0"; input.max = "24"; input.step = "0.25";
-      input.inputMode = "decimal";
-      input.id = "h-" + key;
-      input.placeholder = "0";
-      input.setAttribute("aria-label", DAYS[i] + " hours");
-      if (val) input.value = val;
-      input.addEventListener("input", () => onHours(key, input.value));
-      row.append(left, chip, input);
+      const [vh, vm] = val ? splitHM(val) : [0, 0];
+      const time = document.createElement("div");
+      time.className = "time";
+      const hIn = document.createElement("input");
+      hIn.type = "number"; hIn.min = "0"; hIn.max = "24"; hIn.step = "1";
+      hIn.inputMode = "numeric"; hIn.id = "h-" + key; hIn.placeholder = "0";
+      hIn.setAttribute("aria-label", DAYS[i] + " hours");
+      if (vh) hIn.value = vh;
+      const mIn = document.createElement("input");
+      mIn.type = "number"; mIn.min = "0"; mIn.max = "59"; mIn.step = "1";
+      mIn.inputMode = "numeric"; mIn.id = "m-" + key; mIn.placeholder = "0";
+      mIn.setAttribute("aria-label", DAYS[i] + " minutes");
+      if (vm) mIn.value = vm;
+      const hU = document.createElement("span"); hU.className = "unit"; hU.textContent = "hr";
+      const mU = document.createElement("span"); mU.className = "unit"; mU.textContent = "min";
+      const onChange = () => onHours(key, hIn.value, mIn.value);
+      hIn.addEventListener("input", onChange);
+      mIn.addEventListener("input", onChange);
+      time.append(hIn, hU, mIn, mU);
+      row.append(left, chip, time);
       box.appendChild(row);
     }
   }
@@ -341,9 +360,11 @@
     document.getElementById("rate").value = rate;
   }
 
-  function onHours(key, raw) {
-    const n = raw === "" ? 0 : Math.max(0, Math.min(24, Number(raw)));
-    if (Number.isNaN(n)) return;
+  function onHours(key, rawH, rawM) {
+    const h = rawH === "" ? 0 : Math.floor(Number(rawH));
+    const m = rawM === "" ? 0 : Math.floor(Number(rawM));
+    if (Number.isNaN(h) || Number.isNaN(m) || h < 0 || m < 0 || m > 59) return;
+    const n = Math.min(24, h + m / 60);
     if (n) entries[key] = n; else delete entries[key];
     renderTotals(); renderHistory(); saveLocal();
     clearTimeout(timers[key]);
