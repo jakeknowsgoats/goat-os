@@ -80,11 +80,12 @@
   .day .date { color: var(--muted); font-size: 12px; }
   .chip { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); white-space: nowrap; }
   .chip.none { background: transparent; color: var(--muted); font-weight: 400; }
-  .day .earn { font-family: var(--mono); font-size: 12px; color: var(--money); font-variant-numeric: tabular-nums; }
   input[type=number] { font-family: var(--mono); font-size: 16px; width: 100%; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); color: var(--ink); text-align: right; font-variant-numeric: tabular-nums; }
   .time { display: flex; align-items: center; gap: 6px; }
-  .time input[type=number] { width: 56px; padding: 8px 8px; }
+  .time input[type=time] { font-family: var(--mono); font-size: 15px; width: 118px; padding: 7px 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); color: var(--ink); font-variant-numeric: tabular-nums; }
   .time .unit { font-size: 12px; color: var(--muted); }
+  .day .worked { font-family: var(--mono); font-size: 12px; color: var(--ink); font-weight: 700; font-variant-numeric: tabular-nums; }
+  .day .worked.open { color: var(--muted); font-weight: 500; font-family: var(--sans); }
   .hint { font-size: 12px; color: var(--muted); margin: 0; }
 
   .history h2 { font-size: 14px; margin: 0 0 8px; }
@@ -95,7 +96,7 @@
   tr.clickable { cursor: pointer; }
   tr.clickable:hover td { color: var(--accent); }
   .status { font-size: 12px; color: var(--muted); text-align: center; min-height: 18px; }
-  @media (max-width: 400px) { .big { font-size: 24px; } .day { grid-template-columns: 1fr auto; } .day .chip { display: none; } }
+  @media (max-width: 400px) { .big { font-size: 24px; } .day { grid-template-columns: 1fr; gap: 8px; } .day .chip { display: none; } .time { justify-content: space-between; } .time input[type=time] { flex: 1; width: auto; min-width: 0; } }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style>
 
@@ -124,7 +125,7 @@
   </div>
 
   <div class="days" id="days"></div>
-  <p class="hint">Enter hours and minutes, like 1 hr 15 min. Leave blank if you didn't work. Changes save automatically.</p>
+  <p class="hint">Enter the time you started and finished, like 4:10 PM to 6:15 PM, and the hours are worked out for you. You can put in your start time when you clock in and add the finish time later. Leave blank if you didn't work. Changes save automatically.</p>
   <section class="card" aria-labelledby="expTitle">
     <h2 id="expTitle">Reimbursements this week</h2>
     <div class="exp-list" id="expList"></div>
@@ -157,6 +158,7 @@
 
   let entries = {};      // "YYYY-MM-DD" -> hours
   let expenses = {};     // id -> {date, amount, note}
+  let times = {};        // "YYYY-MM-DD" -> {start: "HH:MM", end: "HH:MM"}
   let rate = 25;
   let weekStart = mondayOf(new Date());
   let db = null;
@@ -180,17 +182,44 @@
     return (h ? h + "h " : "") + m + "m";
   }
 
+  function toMin(t) {
+    const m = /^(\d{1,2}):(\d{2})/.exec(t || "");
+    return m ? Number(m[1]) * 60 + Number(m[2]) : null;
+  }
+  // Hours between two "HH:MM" times; a finish earlier than the start runs past midnight.
+  function span(start, end) {
+    const a = toMin(start), b = toMin(end);
+    if (a == null || b == null) return null;
+    let d = b - a;
+    if (d < 0) d += 24 * 60;
+    return d / 60;
+  }
+  function fmtClock(t) {
+    const v = toMin(t);
+    if (v == null) return "";
+    const h = Math.floor(v / 60), m = v % 60;
+    return ((h + 11) % 12 + 1) + ":" + pad(m) + (h < 12 ? " AM" : " PM");
+  }
+  function workedText(key) {
+    const tm = times[key] || {};
+    if (tm.start && !tm.end) return { text: "Started " + fmtClock(tm.start) + ", add finish time", open: true };
+    if (!tm.start && tm.end) return { text: "Add start time", open: true };
+    const v = entries[key];
+    if (!v) return { text: "", open: false };
+    return { text: hrs(v) + "  " + money(v * rate), open: false };
+  }
+
   function status(msg) { document.getElementById("status").textContent = msg; }
 
   // local fallback
   function loadLocal() {
     try {
       const raw = localStorage.getItem(LS_KEY);
-      if (raw) { const o = JSON.parse(raw); entries = o.entries || {}; expenses = o.expenses || {}; rate = o.rate ?? 25; }
+      if (raw) { const o = JSON.parse(raw); entries = o.entries || {}; times = o.times || {}; expenses = o.expenses || {}; rate = o.rate ?? 25; }
     } catch (e) {}
   }
   function saveLocal() {
-    try { localStorage.setItem(LS_KEY, JSON.stringify({ entries, expenses, rate })); } catch (e) {}
+    try { localStorage.setItem(LS_KEY, JSON.stringify({ entries, times, expenses, rate })); } catch (e) {}
   }
 
   function weekTotal(start) {
@@ -267,34 +296,27 @@
       const sub = document.createElement("div");
       sub.className = "date";
       sub.textContent = fmtShort(d);
-      const earn = document.createElement("span");
-      earn.className = "earn";
-      earn.id = "earn-" + key;
-      earn.textContent = val ? "  " + money(val * rate) : "";
-      sub.appendChild(earn);
-      left.append(name, sub);
+      const worked = document.createElement("div");
+      worked.id = "worked-" + key;
+      left.append(name, sub, worked);
       const chip = document.createElement("span");
       chip.className = "chip" + (REGULAR[i] ? "" : " none");
       chip.textContent = REGULAR[i] ? "Regular day" : "Off";
-      const [vh, vm] = val ? splitHM(val) : [0, 0];
+      const tm = times[key] || {};
       const time = document.createElement("div");
       time.className = "time";
-      const hIn = document.createElement("input");
-      hIn.type = "number"; hIn.min = "0"; hIn.max = "24"; hIn.step = "1";
-      hIn.inputMode = "numeric"; hIn.id = "h-" + key; hIn.placeholder = "0";
-      hIn.setAttribute("aria-label", DAYS[i] + " hours");
-      if (vh) hIn.value = vh;
-      const mIn = document.createElement("input");
-      mIn.type = "number"; mIn.min = "0"; mIn.max = "59"; mIn.step = "1";
-      mIn.inputMode = "numeric"; mIn.id = "m-" + key; mIn.placeholder = "0";
-      mIn.setAttribute("aria-label", DAYS[i] + " minutes");
-      if (vm) mIn.value = vm;
-      const hU = document.createElement("span"); hU.className = "unit"; hU.textContent = "hr";
-      const mU = document.createElement("span"); mU.className = "unit"; mU.textContent = "min";
-      const onChange = () => onHours(key, hIn.value, mIn.value);
-      hIn.addEventListener("input", onChange);
-      mIn.addEventListener("input", onChange);
-      time.append(hIn, hU, mIn, mU);
+      const sIn = document.createElement("input");
+      sIn.type = "time"; sIn.id = "s-" + key;
+      sIn.setAttribute("aria-label", DAYS[i] + " start time");
+      if (tm.start) sIn.value = tm.start;
+      const eIn = document.createElement("input");
+      eIn.type = "time"; eIn.id = "e-" + key;
+      eIn.setAttribute("aria-label", DAYS[i] + " finish time");
+      if (tm.end) eIn.value = tm.end;
+      const to = document.createElement("span"); to.className = "unit"; to.textContent = "to";
+      const onChange = () => onTimes(key, sIn.value, eIn.value);
+      for (const el of [sIn, eIn]) { el.addEventListener("input", onChange); el.addEventListener("change", onChange); }
+      time.append(sIn, to, eIn);
       row.append(left, chip, time);
       box.appendChild(row);
     }
@@ -309,8 +331,12 @@
     document.getElementById("owedBreak").textContent = money(t * rate) + " pay + " + money(r) + " reimbursements";
     for (let i = 0; i < 5; i++) {
       const key = iso(addDays(weekStart, i));
-      const el = document.getElementById("earn-" + key);
-      if (el) el.textContent = entries[key] ? "  " + money(entries[key] * rate) : "";
+      const el = document.getElementById("worked-" + key);
+      if (el) {
+        const w = workedText(key);
+        el.textContent = w.text;
+        el.className = "worked" + (w.open ? " open" : "");
+      }
     }
   }
 
@@ -360,12 +386,12 @@
     document.getElementById("rate").value = rate;
   }
 
-  function onHours(key, rawH, rawM) {
-    const h = rawH === "" ? 0 : Math.floor(Number(rawH));
-    const m = rawM === "" ? 0 : Math.floor(Number(rawM));
-    if (Number.isNaN(h) || Number.isNaN(m) || h < 0 || m < 0 || m > 59) return;
-    const n = Math.min(24, h + m / 60);
-    if (n) entries[key] = n; else delete entries[key];
+  function onTimes(key, start, end) {
+    const prev = times[key] || {};
+    if ((prev.start || "") === start && (prev.end || "") === end) return;
+    if (start || end) times[key] = { start, end }; else delete times[key];
+    const n = span(start, end);
+    if (n) entries[key] = Math.round(n * 60) / 60; else delete entries[key];
     renderTotals(); renderHistory(); saveLocal();
     clearTimeout(timers[key]);
     timers[key] = setTimeout(() => persistDay(key), 600);
@@ -375,7 +401,8 @@
     if (!db) { status("Saved on this device"); return; }
     try {
       const ref = db.collection("days").doc(key);
-      if (entries[key]) await ref.set({ date: key, hours: entries[key] });
+      const tm = times[key];
+      if (entries[key] || tm) await ref.set({ date: key, hours: entries[key] || 0, start: tm?.start || "", end: tm?.end || "" });
       else await ref.delete();
       status("Saved");
     } catch (e) {
@@ -435,13 +462,18 @@
       if (!ns) return;
       db = ns;
       db.collection("days").onSnapshot((snap) => {
-        const next = {};
+        const next = {}, nextTimes = {};
         for (const doc of snap.docs) {
           const d = doc.data();
-          if (d && d.hours) next[doc.id] = Number(d.hours);
+          if (!d) continue;
+          if (Number(d.hours) > 0) next[doc.id] = Number(d.hours);
+          if (d.start || d.end) nextTimes[doc.id] = { start: String(d.start || ""), end: String(d.end || "") };
         }
+        // Skip the redraw when this is just our own save coming back, so an open time picker stays open.
+        const canon = (o) => JSON.stringify(Object.keys(o).sort().map((k) => [k, o[k]]));
+        if (canon(next) === canon(entries) && canon(nextTimes) === canon(times)) return;
         const active = document.activeElement && document.activeElement.id;
-        entries = next; saveLocal();
+        entries = next; times = nextTimes; saveLocal();
         renderAll();
         if (active) { const el = document.getElementById(active); if (el) el.focus(); }
       }, () => status("Live sync stopped. Reload to reconnect."));
