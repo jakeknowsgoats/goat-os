@@ -73,7 +73,7 @@
   form.add input[type=number] { text-align: left; }
 
   .days { background: var(--card); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
-  .day { display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 12px; padding: 12px 16px; border-top: 1px solid var(--line); }
+  .day { display: grid; grid-template-columns: 1fr auto; align-items: start; gap: 10px 12px; padding: 12px 16px; border-top: 1px solid var(--line); }
   .day:first-child { border-top: none; }
   .day.offday { background: var(--off); }
   .day .name { font-weight: 600; }
@@ -81,9 +81,10 @@
   .chip { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); white-space: nowrap; }
   .chip.none { background: transparent; color: var(--muted); font-weight: 400; }
   input[type=number] { font-family: var(--mono); font-size: 16px; width: 100%; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); color: var(--ink); text-align: right; font-variant-numeric: tabular-nums; }
-  .time { display: flex; align-items: center; gap: 6px; }
-  .time input[type=time] { font-family: var(--mono); font-size: 15px; width: 118px; padding: 7px 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); color: var(--ink); font-variant-numeric: tabular-nums; }
+  .time { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 8px; }
+  .time input[type=time] { -webkit-appearance: none; appearance: none; display: block; width: 100%; min-width: 0; min-height: 42px; text-align: left; font-family: var(--mono); font-size: 16px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); color: var(--ink); font-variant-numeric: tabular-nums; }
   .time .unit { font-size: 12px; color: var(--muted); }
+  .time input[type=time]::-webkit-date-and-time-value { text-align: left; }
   .day .worked { font-family: var(--mono); font-size: 12px; color: var(--ink); font-weight: 700; font-variant-numeric: tabular-nums; }
   .day .worked.open { color: var(--muted); font-weight: 500; font-family: var(--sans); }
   .hint { font-size: 12px; color: var(--muted); margin: 0; }
@@ -96,7 +97,7 @@
   tr.clickable { cursor: pointer; }
   tr.clickable:hover td { color: var(--accent); }
   .status { font-size: 12px; color: var(--muted); text-align: center; min-height: 18px; }
-  @media (max-width: 400px) { .big { font-size: 24px; } .day { grid-template-columns: 1fr; gap: 8px; } .day .chip { display: none; } .time { justify-content: space-between; } .time input[type=time] { flex: 1; width: auto; min-width: 0; } }
+  @media (max-width: 400px) { .big { font-size: 24px; } }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style>
 
